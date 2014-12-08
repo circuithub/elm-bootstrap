@@ -1,0 +1,3959 @@
+module PlainComponents where
+{-| 
+Over a dozen reusable components built to provide iconography, dropdowns, input groups, navigation, alerts, and much more.  Provided by Bootstrap.
+-}
+
+import Html (..)
+import Html.Attributes (..)
+import Html.Events (..)
+import Text (..)
+import Graphics.Element (..)
+import Graphics.Collage (..)
+import Signal
+import Window
+
+port title : Signal String
+port title = Signal.constant "Components &middot; Elmstrap"
+
+---- VIEW ----
+
+view : Html
+view =
+  let -- Bootstrap specific
+      container       = div [ class "container" ]
+      containerFluid  = div [ class "container-fluid" ]
+      iconBar         = span [ class "icon-bar" ] []
+      row             = div [ class "row" ]
+      colMd3          = div [ class "col-md-3" ]
+      colMd9          = div [ class "col-md-9" ]
+      colLg6          = div [ class "col-lg-6" ]
+      --colXsMd xs md   = div [ class "col-xs-" ++ toString xs ++ " " ++ "col-md-" ++ toString md ] 
+      --colSmMd sm md   = div [ class "col-sm-" ++ toString sm ++ " " ++ "col-md-" ++ toString md ] 
+      inputGroup      = div [ class "input-group" ]
+      inputGroupAddon = span [ class "input-group-addon" ]
+      pageHeader i t  = h1 [ id i, class "page-header" ] [ text t ]
+      -- Simple Html
+      div' c          = div [ class c ]
+      --h1' i t         = h1 [ id i ] [ text t ]
+      h1_ t           = h1 [] [ text t ]
+      h2' i t         = h2 [ id i ] [ text t ]
+      a'  url t       = a [ href url ] [ text t ]
+      li_             = li []
+      p_  t           = p [] [ text t ]
+      -- Attributes
+      -- role            = attribute "role" "banner"
+      -- Bootstrap documentation
+      bsDocsSection   = div [ class "bs-docs-section" ]
+  in body [] 
+    [ a [ class "sr-only sr-only-focusable", href "#content" ] [ text "Skip to main content" ]
+    -- Docs master nav
+    , header [ class "navbar navbar-static-top bs-docs-nav", id "top"{-role "banner"-} ]
+      [ container
+        [ div [ class "navbar-header" ]
+          [ button [ class "navbar-toggle collapsed", type' "button" {-, data-toggle "collapse",data-target ".bs-navbar-collapse"-}]
+            [ span [ class "sr-only" ] [ text "Toggle navigation" ]
+            , iconBar
+            , iconBar
+            , iconBar
+            ]
+          , a [ href "../", class "navbar-brand" ] [ text "Bootstrap" ]
+          ]
+        , nav [ class "collapse navbar-collapse bs-navbar-collapse" {-role "navigation"-} ]
+          [ ul [ class "nav navbar-nav" ]
+            [ li_ [ a' "../getting-started/" "Getting started" ]
+            , li_ [ a' "../css/" "CSS" ]
+            , li  [ class "active" ]
+              [ a' "../components/" "Components" 
+              ] 
+            , li_ [ a' "../javascript/" "JavaScript" ]
+            , li_ [ a' "../customize/"  "Customize" ]
+            ]
+          --ul.nav.navbar-nav.navbar-right
+          --  li
+          --    a(href='http://expo.getbootstrap.com', onclick='ga("send", "event", "Navbar", "Community links", "Expo");') Expo
+          --  li
+          --    a(href='http://blog.getbootstrap.com', onclick='ga("send", "event", "Navbar", "Community links", "Blog");') Blog
+          ]
+        ]
+      ]
+    -- Docs page layout
+    , div [ class "bs-docs-header", id "content" ]
+      [ container
+        [ h1_ "Components"
+        , p_ "Over a dozen reusable components built to provide iconography, dropdowns, input groups, navigation, alerts, and much more."
+        ]
+      ]
+    , div [ class "container bs-docs-container" ]
+      [ row
+        [ colMd9
+          [ bsDocsSection
+            [ pageHeader "glyphicons" "Glyphicons"
+            , h2' "glyphicons-glyphs" "Available glyphs"
+            --p
+            --  | Includes 200 glyphs in font format from the Glyphicon Halflings set.
+            --  a(href='http://glyphicons.com/') Glyphicons
+            --  | Halflings are normally not available for free, but their creator has
+            --  | made them available for Bootstrap free of cost. As a thank you, we only ask that you include a link back to
+            --  a(href='http://glyphicons.com/') Glyphicons
+            --  | whenever possible.
+            , div' "bs-glyphicons"
+              [
+            --  ul.bs-glyphicons-list
+            --    li
+            --      span.glyphicon.glyphicon-asterisk
+            --      span.glyphicon-class glyphicon glyphicon-asterisk
+            --    li
+            --      span.glyphicon.glyphicon-plus
+            --      span.glyphicon-class glyphicon glyphicon-plus
+            --    li
+            --      span.glyphicon.glyphicon-euro
+            --      span.glyphicon-class glyphicon glyphicon-euro
+            --    li
+            --      span.glyphicon.glyphicon-minus
+            --      span.glyphicon-class glyphicon glyphicon-minus
+            --    li
+            --      span.glyphicon.glyphicon-cloud
+            --      span.glyphicon-class glyphicon glyphicon-cloud
+            --    li
+            --      span.glyphicon.glyphicon-envelope
+            --      span.glyphicon-class glyphicon glyphicon-envelope
+            --    li
+            --      span.glyphicon.glyphicon-pencil
+            --      span.glyphicon-class glyphicon glyphicon-pencil
+            --    li
+            --      span.glyphicon.glyphicon-glass
+            --      span.glyphicon-class glyphicon glyphicon-glass
+            --    li
+            --      span.glyphicon.glyphicon-music
+            --      span.glyphicon-class glyphicon glyphicon-music
+            --    li
+            --      span.glyphicon.glyphicon-search
+            --      span.glyphicon-class glyphicon glyphicon-search
+            --    li
+            --      span.glyphicon.glyphicon-heart
+            --      span.glyphicon-class glyphicon glyphicon-heart
+            --    li
+            --      span.glyphicon.glyphicon-star
+            --      span.glyphicon-class glyphicon glyphicon-star
+            --    li
+            --      span.glyphicon.glyphicon-star-empty
+            --      span.glyphicon-class glyphicon glyphicon-star-empty
+            --    li
+            --      span.glyphicon.glyphicon-user
+            --      span.glyphicon-class glyphicon glyphicon-user
+            --    li
+            --      span.glyphicon.glyphicon-film
+            --      span.glyphicon-class glyphicon glyphicon-film
+            --    li
+            --      span.glyphicon.glyphicon-th-large
+            --      span.glyphicon-class glyphicon glyphicon-th-large
+            --    li
+            --      span.glyphicon.glyphicon-th
+            --      span.glyphicon-class glyphicon glyphicon-th
+            --    li
+            --      span.glyphicon.glyphicon-th-list
+            --      span.glyphicon-class glyphicon glyphicon-th-list
+            --    li
+            --      span.glyphicon.glyphicon-ok
+            --      span.glyphicon-class glyphicon glyphicon-ok
+            --    li
+            --      span.glyphicon.glyphicon-remove
+            --      span.glyphicon-class glyphicon glyphicon-remove
+            --    li
+            --      span.glyphicon.glyphicon-zoom-in
+            --      span.glyphicon-class glyphicon glyphicon-zoom-in
+            --    li
+            --      span.glyphicon.glyphicon-zoom-out
+            --      span.glyphicon-class glyphicon glyphicon-zoom-out
+            --    li
+            --      span.glyphicon.glyphicon-off
+            --      span.glyphicon-class glyphicon glyphicon-off
+            --    li
+            --      span.glyphicon.glyphicon-signal
+            --      span.glyphicon-class glyphicon glyphicon-signal
+            --    li
+            --      span.glyphicon.glyphicon-cog
+            --      span.glyphicon-class glyphicon glyphicon-cog
+            --    li
+            --      span.glyphicon.glyphicon-trash
+            --      span.glyphicon-class glyphicon glyphicon-trash
+            --    li
+            --      span.glyphicon.glyphicon-home
+            --      span.glyphicon-class glyphicon glyphicon-home
+            --    li
+            --      span.glyphicon.glyphicon-file
+            --      span.glyphicon-class glyphicon glyphicon-file
+            --    li
+            --      span.glyphicon.glyphicon-time
+            --      span.glyphicon-class glyphicon glyphicon-time
+            --    li
+            --      span.glyphicon.glyphicon-road
+            --      span.glyphicon-class glyphicon glyphicon-road
+            --    li
+            --      span.glyphicon.glyphicon-download-alt
+            --      span.glyphicon-class glyphicon glyphicon-download-alt
+            --    li
+            --      span.glyphicon.glyphicon-download
+            --      span.glyphicon-class glyphicon glyphicon-download
+            --    li
+            --      span.glyphicon.glyphicon-upload
+            --      span.glyphicon-class glyphicon glyphicon-upload
+            --    li
+            --      span.glyphicon.glyphicon-inbox
+            --      span.glyphicon-class glyphicon glyphicon-inbox
+            --    li
+            --      span.glyphicon.glyphicon-play-circle
+            --      span.glyphicon-class glyphicon glyphicon-play-circle
+            --    li
+            --      span.glyphicon.glyphicon-repeat
+            --      span.glyphicon-class glyphicon glyphicon-repeat
+            --    li
+            --      span.glyphicon.glyphicon-refresh
+            --      span.glyphicon-class glyphicon glyphicon-refresh
+            --    li
+            --      span.glyphicon.glyphicon-list-alt
+            --      span.glyphicon-class glyphicon glyphicon-list-alt
+            --    li
+            --      span.glyphicon.glyphicon-lock
+            --      span.glyphicon-class glyphicon glyphicon-lock
+            --    li
+            --      span.glyphicon.glyphicon-flag
+            --      span.glyphicon-class glyphicon glyphicon-flag
+            --    li
+            --      span.glyphicon.glyphicon-headphones
+            --      span.glyphicon-class glyphicon glyphicon-headphones
+            --    li
+            --      span.glyphicon.glyphicon-volume-off
+            --      span.glyphicon-class glyphicon glyphicon-volume-off
+            --    li
+            --      span.glyphicon.glyphicon-volume-down
+            --      span.glyphicon-class glyphicon glyphicon-volume-down
+            --    li
+            --      span.glyphicon.glyphicon-volume-up
+            --      span.glyphicon-class glyphicon glyphicon-volume-up
+            --    li
+            --      span.glyphicon.glyphicon-qrcode
+            --      span.glyphicon-class glyphicon glyphicon-qrcode
+            --    li
+            --      span.glyphicon.glyphicon-barcode
+            --      span.glyphicon-class glyphicon glyphicon-barcode
+            --    li
+            --      span.glyphicon.glyphicon-tag
+            --      span.glyphicon-class glyphicon glyphicon-tag
+            --    li
+            --      span.glyphicon.glyphicon-tags
+            --      span.glyphicon-class glyphicon glyphicon-tags
+            --    li
+            --      span.glyphicon.glyphicon-book
+            --      span.glyphicon-class glyphicon glyphicon-book
+            --    li
+            --      span.glyphicon.glyphicon-bookmark
+            --      span.glyphicon-class glyphicon glyphicon-bookmark
+            --    li
+            --      span.glyphicon.glyphicon-print
+            --      span.glyphicon-class glyphicon glyphicon-print
+            --    li
+            --      span.glyphicon.glyphicon-camera
+            --      span.glyphicon-class glyphicon glyphicon-camera
+            --    li
+            --      span.glyphicon.glyphicon-font
+            --      span.glyphicon-class glyphicon glyphicon-font
+            --    li
+            --      span.glyphicon.glyphicon-bold
+            --      span.glyphicon-class glyphicon glyphicon-bold
+            --    li
+            --      span.glyphicon.glyphicon-italic
+            --      span.glyphicon-class glyphicon glyphicon-italic
+            --    li
+            --      span.glyphicon.glyphicon-text-height
+            --      span.glyphicon-class glyphicon glyphicon-text-height
+            --    li
+            --      span.glyphicon.glyphicon-text-width
+            --      span.glyphicon-class glyphicon glyphicon-text-width
+            --    li
+            --      span.glyphicon.glyphicon-align-left
+            --      span.glyphicon-class glyphicon glyphicon-align-left
+            --    li
+            --      span.glyphicon.glyphicon-align-center
+            --      span.glyphicon-class glyphicon glyphicon-align-center
+            --    li
+            --      span.glyphicon.glyphicon-align-right
+            --      span.glyphicon-class glyphicon glyphicon-align-right
+            --    li
+            --      span.glyphicon.glyphicon-align-justify
+            --      span.glyphicon-class glyphicon glyphicon-align-justify
+            --    li
+            --      span.glyphicon.glyphicon-list
+            --      span.glyphicon-class glyphicon glyphicon-list
+            --    li
+            --      span.glyphicon.glyphicon-indent-left
+            --      span.glyphicon-class glyphicon glyphicon-indent-left
+            --    li
+            --      span.glyphicon.glyphicon-indent-right
+            --      span.glyphicon-class glyphicon glyphicon-indent-right
+            --    li
+            --      span.glyphicon.glyphicon-facetime-video
+            --      span.glyphicon-class glyphicon glyphicon-facetime-video
+            --    li
+            --      span.glyphicon.glyphicon-picture
+            --      span.glyphicon-class glyphicon glyphicon-picture
+            --    li
+            --      span.glyphicon.glyphicon-map-marker
+            --      span.glyphicon-class glyphicon glyphicon-map-marker
+            --    li
+            --      span.glyphicon.glyphicon-adjust
+            --      span.glyphicon-class glyphicon glyphicon-adjust
+            --    li
+            --      span.glyphicon.glyphicon-tint
+            --      span.glyphicon-class glyphicon glyphicon-tint
+            --    li
+            --      span.glyphicon.glyphicon-edit
+            --      span.glyphicon-class glyphicon glyphicon-edit
+            --    li
+            --      span.glyphicon.glyphicon-share
+            --      span.glyphicon-class glyphicon glyphicon-share
+            --    li
+            --      span.glyphicon.glyphicon-check
+            --      span.glyphicon-class glyphicon glyphicon-check
+            --    li
+            --      span.glyphicon.glyphicon-move
+            --      span.glyphicon-class glyphicon glyphicon-move
+            --    li
+            --      span.glyphicon.glyphicon-step-backward
+            --      span.glyphicon-class glyphicon glyphicon-step-backward
+            --    li
+            --      span.glyphicon.glyphicon-fast-backward
+            --      span.glyphicon-class glyphicon glyphicon-fast-backward
+            --    li
+            --      span.glyphicon.glyphicon-backward
+            --      span.glyphicon-class glyphicon glyphicon-backward
+            --    li
+            --      span.glyphicon.glyphicon-play
+            --      span.glyphicon-class glyphicon glyphicon-play
+            --    li
+            --      span.glyphicon.glyphicon-pause
+            --      span.glyphicon-class glyphicon glyphicon-pause
+            --    li
+            --      span.glyphicon.glyphicon-stop
+            --      span.glyphicon-class glyphicon glyphicon-stop
+            --    li
+            --      span.glyphicon.glyphicon-forward
+            --      span.glyphicon-class glyphicon glyphicon-forward
+            --    li
+            --      span.glyphicon.glyphicon-fast-forward
+            --      span.glyphicon-class glyphicon glyphicon-fast-forward
+            --    li
+            --      span.glyphicon.glyphicon-step-forward
+            --      span.glyphicon-class glyphicon glyphicon-step-forward
+            --    li
+            --      span.glyphicon.glyphicon-eject
+            --      span.glyphicon-class glyphicon glyphicon-eject
+            --    li
+            --      span.glyphicon.glyphicon-chevron-left
+            --      span.glyphicon-class glyphicon glyphicon-chevron-left
+            --    li
+            --      span.glyphicon.glyphicon-chevron-right
+            --      span.glyphicon-class glyphicon glyphicon-chevron-right
+            --    li
+            --      span.glyphicon.glyphicon-plus-sign
+            --      span.glyphicon-class glyphicon glyphicon-plus-sign
+            --    li
+            --      span.glyphicon.glyphicon-minus-sign
+            --      span.glyphicon-class glyphicon glyphicon-minus-sign
+            --    li
+            --      span.glyphicon.glyphicon-remove-sign
+            --      span.glyphicon-class glyphicon glyphicon-remove-sign
+            --    li
+            --      span.glyphicon.glyphicon-ok-sign
+            --      span.glyphicon-class glyphicon glyphicon-ok-sign
+            --    li
+            --      span.glyphicon.glyphicon-question-sign
+            --      span.glyphicon-class glyphicon glyphicon-question-sign
+            --    li
+            --      span.glyphicon.glyphicon-info-sign
+            --      span.glyphicon-class glyphicon glyphicon-info-sign
+            --    li
+            --      span.glyphicon.glyphicon-screenshot
+            --      span.glyphicon-class glyphicon glyphicon-screenshot
+            --    li
+            --      span.glyphicon.glyphicon-remove-circle
+            --      span.glyphicon-class glyphicon glyphicon-remove-circle
+            --    li
+            --      span.glyphicon.glyphicon-ok-circle
+            --      span.glyphicon-class glyphicon glyphicon-ok-circle
+            --    li
+            --      span.glyphicon.glyphicon-ban-circle
+            --      span.glyphicon-class glyphicon glyphicon-ban-circle
+            --    li
+            --      span.glyphicon.glyphicon-arrow-left
+            --      span.glyphicon-class glyphicon glyphicon-arrow-left
+            --    li
+            --      span.glyphicon.glyphicon-arrow-right
+            --      span.glyphicon-class glyphicon glyphicon-arrow-right
+            --    li
+            --      span.glyphicon.glyphicon-arrow-up
+            --      span.glyphicon-class glyphicon glyphicon-arrow-up
+            --    li
+            --      span.glyphicon.glyphicon-arrow-down
+            --      span.glyphicon-class glyphicon glyphicon-arrow-down
+            --    li
+            --      span.glyphicon.glyphicon-share-alt
+            --      span.glyphicon-class glyphicon glyphicon-share-alt
+            --    li
+            --      span.glyphicon.glyphicon-resize-full
+            --      span.glyphicon-class glyphicon glyphicon-resize-full
+            --    li
+            --      span.glyphicon.glyphicon-resize-small
+            --      span.glyphicon-class glyphicon glyphicon-resize-small
+            --    li
+            --      span.glyphicon.glyphicon-exclamation-sign
+            --      span.glyphicon-class glyphicon glyphicon-exclamation-sign
+            --    li
+            --      span.glyphicon.glyphicon-gift
+            --      span.glyphicon-class glyphicon glyphicon-gift
+            --    li
+            --      span.glyphicon.glyphicon-leaf
+            --      span.glyphicon-class glyphicon glyphicon-leaf
+            --    li
+            --      span.glyphicon.glyphicon-fire
+            --      span.glyphicon-class glyphicon glyphicon-fire
+            --    li
+            --      span.glyphicon.glyphicon-eye-open
+            --      span.glyphicon-class glyphicon glyphicon-eye-open
+            --    li
+            --      span.glyphicon.glyphicon-eye-close
+            --      span.glyphicon-class glyphicon glyphicon-eye-close
+            --    li
+            --      span.glyphicon.glyphicon-warning-sign
+            --      span.glyphicon-class glyphicon glyphicon-warning-sign
+            --    li
+            --      span.glyphicon.glyphicon-plane
+            --      span.glyphicon-class glyphicon glyphicon-plane
+            --    li
+            --      span.glyphicon.glyphicon-calendar
+            --      span.glyphicon-class glyphicon glyphicon-calendar
+            --    li
+            --      span.glyphicon.glyphicon-random
+            --      span.glyphicon-class glyphicon glyphicon-random
+            --    li
+            --      span.glyphicon.glyphicon-comment
+            --      span.glyphicon-class glyphicon glyphicon-comment
+            --    li
+            --      span.glyphicon.glyphicon-magnet
+            --      span.glyphicon-class glyphicon glyphicon-magnet
+            --    li
+            --      span.glyphicon.glyphicon-chevron-up
+            --      span.glyphicon-class glyphicon glyphicon-chevron-up
+            --    li
+            --      span.glyphicon.glyphicon-chevron-down
+            --      span.glyphicon-class glyphicon glyphicon-chevron-down
+            --    li
+            --      span.glyphicon.glyphicon-retweet
+            --      span.glyphicon-class glyphicon glyphicon-retweet
+            --    li
+            --      span.glyphicon.glyphicon-shopping-cart
+            --      span.glyphicon-class glyphicon glyphicon-shopping-cart
+            --    li
+            --      span.glyphicon.glyphicon-folder-close
+            --      span.glyphicon-class glyphicon glyphicon-folder-close
+            --    li
+            --      span.glyphicon.glyphicon-folder-open
+            --      span.glyphicon-class glyphicon glyphicon-folder-open
+            --    li
+            --      span.glyphicon.glyphicon-resize-vertical
+            --      span.glyphicon-class glyphicon glyphicon-resize-vertical
+            --    li
+            --      span.glyphicon.glyphicon-resize-horizontal
+            --      span.glyphicon-class glyphicon glyphicon-resize-horizontal
+            --    li
+            --      span.glyphicon.glyphicon-hdd
+            --      span.glyphicon-class glyphicon glyphicon-hdd
+            --    li
+            --      span.glyphicon.glyphicon-bullhorn
+            --      span.glyphicon-class glyphicon glyphicon-bullhorn
+            --    li
+            --      span.glyphicon.glyphicon-bell
+            --      span.glyphicon-class glyphicon glyphicon-bell
+            --    li
+            --      span.glyphicon.glyphicon-certificate
+            --      span.glyphicon-class glyphicon glyphicon-certificate
+            --    li
+            --      span.glyphicon.glyphicon-thumbs-up
+            --      span.glyphicon-class glyphicon glyphicon-thumbs-up
+            --    li
+            --      span.glyphicon.glyphicon-thumbs-down
+            --      span.glyphicon-class glyphicon glyphicon-thumbs-down
+            --    li
+            --      span.glyphicon.glyphicon-hand-right
+            --      span.glyphicon-class glyphicon glyphicon-hand-right
+            --    li
+            --      span.glyphicon.glyphicon-hand-left
+            --      span.glyphicon-class glyphicon glyphicon-hand-left
+            --    li
+            --      span.glyphicon.glyphicon-hand-up
+            --      span.glyphicon-class glyphicon glyphicon-hand-up
+            --    li
+            --      span.glyphicon.glyphicon-hand-down
+            --      span.glyphicon-class glyphicon glyphicon-hand-down
+            --    li
+            --      span.glyphicon.glyphicon-circle-arrow-right
+            --      span.glyphicon-class glyphicon glyphicon-circle-arrow-right
+            --    li
+            --      span.glyphicon.glyphicon-circle-arrow-left
+            --      span.glyphicon-class glyphicon glyphicon-circle-arrow-left
+            --    li
+            --      span.glyphicon.glyphicon-circle-arrow-up
+            --      span.glyphicon-class glyphicon glyphicon-circle-arrow-up
+            --    li
+            --      span.glyphicon.glyphicon-circle-arrow-down
+            --      span.glyphicon-class glyphicon glyphicon-circle-arrow-down
+            --    li
+            --      span.glyphicon.glyphicon-globe
+            --      span.glyphicon-class glyphicon glyphicon-globe
+            --    li
+            --      span.glyphicon.glyphicon-wrench
+            --      span.glyphicon-class glyphicon glyphicon-wrench
+            --    li
+            --      span.glyphicon.glyphicon-tasks
+            --      span.glyphicon-class glyphicon glyphicon-tasks
+            --    li
+            --      span.glyphicon.glyphicon-filter
+            --      span.glyphicon-class glyphicon glyphicon-filter
+            --    li
+            --      span.glyphicon.glyphicon-briefcase
+            --      span.glyphicon-class glyphicon glyphicon-briefcase
+            --    li
+            --      span.glyphicon.glyphicon-fullscreen
+            --      span.glyphicon-class glyphicon glyphicon-fullscreen
+            --    li
+            --      span.glyphicon.glyphicon-dashboard
+            --      span.glyphicon-class glyphicon glyphicon-dashboard
+            --    li
+            --      span.glyphicon.glyphicon-paperclip
+            --      span.glyphicon-class glyphicon glyphicon-paperclip
+            --    li
+            --      span.glyphicon.glyphicon-heart-empty
+            --      span.glyphicon-class glyphicon glyphicon-heart-empty
+            --    li
+            --      span.glyphicon.glyphicon-link
+            --      span.glyphicon-class glyphicon glyphicon-link
+            --    li
+            --      span.glyphicon.glyphicon-phone
+            --      span.glyphicon-class glyphicon glyphicon-phone
+            --    li
+            --      span.glyphicon.glyphicon-pushpin
+            --      span.glyphicon-class glyphicon glyphicon-pushpin
+            --    li
+            --      span.glyphicon.glyphicon-usd
+            --      span.glyphicon-class glyphicon glyphicon-usd
+            --    li
+            --      span.glyphicon.glyphicon-gbp
+            --      span.glyphicon-class glyphicon glyphicon-gbp
+            --    li
+            --      span.glyphicon.glyphicon-sort
+            --      span.glyphicon-class glyphicon glyphicon-sort
+            --    li
+            --      span.glyphicon.glyphicon-sort-by-alphabet
+            --      span.glyphicon-class glyphicon glyphicon-sort-by-alphabet
+            --    li
+            --      span.glyphicon.glyphicon-sort-by-alphabet-alt
+            --      span.glyphicon-class glyphicon glyphicon-sort-by-alphabet-alt
+            --    li
+            --      span.glyphicon.glyphicon-sort-by-order
+            --      span.glyphicon-class glyphicon glyphicon-sort-by-order
+            --    li
+            --      span.glyphicon.glyphicon-sort-by-order-alt
+            --      span.glyphicon-class glyphicon glyphicon-sort-by-order-alt
+            --    li
+            --      span.glyphicon.glyphicon-sort-by-attributes
+            --      span.glyphicon-class glyphicon glyphicon-sort-by-attributes
+            --    li
+            --      span.glyphicon.glyphicon-sort-by-attributes-alt
+            --      span.glyphicon-class glyphicon glyphicon-sort-by-attributes-alt
+            --    li
+            --      span.glyphicon.glyphicon-unchecked
+            --      span.glyphicon-class glyphicon glyphicon-unchecked
+            --    li
+            --      span.glyphicon.glyphicon-expand
+            --      span.glyphicon-class glyphicon glyphicon-expand
+            --    li
+            --      span.glyphicon.glyphicon-collapse-down
+            --      span.glyphicon-class glyphicon glyphicon-collapse-down
+            --    li
+            --      span.glyphicon.glyphicon-collapse-up
+            --      span.glyphicon-class glyphicon glyphicon-collapse-up
+            --    li
+            --      span.glyphicon.glyphicon-log-in
+            --      span.glyphicon-class glyphicon glyphicon-log-in
+            --    li
+            --      span.glyphicon.glyphicon-flash
+            --      span.glyphicon-class glyphicon glyphicon-flash
+            --    li
+            --      span.glyphicon.glyphicon-log-out
+            --      span.glyphicon-class glyphicon glyphicon-log-out
+            --    li
+            --      span.glyphicon.glyphicon-new-window
+            --      span.glyphicon-class glyphicon glyphicon-new-window
+            --    li
+            --      span.glyphicon.glyphicon-record
+            --      span.glyphicon-class glyphicon glyphicon-record
+            --    li
+            --      span.glyphicon.glyphicon-save
+            --      span.glyphicon-class glyphicon glyphicon-save
+            --    li
+            --      span.glyphicon.glyphicon-open
+            --      span.glyphicon-class glyphicon glyphicon-open
+            --    li
+            --      span.glyphicon.glyphicon-saved
+            --      span.glyphicon-class glyphicon glyphicon-saved
+            --    li
+            --      span.glyphicon.glyphicon-import
+            --      span.glyphicon-class glyphicon glyphicon-import
+            --    li
+            --      span.glyphicon.glyphicon-export
+            --      span.glyphicon-class glyphicon glyphicon-export
+            --    li
+            --      span.glyphicon.glyphicon-send
+            --      span.glyphicon-class glyphicon glyphicon-send
+            --    li
+            --      span.glyphicon.glyphicon-floppy-disk
+            --      span.glyphicon-class glyphicon glyphicon-floppy-disk
+            --    li
+            --      span.glyphicon.glyphicon-floppy-saved
+            --      span.glyphicon-class glyphicon glyphicon-floppy-saved
+            --    li
+            --      span.glyphicon.glyphicon-floppy-remove
+            --      span.glyphicon-class glyphicon glyphicon-floppy-remove
+            --    li
+            --      span.glyphicon.glyphicon-floppy-save
+            --      span.glyphicon-class glyphicon glyphicon-floppy-save
+            --    li
+            --      span.glyphicon.glyphicon-floppy-open
+            --      span.glyphicon-class glyphicon glyphicon-floppy-open
+            --    li
+            --      span.glyphicon.glyphicon-credit-card
+            --      span.glyphicon-class glyphicon glyphicon-credit-card
+            --    li
+            --      span.glyphicon.glyphicon-transfer
+            --      span.glyphicon-class glyphicon glyphicon-transfer
+            --    li
+            --      span.glyphicon.glyphicon-cutlery
+            --      span.glyphicon-class glyphicon glyphicon-cutlery
+            --    li
+            --      span.glyphicon.glyphicon-header
+            --      span.glyphicon-class glyphicon glyphicon-header
+            --    li
+            --      span.glyphicon.glyphicon-compressed
+            --      span.glyphicon-class glyphicon glyphicon-compressed
+            --    li
+            --      span.glyphicon.glyphicon-earphone
+            --      span.glyphicon-class glyphicon glyphicon-earphone
+            --    li
+            --      span.glyphicon.glyphicon-phone-alt
+            --      span.glyphicon-class glyphicon glyphicon-phone-alt
+            --    li
+            --      span.glyphicon.glyphicon-tower
+            --      span.glyphicon-class glyphicon glyphicon-tower
+            --    li
+            --      span.glyphicon.glyphicon-stats
+            --      span.glyphicon-class glyphicon glyphicon-stats
+            --    li
+            --      span.glyphicon.glyphicon-sd-video
+            --      span.glyphicon-class glyphicon glyphicon-sd-video
+            --    li
+            --      span.glyphicon.glyphicon-hd-video
+            --      span.glyphicon-class glyphicon glyphicon-hd-video
+            --    li
+            --      span.glyphicon.glyphicon-subtitles
+            --      span.glyphicon-class glyphicon glyphicon-subtitles
+            --    li
+            --      span.glyphicon.glyphicon-sound-stereo
+            --      span.glyphicon-class glyphicon glyphicon-sound-stereo
+            --    li
+            --      span.glyphicon.glyphicon-sound-dolby
+            --      span.glyphicon-class glyphicon glyphicon-sound-dolby
+            --    li
+            --      span.glyphicon.glyphicon-sound-5-1
+            --      span.glyphicon-class glyphicon glyphicon-sound-5-1
+            --    li
+            --      span.glyphicon.glyphicon-sound-6-1
+            --      span.glyphicon-class glyphicon glyphicon-sound-6-1
+            --    li
+            --      span.glyphicon.glyphicon-sound-7-1
+            --      span.glyphicon-class glyphicon glyphicon-sound-7-1
+            --    li
+            --      span.glyphicon.glyphicon-copyright-mark
+            --      span.glyphicon-class glyphicon glyphicon-copyright-mark
+            --    li
+            --      span.glyphicon.glyphicon-registration-mark
+            --      span.glyphicon-class glyphicon glyphicon-registration-mark
+            --    li
+            --      span.glyphicon.glyphicon-cloud-download
+            --      span.glyphicon-class glyphicon glyphicon-cloud-download
+            --    li
+            --      span.glyphicon.glyphicon-cloud-upload
+            --      span.glyphicon-class glyphicon glyphicon-cloud-upload
+            --    li
+            --      span.glyphicon.glyphicon-tree-conifer
+            --      span.glyphicon-class glyphicon glyphicon-tree-conifer
+            --    li
+            --      span.glyphicon.glyphicon-tree-deciduous
+            --      span.glyphicon-class glyphicon glyphicon-tree-deciduous
+              ]
+            , h2' "glyphicons-how-to-use" "How to use"
+            --p
+            --  | For performance reasons, all icons require a base class and individual icon class. To use, place the following code just about anywhere. Be sure to leave a space between the icon and
+            --  | text for proper padding.
+            --.bs-callout.bs-callout-danger
+            --  h4 Don't mix with other components
+            --  p
+            --    | Icon classes cannot be directly combined with other components. They should not be used along with other classes on the same element. Instead, add a nested
+            --    code <span>
+            --    | and apply the icon classes to the
+            --    code <span>
+            --    | .
+            --.bs-callout.bs-callout-danger
+            --  h4 Only for use on empty elements
+            --  p
+            --    | Icon classes should only be used on elements that contain no text content and have no child elements.
+            --.bs-callout.bs-callout-info
+            --  h4 Changing the icon font location
+            --  p
+            --    | Bootstrap assumes icon font files will be located in the
+            --    code ../fonts/
+            --    | directory, relative to the compiled CSS files. Moving or renaming those font files means updating the
+            --    | CSS in one of three ways:
+            --  ul
+            --    li
+            --      | Change the
+            --      code @icon-font-path
+            --      | and/or
+            --      code @icon-font-name
+            --      | variables in the source Less files.
+            --    li
+            --      | Utilize the
+            --      a(href='http://lesscss.org/usage/#command-line-usage-relative-urls') relative URLs option
+            --      | provided by the Less compiler.
+            --    li
+            --      | Change the
+            --      code url()
+            --      | paths in the compiled CSS.
+            --  p Use whatever option best suits your specific development setup.
+            --.bs-callout.bs-callout-warning
+            --  h4 Accessible icons
+            --  p
+            --    | Modern versions of assistive technologies will announce CSS generated content, as well as specific Unicode characters. To avoid unintended and confusing output in screen readers
+            --    | (particularly when icons are used purely for decoration), we hide them with the
+            --    code aria-hidden="true"
+            --    | attribute.
+            --  p
+            --    | If you're using an icon to convey meaning (rather than only as a decorative element), ensure that this meaning is also conveyed to assistive technologies – for instance, include
+            --    | additional content, visually hidden with the
+            --    code .sr-only
+            --    | class.
+            --  p
+            --    | If you're creating controls with no other text (such as a
+            --    code <button>
+            --    | that only contains an icon), you should always provide alternative content to identify the purpose
+            --    | of the control, so that it will make sense to users of assistive technologies. In this case, you could add an
+            --    code aria-label
+            --    | attribute on the control itself.
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            , h2' "glyphicons-examples" "Examples"
+            --p
+            --  | Use them in buttons, button groups for a toolbar, navigation, or prepended form inputs.
+            --.bs-example
+            --  .btn-toolbar
+            --    .btn-group
+            --      button.btn.btn-default(type='button')
+            --        span.glyphicon.glyphicon-align-left
+            --      button.btn.btn-default(type='button')
+            --        span.glyphicon.glyphicon-align-center
+            --      button.btn.btn-default(type='button')
+            --        span.glyphicon.glyphicon-align-right
+            --      button.btn.btn-default(type='button')
+            --        span.glyphicon.glyphicon-align-justify
+            --  .btn-toolbar
+            --    button.btn.btn-default.btn-lg(type='button')
+            --      span.glyphicon.glyphicon-star
+            --      | Star
+            --    button.btn.btn-default(type='button')
+            --      span.glyphicon.glyphicon-star
+            --      | Star
+            --    button.btn.btn-default.btn-sm(type='button')
+            --      span.glyphicon.glyphicon-star
+            --      | Star
+            --    button.btn.btn-default.btn-xs(type='button')
+            --      span.glyphicon.glyphicon-star
+            --      | Star
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --p
+            --  | An icon used in an
+            --  a(href='#alerts') alert
+            --  | to convey that it's an error message, with additional
+            --  code .sr-only
+            --  | text to convey this hint to users of assistive
+            --  | technologies.
+            --.bs-example
+            --  .alert.alert-danger
+            --    span.glyphicon.glyphicon-exclamation-sign
+            --    span.sr-only Error:
+            --    | Enter a valid email address
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            ]
+          , bsDocsSection
+            [ pageHeader "dropdowns" "Dropdowns"
+            --p.lead
+            --  | Toggleable, contextual menu for displaying lists of links. Made interactive with the
+            --  a(href='../javascript/#dropdowns') dropdown JavaScript plugin
+            --  | .
+            --h3#dropdowns-example Example
+            --p
+            --  | Wrap the dropdown's trigger and the dropdown menu within
+            --  code .dropdown
+            --  | , or another element that declares
+            --  code position: relative;
+            --  | . Then add the menu's HTML.
+            --.bs-example
+            --  .dropdown.clearfix
+            --    button#dropdownMenu1.btn.btn-default.dropdown-toggle(data-toggle='dropdown', type='button')
+            --      | Dropdown
+            --      span.caret
+            --    ul.dropdown-menu
+            --      li
+            --        a(href='#', tabindex='-1') Action
+            --      li
+            --        a(href='#', tabindex='-1') Another action
+            --      li
+            --        a(href='#', tabindex='-1') Something else here
+            --      li
+            --        a(href='#', tabindex='-1') Separated link
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#dropdowns-alignment Alignment
+            --p
+            --  | By default, a dropdown menu is automatically positioned 100% from the top and along the left side of its parent. Add
+            --  code .dropdown-menu-right
+            --  | to a
+            --  code .dropdown-menu
+            --  | to
+            --  | right align the dropdown menu.
+            --.bs-callout.bs-callout-warning
+            --  h4 May require additional positioning
+            --  p
+            --    | Dropdowns are automatically positioned via CSS within the normal flow of the document. This means dropdowns may be cropped by parents with certain
+            --    code overflow
+            --    | properties or
+            --    | appear out of bounds of the viewport. Address these issues on your own as they arise.
+            --.bs-callout.bs-callout-warning
+            --  h4
+            --    | Deprecated
+            --    code .pull-right
+            --    | alignment
+            --  p
+            --    | As of v3.1.0, we've deprecated
+            --    code .pull-right
+            --    | on dropdown menus. To right-align a menu, use
+            --    code .dropdown-menu-right
+            --    | . Right-aligned nav components in the navbar use
+            --    | a mixin version of this class to automatically align the menu. To override it, use
+            --    code .dropdown-menu-left
+            --    | .
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#dropdowns-headers Headers
+            --p Add a header to label sections of actions in any dropdown menu.
+            --.bs-example
+            --  .dropdown.clearfix
+            --    button#dropdownMenu2.btn.btn-default.dropdown-toggle(data-toggle='dropdown', type='button')
+            --      | Dropdown
+            --      span.caret
+            --    ul.dropdown-menu
+            --      li.dropdown-header Dropdown header
+            --      li
+            --        a(href='#', tabindex='-1') Action
+            --      li
+            --        a(href='#', tabindex='-1') Another action
+            --      li
+            --        a(href='#', tabindex='-1') Something else here
+            --      li.dropdown-header Dropdown header
+            --      li
+            --        a(href='#', tabindex='-1') Separated link
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#dropdowns-divider Divider
+            --p Add a divider to separate series of links in a dropdown menu.
+            --.bs-example
+            --  .dropdown.clearfix
+            --    button#dropdownMenuDivider.btn.btn-default.dropdown-toggle(data-toggle='dropdown', type='button')
+            --      | Dropdown
+            --      span.caret
+            --    ul.dropdown-menu
+            --      li
+            --        a(href='#', tabindex='-1') Action
+            --      li
+            --        a(href='#', tabindex='-1') Another action
+            --      li
+            --        a(href='#', tabindex='-1') Something else here
+            --      li.divider
+            --      li
+            --        a(href='#', tabindex='-1') Separated link
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#dropdowns-disabled Disabled menu items
+            --p
+            --  | Add
+            --  code .disabled
+            --  | to a
+            --  code <li>
+            --  | in the dropdown to disable the link.
+            --.bs-example
+            --  .dropdown.clearfix
+            --    button#dropdownMenu3.btn.btn-default.dropdown-toggle(data-toggle='dropdown', type='button')
+            --      | Dropdown
+            --      span.caret
+            --    ul.dropdown-menu
+            --      li
+            --        a(href='#', tabindex='-1') Regular link
+            --      li.disabled
+            --        a(href='#', tabindex='-1') Disabled link
+            --      li
+            --        a(href='#', tabindex='-1') Another link
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            ]
+          , bsDocsSection
+            [ pageHeader "btn-groups" "Button groups"
+            --p.lead
+            --  | Group a series of buttons together on a single line with the button group. Add on optional JavaScript radio and checkbox style behavior with
+            --  a(href='../javascript/#buttons') our buttons plugin
+            --  | .
+            --.bs-callout.bs-callout-warning
+            --  h4 Tooltips & popovers in button groups require special setting
+            --  p
+            --    | When using tooltips or popovers on elements within a
+            --    code .btn-group
+            --    | , you'll have to specify the option
+            --    code container: 'body'
+            --    | to avoid unwanted side effects (such as
+            --    | the element growing wider and/or losing its rounded corners when the tooltip or popover is triggered).
+            --.bs-callout.bs-callout-warning
+            --  h4
+            --    | Ensure correct
+            --    code role
+            --    | and provide a label
+            --  p
+            --    | In order for assistive technologies – such as screen readers – to convey that a series of buttons is grouped, an appropriate
+            --    code role
+            --    | attribute needs to be provided. For
+            --    | button groups, this would be
+            --    code role="group"
+            --    | , while toolbars should have a
+            --    code role="toolbar"
+            --    | .
+            --  p
+            --    | One exception are groups which only contain a single control (for instance the
+            --    a(href='#btn-groups-justified') justified button groups
+            --    | with
+            --    code <button>
+            --    | elements) or
+            --    | a dropdown.
+            --  p
+            --    | In addition, groups and toolbars should be given an explicit label, as most assistive technologies will otherwise not announce them, despite the presence of the correct
+            --    code role
+            --    | attribute. In the examples provided here, we use
+            --    code aria-label
+            --    | , but alternatives such as
+            --    code aria-labelledby
+            --    | can also be used.
+            --h3#btn-groups-single Basic example
+            --p
+            --  | Wrap a series of buttons with
+            --  code .btn
+            --  | in
+            --  code .btn-group
+            --  | .
+            --.bs-example
+            --  .btn-group
+            --    button.btn.btn-default(type='button') Left
+            --    button.btn.btn-default(type='button') Middle
+            --    button.btn.btn-default(type='button') Right
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#btn-groups-toolbar Button toolbar
+            --p
+            --  | Combine sets of
+            --  code <div class="btn-group">
+            --  | into a
+            --  code <div class="btn-toolbar">
+            --  | for more complex components.
+            --.bs-example
+            --  .btn-toolbar
+            --    .btn-group
+            --      button.btn.btn-default(type='button') 1
+            --      button.btn.btn-default(type='button') 2
+            --      button.btn.btn-default(type='button') 3
+            --      button.btn.btn-default(type='button') 4
+            --    .btn-group
+            --      button.btn.btn-default(type='button') 5
+            --      button.btn.btn-default(type='button') 6
+            --      button.btn.btn-default(type='button') 7
+            --    .btn-group
+            --      button.btn.btn-default(type='button') 8
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#btn-groups-sizing Sizing
+            --p
+            --  | Instead of applying button sizing classes to every button in a group, just add
+            --  code .btn-group-*
+            --  | to the
+            --  code .btn-group
+            --  | .
+            --.bs-example
+            --  .btn-group.btn-group-lg
+            --    button.btn.btn-default(type='button') Left
+            --    button.btn.btn-default(type='button') Middle
+            --    button.btn.btn-default(type='button') Right
+            --  br
+            --  .btn-group
+            --    button.btn.btn-default(type='button') Left
+            --    button.btn.btn-default(type='button') Middle
+            --    button.btn.btn-default(type='button') Right
+            --  br
+            --  .btn-group.btn-group-sm
+            --    button.btn.btn-default(type='button') Left
+            --    button.btn.btn-default(type='button') Middle
+            --    button.btn.btn-default(type='button') Right
+            --  br
+            --  .btn-group.btn-group-xs
+            --    button.btn.btn-default(type='button') Left
+            --    button.btn.btn-default(type='button') Middle
+            --    button.btn.btn-default(type='button') Right
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#btn-groups-nested Nesting
+            --p
+            --  | Place a
+            --  code .btn-group
+            --  | within another
+            --  code .btn-group
+            --  | when you want dropdown menus mixed with a series of buttons.
+            --.bs-example
+            --  .btn-group
+            --    button.btn.btn-default(type='button') 1
+            --    button.btn.btn-default(type='button') 2
+            --    .btn-group
+            --      button#btnGroupDrop1.btn.btn-default.dropdown-toggle(data-toggle='dropdown', type='button')
+            --        | Dropdown
+            --        span.caret
+            --      ul.dropdown-menu
+            --        li
+            --          a(href='#') Dropdown link
+            --        li
+            --          a(href='#') Dropdown link
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#btn-groups-vertical Vertical variation
+            --p
+            --  | Make a set of buttons appear vertically stacked rather than horizontally.
+            --  strong.text-danger Split button dropdowns are not supported here.
+            --.bs-example
+            --  .btn-group-vertical
+            --    button.btn.btn-default(type='button') Button
+            --    button.btn.btn-default(type='button') Button
+            --    .btn-group
+            --      button#btnGroupVerticalDrop1.btn.btn-default.dropdown-toggle(data-toggle='dropdown', type='button')
+            --        | Dropdown
+            --        span.caret
+            --      ul.dropdown-menu
+            --        li
+            --          a(href='#') Dropdown link
+            --        li
+            --          a(href='#') Dropdown link
+            --    button.btn.btn-default(type='button') Button
+            --    button.btn.btn-default(type='button') Button
+            --    .btn-group
+            --      button#btnGroupVerticalDrop2.btn.btn-default.dropdown-toggle(data-toggle='dropdown', type='button')
+            --        | Dropdown
+            --        span.caret
+            --      ul.dropdown-menu
+            --        li
+            --          a(href='#') Dropdown link
+            --        li
+            --          a(href='#') Dropdown link
+            --    .btn-group
+            --      button#btnGroupVerticalDrop3.btn.btn-default.dropdown-toggle(data-toggle='dropdown', type='button')
+            --        | Dropdown
+            --        span.caret
+            --      ul.dropdown-menu
+            --        li
+            --          a(href='#') Dropdown link
+            --        li
+            --          a(href='#') Dropdown link
+            --    .btn-group
+            --      button#btnGroupVerticalDrop4.btn.btn-default.dropdown-toggle(data-toggle='dropdown', type='button')
+            --        | Dropdown
+            --        span.caret
+            --      ul.dropdown-menu
+            --        li
+            --          a(href='#') Dropdown link
+            --        li
+            --          a(href='#') Dropdown link
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#btn-groups-justified Justified button groups
+            --p
+            --  | Make a group of buttons stretch at equal sizes to span the entire width of its parent. Also works with button dropdowns within the button group.
+            --.bs-callout.bs-callout-warning
+            --  h4 Handling borders
+            --  p
+            --    | Due to the specific HTML and CSS used to justify buttons (namely
+            --    code display: table-cell
+            --    | ), the borders between them are doubled. In regular button groups,
+            --    code
+            --      | margin-left:
+            --      | -1px
+            --    | is used to stack the borders instead of removing them. However,
+            --    code margin
+            --    | doesn't work with
+            --    code display: table-cell
+            --    | . As a result, depending on your
+            --    | customizations to Bootstrap, you may wish to remove or re-color the borders.
+            --.bs-callout.bs-callout-warning
+            --  h4 IE8 and borders
+            --  p
+            --    | Internet Explorer 8 doesn't render borders on buttons in a justified button group, whether it's on
+            --    code <a>
+            --    | or
+            --    code <button>
+            --    | elements. To get around that,
+            --    | wrap each button in another
+            --    code .btn-group
+            --    | .
+            --  p
+            --    | See
+            --    a(href='https://github.com/twbs/bootstrap/issues/12476') #12476
+            --    | for more information.
+            --h4
+            --  | With
+            --  code <a>
+            --  | elements
+            --p
+            --  | Just wrap a series of
+            --  code .btn
+            --  | s in
+            --  code .btn-group.btn-group-justified
+            --  | .
+            --.bs-example
+            --  .btn-group.btn-group-justified
+            --    a.btn.btn-default(href='#') Left
+            --    a.btn.btn-default(href='#') Middle
+            --    a.btn.btn-default(href='#') Right
+            --  br
+            --  .btn-group.btn-group-justified
+            --    a.btn.btn-default(href='#') Left
+            --    a.btn.btn-default(href='#') Middle
+            --    .btn-group
+            --      a.btn.btn-default.dropdown-toggle(data-toggle='dropdown', href='#')
+            --        | Dropdown
+            --        span.caret
+            --      ul.dropdown-menu
+            --        li
+            --          a(href='#') Action
+            --        li
+            --          a(href='#') Another action
+            --        li
+            --          a(href='#') Something else here
+            --        li.divider
+            --        li
+            --          a(href='#') Separated link
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --.bs-callout.bs-callout-warning
+            --  h4 Links acting as buttons
+            --  p
+            --    | If the
+            --    code <a>
+            --    | elements are used to act as buttons – triggering in-page functionality, rather than navigating to another document or section within the current page –
+            --    | they should also be given an appropriate
+            --    code role="button"
+            --    | .
+            --h4
+            --  | With
+            --  code <button>
+            --  | elements
+            --p
+            --  | To use justified button groups with
+            --  code <button>
+            --  | elements,
+            --  strong.text-danger you must wrap each button in a button group
+            --  | . Most browsers don't properly
+            --  | apply our CSS for justification to
+            --  code <button>
+            --  | elements, but since we support button dropdowns, we can work around that.
+            --.bs-example
+            --  .btn-group.btn-group-justified
+            --    .btn-group
+            --      button.btn.btn-default(type='button') Left
+            --    .btn-group
+            --      button.btn.btn-default(type='button') Middle
+            --    .btn-group
+            --      button.btn.btn-default(type='button') Right
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            ]
+          , bsDocsSection
+            [ pageHeader "btn-dropdowns" "Button dropdowns"
+            --p.lead
+            --  | Use any button to trigger a dropdown menu by placing it within a
+            --  code .btn-group
+            --  | and providing the proper menu markup.
+            --.bs-callout.bs-callout-danger
+            --  h4 Plugin dependency
+            --  p
+            --    | Button dropdowns require the
+            --    a(href='../javascript/#dropdowns') dropdown plugin
+            --    | to be included in your version of Bootstrap.
+            --h3#btn-dropdowns-single Single button dropdowns
+            --p Turn a button into a dropdown toggle with some basic markup changes.
+            --.bs-example
+            --  .btn-group
+            --    button.btn.btn-default.dropdown-toggle(data-toggle='dropdown', type='button')
+            --      | Default
+            --      span.caret
+            --    ul.dropdown-menu
+            --      li
+            --        a(href='#') Action
+            --      li
+            --        a(href='#') Another action
+            --      li
+            --        a(href='#') Something else here
+            --      li.divider
+            --      li
+            --        a(href='#') Separated link
+            --  .btn-group
+            --    button.btn.btn-primary.dropdown-toggle(data-toggle='dropdown', type='button')
+            --      | Primary
+            --      span.caret
+            --    ul.dropdown-menu
+            --      li
+            --        a(href='#') Action
+            --      li
+            --        a(href='#') Another action
+            --      li
+            --        a(href='#') Something else here
+            --      li.divider
+            --      li
+            --        a(href='#') Separated link
+            --  .btn-group
+            --    button.btn.btn-success.dropdown-toggle(data-toggle='dropdown', type='button')
+            --      | Success
+            --      span.caret
+            --    ul.dropdown-menu
+            --      li
+            --        a(href='#') Action
+            --      li
+            --        a(href='#') Another action
+            --      li
+            --        a(href='#') Something else here
+            --      li.divider
+            --      li
+            --        a(href='#') Separated link
+            --  .btn-group
+            --    button.btn.btn-info.dropdown-toggle(data-toggle='dropdown', type='button')
+            --      | Info
+            --      span.caret
+            --    ul.dropdown-menu
+            --      li
+            --        a(href='#') Action
+            --      li
+            --        a(href='#') Another action
+            --      li
+            --        a(href='#') Something else here
+            --      li.divider
+            --      li
+            --        a(href='#') Separated link
+            --  .btn-group
+            --    button.btn.btn-warning.dropdown-toggle(data-toggle='dropdown', type='button')
+            --      | Warning
+            --      span.caret
+            --    ul.dropdown-menu
+            --      li
+            --        a(href='#') Action
+            --      li
+            --        a(href='#') Another action
+            --      li
+            --        a(href='#') Something else here
+            --      li.divider
+            --      li
+            --        a(href='#') Separated link
+            --  .btn-group
+            --    button.btn.btn-danger.dropdown-toggle(data-toggle='dropdown', type='button')
+            --      | Danger
+            --      span.caret
+            --    ul.dropdown-menu
+            --      li
+            --        a(href='#') Action
+            --      li
+            --        a(href='#') Another action
+            --      li
+            --        a(href='#') Something else here
+            --      li.divider
+            --      li
+            --        a(href='#') Separated link
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#btn-dropdowns-split Split button dropdowns
+            --p
+            --  | Similarly, create split button dropdowns with the same markup changes, only with a separate button.
+            --.bs-example
+            --  .btn-group
+            --    button.btn.btn-default(type='button') Default
+            --    button.btn.btn-default.dropdown-toggle(data-toggle='dropdown', type='button')
+            --      span.caret
+            --      span.sr-only Toggle Dropdown
+            --    ul.dropdown-menu
+            --      li
+            --        a(href='#') Action
+            --      li
+            --        a(href='#') Another action
+            --      li
+            --        a(href='#') Something else here
+            --      li.divider
+            --      li
+            --        a(href='#') Separated link
+            --  .btn-group
+            --    button.btn.btn-primary(type='button') Primary
+            --    button.btn.btn-primary.dropdown-toggle(data-toggle='dropdown', type='button')
+            --      span.caret
+            --      span.sr-only Toggle Dropdown
+            --    ul.dropdown-menu
+            --      li
+            --        a(href='#') Action
+            --      li
+            --        a(href='#') Another action
+            --      li
+            --        a(href='#') Something else here
+            --      li.divider
+            --      li
+            --        a(href='#') Separated link
+            --  .btn-group
+            --    button.btn.btn-success(type='button') Success
+            --    button.btn.btn-success.dropdown-toggle(data-toggle='dropdown', type='button')
+            --      span.caret
+            --      span.sr-only Toggle Dropdown
+            --    ul.dropdown-menu
+            --      li
+            --        a(href='#') Action
+            --      li
+            --        a(href='#') Another action
+            --      li
+            --        a(href='#') Something else here
+            --      li.divider
+            --      li
+            --        a(href='#') Separated link
+            --  .btn-group
+            --    button.btn.btn-info(type='button') Info
+            --    button.btn.btn-info.dropdown-toggle(data-toggle='dropdown', type='button')
+            --      span.caret
+            --      span.sr-only Toggle Dropdown
+            --    ul.dropdown-menu
+            --      li
+            --        a(href='#') Action
+            --      li
+            --        a(href='#') Another action
+            --      li
+            --        a(href='#') Something else here
+            --      li.divider
+            --      li
+            --        a(href='#') Separated link
+            --  .btn-group
+            --    button.btn.btn-warning(type='button') Warning
+            --    button.btn.btn-warning.dropdown-toggle(data-toggle='dropdown', type='button')
+            --      span.caret
+            --      span.sr-only Toggle Dropdown
+            --    ul.dropdown-menu
+            --      li
+            --        a(href='#') Action
+            --      li
+            --        a(href='#') Another action
+            --      li
+            --        a(href='#') Something else here
+            --      li.divider
+            --      li
+            --        a(href='#') Separated link
+            --  .btn-group
+            --    button.btn.btn-danger(type='button') Danger
+            --    button.btn.btn-danger.dropdown-toggle(data-toggle='dropdown', type='button')
+            --      span.caret
+            --      span.sr-only Toggle Dropdown
+            --    ul.dropdown-menu
+            --      li
+            --        a(href='#') Action
+            --      li
+            --        a(href='#') Another action
+            --      li
+            --        a(href='#') Something else here
+            --      li.divider
+            --      li
+            --        a(href='#') Separated link
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#btn-dropdowns-sizing Sizing
+            --p Button dropdowns work with buttons of all sizes.
+            --.bs-example
+            --  .btn-toolbar
+            --    .btn-group
+            --      button.btn.btn-default.btn-lg.dropdown-toggle(data-toggle='dropdown', type='button')
+            --        | Large button
+            --        span.caret
+            --      ul.dropdown-menu
+            --        li
+            --          a(href='#') Action
+            --        li
+            --          a(href='#') Another action
+            --        li
+            --          a(href='#') Something else here
+            --        li.divider
+            --        li
+            --          a(href='#') Separated link
+            --  .btn-toolbar
+            --    .btn-group
+            --      button.btn.btn-default.btn-sm.dropdown-toggle(data-toggle='dropdown', type='button')
+            --        | Small button
+            --        span.caret
+            --      ul.dropdown-menu
+            --        li
+            --          a(href='#') Action
+            --        li
+            --          a(href='#') Another action
+            --        li
+            --          a(href='#') Something else here
+            --        li.divider
+            --        li
+            --          a(href='#') Separated link
+            --  .btn-toolbar
+            --    .btn-group
+            --      button.btn.btn-default.btn-xs.dropdown-toggle(data-toggle='dropdown', type='button')
+            --        | Extra small button
+            --        span.caret
+            --      ul.dropdown-menu
+            --        li
+            --          a(href='#') Action
+            --        li
+            --          a(href='#') Another action
+            --        li
+            --          a(href='#') Something else here
+            --        li.divider
+            --        li
+            --          a(href='#') Separated link
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#btn-dropdowns-dropup Dropup variation
+            --p
+            --  | Trigger dropdown menus above elements by adding
+            --  code .dropup
+            --  | to the parent.
+            --.bs-example
+            --  .btn-toolbar
+            --    .btn-group.dropup
+            --      button.btn.btn-default(type='button') Dropup
+            --      button.btn.btn-default.dropdown-toggle(data-toggle='dropdown', type='button')
+            --        span.caret
+            --        span.sr-only Toggle Dropdown
+            --      ul.dropdown-menu
+            --        li
+            --          a(href='#') Action
+            --        li
+            --          a(href='#') Another action
+            --        li
+            --          a(href='#') Something else here
+            --        li.divider
+            --        li
+            --          a(href='#') Separated link
+            --    .btn-group.dropup
+            --      button.btn.btn-primary(type='button') Right dropup
+            --      button.btn.btn-primary.dropdown-toggle(data-toggle='dropdown', type='button')
+            --        span.caret
+            --        span.sr-only Toggle Dropdown
+            --      ul.dropdown-menu.dropdown-menu-right
+            --        li
+            --          a(href='#') Action
+            --        li
+            --          a(href='#') Another action
+            --        li
+            --          a(href='#') Something else here
+            --        li.divider
+            --        li
+            --          a(href='#') Separated link
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            ]
+          , bsDocsSection
+            [ pageHeader "input-groups" "Input groups"
+            --p.lead
+            --  | Extend form controls by adding text or buttons before, after, or on both sides of any text-based
+            --  code <input>
+            --  | . Use
+            --  code .input-group
+            --  | with an
+            --  code .input-group-addon
+            --  | to prepend or append elements to a single
+            --  code .form-control
+            --  | .
+            --.bs-callout.bs-callout-danger
+            --  h4
+            --    | Textual
+            --    code <input>
+            --    | s only
+            --  p
+            --    | Avoid using
+            --    code <select>
+            --    | elements here as they cannot be fully styled in WebKit browsers.
+            --  p
+            --    | Avoid using
+            --    code <textarea>
+            --    | elements here as their
+            --    code rows
+            --    | attribute will not be respected in some cases.
+            --.bs-callout.bs-callout-warning
+            --  h4 Tooltips & popovers in input groups require special setting
+            --  p
+            --    | When using tooltips or popovers on elements within an
+            --    code .input-group
+            --    | , you'll have to specify the option
+            --    code container: 'body'
+            --    | to avoid unwanted side effects (such
+            --    | as the element growing wider and/or losing its rounded corners when the tooltip or popover is triggered).
+            --.bs-callout.bs-callout-warning
+            --  h4 Don't mix with other components
+            --  p
+            --    | Do not mix form groups or grid column classes directly with input groups. Instead, nest the input group inside of the form group or grid-related element.
+            , h2' "input-groups-basic" "Basic example"
+            --p
+            --  | Place one add-on or button on either side of an input. You may also place one on both sides of an input.
+            --p
+            --  strong.text-danger We do not support multiple add-ons on a single side.
+            --p
+            --  strong.text-danger We do not support multiple form-controls in a single input group.
+            --form.bs-example.bs-example-form
+            --  inputGroup
+            --    inputGroupAddon @
+            --    input.form-control(placeholder='Username', type='text')
+            --  br
+            --  inputGroup
+            --    input.form-control(type='text')
+            --    inputGroupAddon .00
+            --  br
+            --  inputGroup
+            --    inputGroupAddon $
+            --    input.form-control(type='text')
+            --    inputGroupAddon .00
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            , h2' "input-groups-sizing" "Sizing"
+            --p
+            --  | Add the relative form sizing classes to the
+            --  code .input-group
+            --  | itself and contents within will automatically resize—no need for repeating the form control size classes on each
+            --  | element.
+            --form.bs-example.bs-example-form
+            --  inputGroup.input-group-lg
+            --    inputGroupAddon @
+            --    input.form-control(placeholder='Username', type='text')
+            --  br
+            --  inputGroup
+            --    inputGroupAddon @
+            --    input.form-control(placeholder='Username', type='text')
+            --  br
+            --  inputGroup.input-group-sm
+            --    inputGroupAddon @
+            --    input.form-control(placeholder='Username', type='text')
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            , h2' "input-groups-checkboxes-radios" "Checkboxes and radio addons"
+            --p
+            --  | Place any checkbox or radio option within an input group's addon instead of text.
+            --form.bs-example.bs-example-form
+            --  row
+            --    colLg6
+            --      inputGroup
+            --        inputGroupAddon
+            --          input(type='checkbox')
+            --        input.form-control(type='text')
+            --    colLg6
+            --      inputGroup
+            --        inputGroupAddon
+            --          input(type='radio')
+            --        input.form-control(type='text')
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            , h2' "input-groups-buttons" "Button addons"
+            --p
+            --  | Buttons in input groups are a bit different and require one extra level of nesting. Instead of
+            --  code .input-group-addon
+            --  | , you'll need to use
+            --  code .input-group-btn
+            --  | to wrap
+            --  | the buttons. This is required due to default browser styles that cannot be overridden.
+            --form.bs-example.bs-example-form
+            --  row
+            --    colLg6
+            --      inputGroup
+            --        span.input-group-btn
+            --          button.btn.btn-default(type='button')
+            --            span.input-group-btn Go!
+            --        input.form-control(type='text')
+            --    colLg6
+            --      inputGroup
+            --        input.form-control(type='text')
+            --        span.input-group-btn
+            --          button.btn.btn-default(type='button')
+            --            span.input-group-btn Go!
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            , h2' "input-groups-buttons-dropdowns" "Buttons with dropdowns"
+            --p
+            --form.bs-example.bs-example-form
+            --  row
+            --    colLg6
+            --      inputGroup
+            --        inputGroup-btn
+            --          button.btn.btn-default.dropdown-toggle(data-toggle='dropdown', type='button')
+            --            | Action
+            --            span.caret
+            --          ul.dropdown-menu
+            --            li
+            --              a(href='#') Action
+            --            li
+            --              a(href='#') Another action
+            --            li
+            --              a(href='#') Something else here
+            --            li.divider
+            --            li
+            --              a(href='#') Separated link
+            --        input.form-control(type='text')
+            --    colLg6
+            --      inputGroup
+            --        input.form-control(type='text')
+            --        inputGroup-btn
+            --          button.btn.btn-default.dropdown-toggle(data-toggle='dropdown', type='button')
+            --            | Action
+            --            span.caret
+            --          ul.dropdown-menu.dropdown-menu-right
+            --            li
+            --              a(href='#') Action
+            --            li
+            --              a(href='#') Another action
+            --            li
+            --              a(href='#') Something else here
+            --            li.divider
+            --            li
+            --              a(href='#') Separated link
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            , h2' "input-groups-buttons-segmented" "Segmented buttons"
+            --form.bs-example.bs-example-form
+            --  row
+            --    colLg6
+            --      inputGroup
+            --        inputGroup-btn
+            --          button.btn.btn-default(tabindex='-1', type='button') Action
+            --          button.btn.btn-default.dropdown-toggle(data-toggle='dropdown', type='button')
+            --            span.caret
+            --            span.sr-only Toggle Dropdown
+            --          ul.dropdown-menu
+            --            li
+            --              a(href='#') Action
+            --            li
+            --              a(href='#') Another action
+            --            li
+            --              a(href='#') Something else here
+            --            li.divider
+            --            li
+            --              a(href='#') Separated link
+            --        input.form-control(type='text')
+            --    colLg6
+            --      inputGroup
+            --        input.form-control(type='text')
+            --        inputGroup-btn
+            --          button.btn.btn-default(tabindex='-1', type='button') Action
+            --          button.btn.btn-default.dropdown-toggle(data-toggle='dropdown', type='button')
+            --            span.caret
+            --            span.sr-only Toggle Dropdown
+            --          ul.dropdown-menu.dropdown-menu-right
+            --            li
+            --              a(href='#') Action
+            --            li
+            --              a(href='#') Another action
+            --            li
+            --              a(href='#') Something else here
+            --            li.divider
+            --            li
+            --              a(href='#') Separated link
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            ]
+          , bsDocsSection
+            [ pageHeader "nav" "Navs"
+            --p.lead
+            --  | Navs available in Bootstrap have shared markup, starting with the base
+            --  code .nav
+            --  | class, as well as shared states. Swap modifier classes to switch between each
+            --  | style.
+            --.bs-callout.bs-callout-info
+            --  h4 Using navs for tab panels requires JavaScript tabs plugin
+            --  p
+            --    | For tabs with tabbable areas, you must use the
+            --    a(href='../javascript/#tabs') tabs JavaScript plugin
+            --    | . The markup will also require additional
+            --    code role
+            --    | and ARIA attributes –
+            --    | see the plugin's
+            --    a(href='../javascript/#tabs-usage') example markup
+            --    | for further details.
+            --.bs-callout.bs-callout-warning
+            --  h4 Make navs used as navigation accessible
+            --  p
+            --    | If you are using navs to provide a navigation bar, be sure to add a
+            --    code role="navigation"
+            --    | to the most logical parent container of the
+            --    code <ul>
+            --    | , or wrap a
+            --    code <nav>
+            --    | element around the whole navigation. Do not add the role to the
+            --    code <ul>
+            --    | itself, as this would prevent it from being announced as an actual list by
+            --    | assistive technologies.
+            , h2' "nav-tabs" "Tabs"
+            --p
+            --  | Note the
+            --  code .nav-tabs
+            --  | class requires the
+            --  code .nav
+            --  | base class.
+            --.bs-example
+            --  ul.nav.nav-tabs
+            --    li.active
+            --      a(href='#') Home
+            --    li
+            --      a(href='#') Profile
+            --    li
+            --      a(href='#') Messages
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            , h2' "nav-pills" "Pills"
+            --p
+            --  | Take that same HTML, but use
+            --  code .nav-pills
+            --  | instead:
+            --.bs-example
+            --  ul.nav.nav-pills
+            --    li.active
+            --      a(href='#') Home
+            --    li
+            --      a(href='#') Profile
+            --    li
+            --      a(href='#') Messages
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --p
+            --  | Pills are also vertically stackable. Just add
+            --  code .nav-stacked
+            --  | .
+            --.bs-example
+            --  ul.nav.nav-pills.nav-stacked(style='max-width: 300px;')
+            --    li.active
+            --      a(href='#') Home
+            --    li
+            --      a(href='#') Profile
+            --    li
+            --      a(href='#') Messages
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            , h2' "nav-justified" "Justified"
+            --p
+            --  | Easily make tabs or pills equal widths of their parent at screens wider than 768px with
+            --  code .nav-justified
+            --  | . On smaller screens, the nav links are stacked.
+            --p
+            --  strong.text-danger Justified navbar nav links are currently not supported.
+            --.bs-callout.bs-callout-warning
+            --  h4 Safari and responsive justified navs
+            --  p
+            --    | As of v8.0, Safari exhibits a bug in which resizing your browser horizontally causes rendering errors in the justified nav that are cleared upon refreshing. This bug is also shown in
+            --    | the
+            --    a(href='../examples/justified-nav/') justified nav example
+            --    | .
+            --.bs-example
+            --  ul.nav.nav-tabs.nav-justified
+            --    li.active
+            --      a(href='#') Home
+            --    li
+            --      a(href='#') Profile
+            --    li
+            --      a(href='#') Messages
+            --  br
+            --  ul.nav.nav-pills.nav-justified
+            --    li.active
+            --      a(href='#') Home
+            --    li
+            --      a(href='#') Profile
+            --    li
+            --      a(href='#') Messages
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            , h2' "nav-disabled-links" "Disabled links"
+            --p
+            --  | For any nav component (tabs or pills), add
+            --  code .disabled
+            --  | for
+            --  strong gray links and no hover effects
+            --  | .
+            --.bs-callout.bs-callout-warning
+            --  h4 Link functionality not impacted
+            --  p
+            --    | This class will only change the
+            --    code <a>
+            --    | 's appearance, not its functionality. Use custom JavaScript to disable links here.
+            --.bs-example
+            --  ul.nav.nav-pills
+            --    li
+            --      a(href='#') Clickable link
+            --    li
+            --      a(href='#') Clickable link
+            --    li.disabled
+            --      a(href='#') Disabled link
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            , h2' "nav-dropdowns" "Using dropdowns"
+            --p
+            --  | Add dropdown menus with a little extra HTML and the
+            --  a(href='../javascript/#dropdowns') dropdowns JavaScript plugin
+            --  | .
+            --h3 Tabs with dropdowns
+            --.bs-example
+            --  ul.nav.nav-tabs
+            --    li.active
+            --      a(href='#') Home
+            --    li
+            --      a(href='#') Help
+            --    li.dropdown
+            --      a.dropdown-toggle(data-toggle='dropdown', href='#')
+            --        | Dropdown
+            --        span.caret
+            --      ul.dropdown-menu
+            --        li
+            --          a(href='#') Action
+            --        li
+            --          a(href='#') Another action
+            --        li
+            --          a(href='#') Something else here
+            --        li.divider
+            --        li
+            --          a(href='#') Separated link
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3 Pills with dropdowns
+            --.bs-example
+            --  ul.nav.nav-pills
+            --    li.active
+            --      a(href='#') Home
+            --    li
+            --      a(href='#') Help
+            --    li.dropdown
+            --      a.dropdown-toggle(data-toggle='dropdown', href='#')
+            --        | Dropdown
+            --        span.caret
+            --      ul.dropdown-menu
+            --        li
+            --          a(href='#') Action
+            --        li
+            --          a(href='#') Another action
+            --        li
+            --          a(href='#') Something else here
+            --        li.divider
+            --        li
+            --          a(href='#') Separated link
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            ]
+          , bsDocsSection
+            [ pageHeader "navbar" "Navbar"
+            , h2' "navbar-default" "Default navbar"
+            --p
+            --  | Navbars are responsive meta components that serve as navigation headers for your application or site. They begin collapsed (and are toggleable) in mobile views and become horizontal as
+            --  | the available viewport width increases.
+            --p
+            --  strong.text-danger Justified navbar nav links are currently not supported.
+            --#callout-navbar-overflow.bs-callout.bs-callout-warning
+            --  h4 Overflowing content
+            --  p
+            --    | Since Bootstrap doesn't know how much space the content in your navbar needs, you might run into issues with content wrapping into a second row. To resolve this, you can:
+            --  ol(type='a')
+            --    li Reduce the amount or width of navbar items.
+            --    li
+            --      | Hide certain navbar items at certain screen sizes using
+            --      a(href='../css/#responsive-utilities') responsive utility classes
+            --      | .
+            --    li
+            --      | Change the point at which your navbar switches between collapsed and horizontal mode. Customize the
+            --      code @grid-float-breakpoint
+            --      | variable or add your own media query.
+            --.bs-callout.bs-callout-danger
+            --  h4 Requires JavaScript plugin
+            --  p
+            --    | If JavaScript is disabled and the viewport is narrow enough that the navbar collapses, it will be impossible to expand the navbar and view the content within the
+            --    code .navbar-collapse
+            --    | .
+            --  p
+            --    | The responsive navbar requires the
+            --    a(href='../javascript/#collapse') collapse plugin
+            --    | to be included in your version of Bootstrap.
+            --.bs-callout.bs-callout-info
+            --  h4 Changing the collapsed mobile navbar breakpoint
+            --  p
+            --    | The navbar collapses into its vertical mobile view when the viewport is narrower than
+            --    code @grid-float-breakpoint
+            --    | , and expands into its horizontal non-mobile view when the
+            --    | viewport is at least
+            --    code @grid-float-breakpoint
+            --    | in width. Adjust this variable in the Less source to control when the navbar collapses/expands. The default value is
+            --    code 768px
+            --    | (the smallest "small" or "tablet" screen).
+            --.bs-callout.bs-callout-warning
+            --  h4 Make navbars accessible
+            --  p
+            --    | Be sure to add a
+            --    code role="navigation"
+            --    | to every navbar to help with accessibility.
+            --.bs-example
+            --  nav.navbar.navbar-default
+            --    .container-fluid
+            --      -- Brand and toggle get grouped for better mobile display
+            --      .navbar-header
+            --        button.navbar-toggle.collapsed(data-target='#bs-example-navbar-collapse-1', data-toggle='collapse', type='button')
+            --          span.sr-only Toggle navigation
+            --          span.icon-bar
+            --          span.icon-bar
+            --          span.icon-bar
+            --        a.navbar-brand(href='#') Brand
+            --      -- Collect the nav links, forms, and other content for toggling
+            --      #bs-example-navbar-collapse-1.collapse.navbar-collapse
+            --        ul.nav.navbar-nav
+            --          li.active
+            --            a(href='#')
+            --              | Link
+            --              span.sr-only (current)
+            --          li
+            --            a(href='#') Link
+            --          li.dropdown
+            --            a.dropdown-toggle(data-toggle='dropdown', href='#')
+            --              | Dropdown
+            --              span.caret
+            --            ul.dropdown-menu
+            --              li
+            --                a(href='#') Action
+            --              li
+            --                a(href='#') Another action
+            --              li
+            --                a(href='#') Something else here
+            --              li.divider
+            --              li
+            --                a(href='#') Separated link
+            --              li.divider
+            --              li
+            --                a(href='#') One more separated link
+            --        form.navbar-form.navbar-left
+            --          .form-group
+            --            input.form-control(placeholder='Search', type='text')
+            --          button.btn.btn-default(type='submit') Submit
+            --        ul.nav.navbar-nav.navbar-right
+            --          li
+            --            a(href='#') Link
+            --          li.dropdown
+            --            a.dropdown-toggle(data-toggle='dropdown', href='#')
+            --              | Dropdown
+            --              span.caret
+            --            ul.dropdown-menu
+            --              li
+            --                a(href='#') Action
+            --              li
+            --                a(href='#') Another action
+            --              li
+            --                a(href='#') Something else here
+            --              li.divider
+            --              li
+            --                a(href='#') Separated link
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            , h2' "navbar-brand-image" "Brand image"
+            --p
+            --  | Replace the navbar brand with your own image by swapping the text for an
+            --  code <img>
+            --  | . Since the
+            --  code .navbar-brand
+            --  | has its own padding and height, you may need to
+            --  | override some CSS depending on your image.
+            --.bs-example
+            --  nav.navbar.navbar-default
+            --    .container-fluid
+            --      .navbar-header
+            --        a.navbar-brand(href='#')
+            --          img(alt='Brand', height='20', src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJgAAACYCAYAAAAYwiAhAAAMU0lEQVR4AeyZzU4TARSFhx08ienKiAsSSymliEjpdBBqoUX++gMJupZC/6B0prPUhIRI4qvIwoUhxAU8gBKiS0kkYQW5npsUAZloy4xYp3fxJSxYDMOXc07uKETkGJmI6clo5iLYmtfMbXAwP2IeA2oNqo6Q0W6N40ykegC205HqFlgEHiedcECq6j0ItQGZDptcABGqXiLVQ7CRVo3OfyLYU1+uDQ+iQaqdyy8cD0Szj9fp2cM1SvSVaNxfoFhPnvD7LmDFEaLdzQP/Xfz/iQeKNNm/SjODZUqFK7/IZuykVV2Ldi+33YpgMLsLibV7LlUqbNDUwBrLxA8sMlkI1bwsWwHpcgiJEiWHL2RLRYzdlKp3/TXBkE4dXIWQ6gzQXKhC8b6iCPWfy2TF2CXGA3maGSpTGpKBs3TE2EyG9Q5HBYNYHki1f55YLJbI5A6hxuqERZsbrtREM/aRaB5HBEMl+hZGzCPsLd5WIpQL0skOif4SIcW4No9SquGzJRjkUpFaJzzeJwJFkckV6WSfWG+e9xmLdoJGU28kGOTyslzJYZ1i/rwLZJJ0soX3KlG8t9mh9ZpkurchwXBsu7Ogmd+SIcjVk2+5dBKZ6gPPAcnKfMpAXeqeugRDarVjb+0huVgukcldVWdDqKwVNcmQZKq+hzRr/6NgGc3c5M2FWhShWjadsg0R9S3zJmPJNn8rGB9RkV6nzg96SafmlYnJ2ibmz7Fgp/gS0GUpGH/+gVwfcYqQIS7p1BCjNeLBIqUi+i5+brsmGNJL4yOqC9JJZLoVoayZDa1TUq1o1wRDen3AhV5kcuEQty9T/cR6c5RS9Z0rgiG9OvFtUYRq8apjRh1genCNsMXuXwimma+QXpJOUnWN82DpGjH/Cgv2+qdguHl9lXSSqrupUFbgAPuF3UI9GnenBlal6qyRdLohiWCBkuGKB/VYfTHuz0vVMZJOjoH3wYI9V7D437ZSOskQd16mJ9bQTKj8Rpl+VH4v6SRVZ1soCyYHSu+URLD0WWSSqrMrkxXxYOGTMhEofJeqk3SyK9MFL8/hc8WxEuvJSzpJ1dmWyYqx7izxR24Z4pJOtmWyYtS7RIpUXeNIOtWP0tpVJ0P8Rzt39ptlEcVx/HDHPwJeIUvRondcSG3LoneiFKIXKG3ZRMGyaGSRVcJarKxuiUQWNxCI7DS2mFAEb0ohCg0mGilqgiiBPJ4M9SX1TF4Z3jnvb9r3TPK9NdF+cuZ5Z57HeJi4x2Rk06n3b3V4ULKnu6PUz5wuXejs9X1/tiPbv/eka8WCHdnMSW/3iekkQcko9enUh5fDd+zQt1njyp3ZC2MX9XpMstkZpb7VldI6z5PuvU2fA0DFweSLUn8QL8V1/drvbjtNfTrJZJT6gzh24aFtXLkzvekUEAEwGbDwrZOf0RaippMmMPyZk62766fOXxwyLKbwKOkzJwnMkI1ZmBIm0VMjekapH2DKZcieZ2R4UBKT7NWM8KAMWOg63XweP50kJm+U+vWKf9lavmB7cph8UeqXv/5lq4uPMECgFIEpYzJgYWvHps8AmMIi4HQyYBEe+GM8iGtGqb+aYiv/mj5xZYTppBel/hZm/mXrkw8OgTHJxo14JRel/uJc7MWXyLGuV3h6rOJfczu62+7+2Pz6Db+Gc6V410htHQmBkhEeEwCY/vUKH4a+6R7C+deeKrCbf/6Fx+Sr/G6U+jviCsCKfsWyf+8JTWPJYPJFKWGSqQBDXK+4aaa1ls3fVjxQ5WERGhQAGOy+jp/RAMAUplNABMYEAHYCevl7sf0KBJg+Jn+U+udQCsCg1ysbVnysDgyFaWz5LBHhMcnwwHRPxDWA4UH5o9Q/h1IABr+v421SFxgIky9KDRQAmAImADA8KG+U+udQsdc+Boa+rzvfdgEMTGBSi1L/HEoBmAIm7ARDYRI9KiPkdMIBw97VxQTGV1EpgRIRHhMYGOCKJeb9ZGvzORwm0csiCsCkDAoADHBfN61mRRZzbW/8FA/K05juKAAU4HpFFxjgvo6viw5mMdfE6tfxmPJEKX6sqQ8Mc/k7qfqN2NujEiYuHJM3SvBjzR5pAQNc/joQMdfUmuWA6RQWJfixpj4wwH3dvj1x3wk7eug0AFN4hMYEAKYJSsRTJvq519XOn92zV0qgRI/MdFGRtrrEgOnf182but5tiRqvSM+rX58kJl+EnE4AYO6PzlcrBbd0/tZc+/Ycz8XXQA4BL21cyWEa7YkA0ykoWz1wpQ5KRBJUWt/X2XLPXA4XHlN4lBImmQE7erA1q6legAEVIQqCALheKeWptXTeFiQmADDA9UopLv6hoIdJtRkiQk4nmaikH+pbT53L5tav7w2gRNXdEWA6BZXZcge1vF0mj8kXIaeTAQtaPNG+y2qqFiQJSjT8bgTBFHAibktunW/xNINj8oMSUWIfa4ps+de2xr3JYfJFYFAKwAyZxlYX3nQXATApADNkiOkkQclIH5MB014N9Wsh00kUDgz/OZTG/1+ef/YX0GVvQa9CK/w7TaiajwflifCY8hd78Ss1RTkR5196bvviowX3y097fbnnGAqTqCqXBJba93UawCAn4oxNc8o5xHXPLYViEpUxsIQwicboAEOeiLtJo7WOHGxVBSURCVAiSgXUGJkeMOwVC2+fm93E0ZhiEyrnF206yUKB4T+HUnhWOZ7E9cq65R/pHFts3FO06SSbJiI0Jjww3PVKC/8AiL3OtbUXbTpJUDICgEoRGOREnB/KNbZJGCZflPq3dfrAoPd1buLEXkvmbo671QVU+Z8o/EFcFZRIHxj0vs49M8VeO9//yo9JH5SIGE7K39dpHEiCMDlQooa6NfH/HXcfg2DyRXhMMn1guMtfX7EXX10VDKoyUgQFhQEGwAQAhgHFTe0RATChgcFBVfVMAxgEk2gYAwNgwgNL7L5OFVgRMfmi1D+H0geGv6+LvToYmCqoYfcfpf5tnS4w/H0dHlj4dAqJEgMl0gEmoaCuV5bMfRcATAWT6EmOksEEAAa4/BUdOdiiA0x/OglMslBggPs6fWDY+7qua79lsRejLT4mUb2L0sFUPGASEea+7ovdRzONxf/ceFtdACZfhPlYEwssAJPaificujVq7+ovaWiCYAoABrv8FSnd0+lf/oJw8UKCElGKH2vqA8Nd/q5d9qEqrnNn2iGYREPvRkBMIGBH9UH5Yblfd9pr68bdOUwAUCIKwAS4XsEBqywwPt9yf+yWU2fFxNL8dG18RQMCk6iiO0oMlCj24mMB8VV2R4QSWA6zxKQPqiJPBMUkCrhGsSWm15RnFxdtOuWvLpcEBr38NWAFnH0BMAlQIgrCBLivs3V/2/74itfCQClg8kVpYBIFALM1p3Y1ZDoFA8ODMmDhxxK7FKZTvAiAKeiYwFaeS+0DLVEexDVzwOCXv3my5V8tJ8+GTidIBJlOAdmSa8uGXVhMAREeUwgwO+ta3NCEBxUQBWCCfFtn696W+AwfReDRhEV4UFPzZMA62n/kqfVOr8A0akitiAIwQb6vM1i9BlMAMBAmX6V2In/4wDfZS+MX9VZQIlKYTgGYDBhPKr5HPJLNrl2dEqZoUXGmkwFjSDlMfMyA3/50QIkIjwn/Wi+HPxHHY1KJkKDSxyQzTGFRn8SEuvw1UCKyrc4wKfY3MYY/bDoZKKV+JQbyQ9KgDFOv64khU1yjhtZeIj4HO24P4oVmmHxVDKs7Tvw+WJNtdQaqAEz5gDXR6PIZtfYgHppNJ2+De1ZZVv8ijXt81iDb6mQ2nYJBiUaXT3+IsiwjRnHVtrr82XQKrpNt0b/AVtl0EhmmwlqVA1Y1fNpgm0621cWM/zsOzgHrnmLN9iBu0ylSzd2u7gFjPNW21dl0ilS1AMZY+nGtNp0MU4G1cv0EsG5kZdxtm0621T1gt7ky50kAyyGrW2ugbDo9YGtzlvIA68+dMUw2nQI7w/X3A5PIBnBdhsmm0312nRsoLXmB5ZCVczcMlGH6n25w5dKQBOZDVsXdNEwuwyS7yVUJOwJYfmQjw7dLm04lUBc3MmclHJh4Jmsr1elkmERt3ABhJRyY+HW5hrtjD+Il2x1unfi1WAAwEf+ByrgWw1RytfQ4RI0KTCLrx1VzzbbV9fmauerc9Y86MIltELeau9xnppN1hVvNPRxgQQGYxDaQm8w1cl9zF7ku7lZy08m6xXVxF7nDXCM3WR6YFtY/g9j2sjS1K/4AAAAASUVORK5CYII=')
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            , h2' "navbar-forms" "Forms"
+            --p
+            --  | Place form content within
+            --  code .navbar-form
+            --  | for proper vertical alignment and collapsed behavior in narrow viewports. Use the alignment options to decide where it resides within
+            --  | the navbar content.
+            --p
+            --  | As a heads up,
+            --  code .navbar-form
+            --  | shares much of its code with
+            --  code .form-inline
+            --  | via mixin.
+            --  strong.text-danger
+            --    | Some form controls, like input groups, may require
+            --    | fixed widths to be show up properly within a navbar.
+            --.bs-example
+            --  nav.navbar.navbar-default
+            --    .container-fluid
+            --      .navbar-header
+            --        button.navbar-toggle.collapsed(data-target='#bs-example-navbar-collapse-2', data-toggle='collapse', type='button')
+            --          span.sr-only Toggle navigation
+            --          span.icon-bar
+            --          span.icon-bar
+            --          span.icon-bar
+            --        a.navbar-brand(href='#') Brand
+            --      #bs-example-navbar-collapse-2.collapse.navbar-collapse
+            --        form.navbar-form.navbar-left
+            --          .form-group
+            --            input.form-control(placeholder='Search', type='text')
+            --          button.btn.btn-default(type='submit') Submit
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --.bs-callout.bs-callout-warning
+            --  h4 Mobile device caveats
+            --  p
+            --    | There are some caveats regarding using form controls within fixed elements on mobile devices.
+            --    a(href='../getting-started/#support-fixed-position-keyboards')
+            --      | See our browser support
+            --      | docs
+            --    | for details.
+            --.bs-callout.bs-callout-warning
+            --  h4 Always add labels
+            --  p
+            --    | Screen readers will have trouble with your forms if you don't include a label for every input. For these inline navbar forms, you can hide the labels using the
+            --    code .sr-only
+            --    | class.
+            , h2' "navbar-buttons" "Buttons"
+            --p
+            --  | Add the
+            --  code .navbar-btn
+            --  | class to
+            --  code <button>
+            --  | elements not residing in a
+            --  code <form>
+            --  | to vertically center them in the navbar.
+            --.bs-example
+            --  nav.navbar.navbar-default
+            --    .container-fluid
+            --      .navbar-header
+            --        button.navbar-toggle.collapsed(data-target='#bs-example-navbar-collapse-3', data-toggle='collapse', type='button')
+            --          span.sr-only Toggle navigation
+            --          span.icon-bar
+            --          span.icon-bar
+            --          span.icon-bar
+            --        a.navbar-brand(href='#') Brand
+            --      #bs-example-navbar-collapse-3.collapse.navbar-collapse
+            --        button.btn.btn-default.navbar-btn(type='button') Sign in
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --.bs-callout.bs-callout-warning
+            --  h4 Context-specific usage
+            --  p
+            --    | Like the standard
+            --    a(href='../css/#buttons') button classes
+            --    | ,
+            --    code .navbar-btn
+            --    | can be used on
+            --    code <a>
+            --    | and
+            --    code <input>
+            --    | elements. However, neither
+            --    code .navbar-btn
+            --    | nor the standard button classes should be used on
+            --    code <a>
+            --    | elements within
+            --    code .navbar-nav
+            --    | .
+            , h2' "navbar-text" "Text"
+            --p
+            --  | Wrap strings of text in an element with
+            --  code .navbar-text
+            --  | , usually on a
+            --  code <p>
+            --  | tag for proper leading and color.
+            --.bs-example
+            --  nav.navbar.navbar-default
+            --    .container-fluid
+            --      .navbar-header
+            --        button.navbar-toggle.collapsed(data-target='#bs-example-navbar-collapse-4', data-toggle='collapse', type='button')
+            --          span.sr-only Toggle navigation
+            --          span.icon-bar
+            --          span.icon-bar
+            --          span.icon-bar
+            --        a.navbar-brand(href='#') Brand
+            --      #bs-example-navbar-collapse-4.collapse.navbar-collapse
+            --        p.navbar-text Signed in as Mark Otto
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            , h2' "navbar-links" "Non-nav links"
+            --p
+            --  | For folks using standard links that are not within the regular navbar navigation component, use the
+            --  code .navbar-link
+            --  | class to add the proper colors for the default and inverse
+            --  | navbar options.
+            --.bs-example
+            --  nav.navbar.navbar-default
+            --    .container-fluid
+            --      .navbar-header
+            --        button.navbar-toggle.collapsed(data-target='#bs-example-navbar-collapse-5', data-toggle='collapse', type='button')
+            --          span.sr-only Toggle navigation
+            --          span.icon-bar
+            --          span.icon-bar
+            --          span.icon-bar
+            --        a.navbar-brand(href='#') Brand
+            --      #bs-example-navbar-collapse-5.collapse.navbar-collapse
+            --        p.navbar-text.navbar-right
+            --          | Signed in as
+            --          a.navbar-link(href='#') Mark Otto
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            , h2' "navbar-component-alignment" "Component alignment"
+            --p
+            --  | Align nav links, forms, buttons, or text, using the
+            --  code .navbar-left
+            --  | or
+            --  code .navbar-right
+            --  | utility classes. Both classes will add a CSS float in the specified direction.
+            --  | For example, to align nav links, put them in a separate
+            --  code <ul>
+            --  | with the respective utility class applied.
+            --p
+            --  | These classes are mixin-ed versions of
+            --  code .pull-left
+            --  | and
+            --  code .pull-right
+            --  | , but they're scoped to media queries for easier handling of navbar components across device
+            --  | sizes.
+            --.bs-callout.bs-callout-warning
+            --  h4 Right aligning multiple components
+            --  p
+            --    | Navbars currently have a limitation with multiple
+            --    code .navbar-right
+            --    | classes. To properly space content, we use negative margin on the last
+            --    code .navbar-right
+            --    | element.
+            --    | When there are multiple elements using that class, these margins don't work as intended.
+            --  p We'll revisit this when we can rewrite that component in v4.
+            , h2' "navbar-fixed-top" "Fixed to top"
+            --p
+            --  | Add
+            --  code .navbar-fixed-top
+            --  | and include a
+            --  code .container
+            --  | or
+            --  code .container-fluid
+            --  | to center and pad navbar content.
+            --.bs-example.bs-navbar-top-example
+            --  nav.navbar.navbar-default.navbar-fixed-top
+            --    -- We use the fluid option here to avoid overriding the fixed width of a normal container within the narrow content columns.
+            --    .container-fluid
+            --      .navbar-header
+            --        button.navbar-toggle.collapsed(data-target='#bs-example-navbar-collapse-6', data-toggle='collapse', type='button')
+            --          span.sr-only Toggle navigation
+            --          span.icon-bar
+            --          span.icon-bar
+            --          span.icon-bar
+            --        a.navbar-brand(href='#') Brand
+            --      #bs-example-navbar-collapse-6.collapse.navbar-collapse
+            --        ul.nav.navbar-nav
+            --          li.active
+            --            a(href='#') Home
+            --          li
+            --            a(href='#') Link
+            --          li
+            --            a(href='#') Link
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --.bs-callout.bs-callout-danger
+            --  h4 Body padding required
+            --  p
+            --    | The fixed navbar will overlay your other content, unless you add
+            --    code padding
+            --    | to the top of the
+            --    code <body>
+            --    | . Try out your own values or use our snippet below.
+            --    | Tip: By default, the navbar is 50px high.
+            --  .zero-clipboard
+            --    span.btn-clipboard Copy
+            --  .highlight
+            --    pre.
+            --      \n              
+            --  p
+            --    | Make sure to include this
+            --    strong after
+            --    | the core Bootstrap CSS.
+            , h2' "navbar-fixed-bottom" "Fixed to bottom"
+            --p
+            --  | Add
+            --  code .navbar-fixed-bottom
+            --  | and include a
+            --  code .container
+            --  | or
+            --  code .container-fluid
+            --  | to center and pad navbar content.
+            --.bs-example.bs-navbar-bottom-example
+            --  nav.navbar.navbar-default.navbar-fixed-bottom
+            --    -- We use the fluid option here to avoid overriding the fixed width of a normal container within the narrow content columns.
+            --    .container-fluid
+            --      .navbar-header
+            --        button.navbar-toggle.collapsed(data-target='#bs-example-navbar-collapse-7', data-toggle='collapse', type='button')
+            --          span.sr-only Toggle navigation
+            --          span.icon-bar
+            --          span.icon-bar
+            --          span.icon-bar
+            --        a.navbar-brand(href='#') Brand
+            --      #bs-example-navbar-collapse-7.collapse.navbar-collapse
+            --        ul.nav.navbar-nav
+            --          li.active
+            --            a(href='#') Home
+            --          li
+            --            a(href='#') Link
+            --          li
+            --            a(href='#') Link
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --.bs-callout.bs-callout-danger
+            --  h4 Body padding required
+            --  p
+            --    | The fixed navbar will overlay your other content, unless you add
+            --    code padding
+            --    | to the bottom of the
+            --    code <body>
+            --    | . Try out your own values or use our snippet below.
+            --    | Tip: By default, the navbar is 50px high.
+            --  .zero-clipboard
+            --    span.btn-clipboard Copy
+            --  .highlight
+            --    pre.
+            --      \n              
+            --  p
+            --    | Make sure to include this
+            --    strong after
+            --    | the core Bootstrap CSS.
+            , h2' "navbar-static-top" "Static top"
+            --p
+            --  | Create a full-width navbar that scrolls away with the page by adding
+            --  code .navbar-static-top
+            --  | and include a
+            --  code .container
+            --  | or
+            --  code .container-fluid
+            --  | to center and
+            --  | pad navbar content.
+            --p
+            --  | Unlike the
+            --  code .navbar-fixed-*
+            --  | classes, you do not need to change any padding on the
+            --  code body
+            --  | .
+            --.bs-example.bs-navbar-top-example
+            --  nav.navbar.navbar-default.navbar-static-top
+            --    -- We use the fluid option here to avoid overriding the fixed width of a normal container within the narrow content columns.
+            --    .container-fluid
+            --      .navbar-header
+            --        button.navbar-toggle.collapsed(data-target='#bs-example-navbar-collapse-8', data-toggle='collapse', type='button')
+            --          span.sr-only Toggle navigation
+            --          span.icon-bar
+            --          span.icon-bar
+            --          span.icon-bar
+            --        a.navbar-brand(href='#') Brand
+            --      -- Collect the nav links, forms, and other content for toggling
+            --      #bs-example-navbar-collapse-8.collapse.navbar-collapse
+            --        ul.nav.navbar-nav
+            --          li.active
+            --            a(href='#') Home
+            --          li
+            --            a(href='#') Link
+            --          li
+            --            a(href='#') Link
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            , h2' "navbar-inverted" "Inverted navbar"
+            --p
+            --  | Modify the look of the navbar by adding
+            --  code .navbar-inverse
+            --  | .
+            --.bs-example
+            --  nav.navbar.navbar-inverse
+            --    .container-fluid
+            --      -- Brand and toggle get grouped for better mobile display
+            --      .navbar-header
+            --        button.navbar-toggle.collapsed(data-target='#bs-example-navbar-collapse-9', data-toggle='collapse', type='button')
+            --          span.sr-only Toggle navigation
+            --          span.icon-bar
+            --          span.icon-bar
+            --          span.icon-bar
+            --        a.navbar-brand(href='#') Brand
+            --      -- Collect the nav links, forms, and other content for toggling
+            --      #bs-example-navbar-collapse-9.collapse.navbar-collapse
+            --        ul.nav.navbar-nav
+            --          li.active
+            --            a(href='#') Home
+            --          li
+            --            a(href='#') Link
+            --          li
+            --            a(href='#') Link
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            ]
+          , bsDocsSection
+            [ pageHeader "breadcrumbs" "Breadcrumbs"
+            --p.lead Indicate the current page's location within a navigational hierarchy.
+            --p
+            --  | Separators are automatically added in CSS through
+            --  code :before
+            --  | and
+            --  code content
+            --  | .
+            --.bs-example
+            --  ol.breadcrumb
+            --    li.active Home
+            --  ol.breadcrumb
+            --    li
+            --      a(href='#') Home
+            --    li.active Library
+            --  ol.breadcrumb(style='margin-bottom: 5px;')
+            --    li
+            --      a(href='#') Home
+            --    li
+            --      a(href='#') Library
+            --    li.active Data
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            ]
+          , bsDocsSection
+            [ pageHeader "pagination" "Pagination"
+            --p.lead
+            --  | Provide pagination links for your site or app with the multi-page pagination component, or the simpler
+            --  a(href='#pagination-pager') pager alternative
+            --  | .
+            , h2' "pagination-default" "Default pagination"
+            --p
+            --  | Simple pagination inspired by Rdio, great for apps and search results. The large block is hard to miss, easily scalable, and provides large click areas.
+            --.bs-example
+            --  nav
+            --    ul.pagination
+            --      li
+            --        a(href='#')
+            --          span «
+            --          span.sr-only Previous
+            --      li
+            --        a(href='#') 1
+            --      li
+            --        a(href='#') 2
+            --      li
+            --        a(href='#') 3
+            --      li
+            --        a(href='#') 4
+            --      li
+            --        a(href='#') 5
+            --      li
+            --        a(href='#')
+            --          span »
+            --          span.sr-only Next
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3 Disabled and active states
+            --p
+            --  | Links are customizable for different circumstances. Use
+            --  code .disabled
+            --  | for unclickable links and
+            --  code .active
+            --  | to indicate the current page.
+            --.bs-example
+            --  nav
+            --    ul.pagination
+            --      li.disabled
+            --        a(href='#')
+            --          span «
+            --          span.sr-only Previous
+            --      li.active
+            --        a(href='#')
+            --          | 1
+            --          span.sr-only (current)
+            --      li
+            --        a(href='#') 2
+            --      li
+            --        a(href='#') 3
+            --      li
+            --        a(href='#') 4
+            --      li
+            --        a(href='#') 5
+            --      li
+            --        a(href='#')
+            --          span »
+            --          span.sr-only Next
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --p
+            --  | You can optionally swap out active or disabled anchors for
+            --  code <span>
+            --  | , or omit the anchor in the case of the previous/next arrows, to remove click functionality while
+            --  | retaining intended styles.
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3 Sizing
+            --p
+            --  | Fancy larger or smaller pagination? Add
+            --  code .pagination-lg
+            --  | or
+            --  code .pagination-sm
+            --  | for additional sizes.
+            --.bs-example
+            --  nav
+            --    ul.pagination.pagination-lg
+            --      li
+            --        a(href='#')
+            --          span «
+            --          span.sr-only Previous
+            --      li
+            --        a(href='#') 1
+            --      li
+            --        a(href='#') 2
+            --      li
+            --        a(href='#') 3
+            --      li
+            --        a(href='#') 4
+            --      li
+            --        a(href='#') 5
+            --      li
+            --        a(href='#')
+            --          span »
+            --          span.sr-only Next
+            --  nav
+            --    ul.pagination
+            --      li
+            --        a(href='#')
+            --          span «
+            --          span.sr-only Previous
+            --      li
+            --        a(href='#') 1
+            --      li
+            --        a(href='#') 2
+            --      li
+            --        a(href='#') 3
+            --      li
+            --        a(href='#') 4
+            --      li
+            --        a(href='#') 5
+            --      li
+            --        a(href='#')
+            --          span »
+            --          span.sr-only Next
+            --  nav
+            --    ul.pagination.pagination-sm
+            --      li
+            --        a(href='#')
+            --          span «
+            --          span.sr-only Previous
+            --      li
+            --        a(href='#') 1
+            --      li
+            --        a(href='#') 2
+            --      li
+            --        a(href='#') 3
+            --      li
+            --        a(href='#') 4
+            --      li
+            --        a(href='#') 5
+            --      li
+            --        a(href='#')
+            --          span »
+            --          span.sr-only Next
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            , h2' "pagination-pager" "Pager"
+            --p
+            --  | Quick previous and next links for simple pagination implementations with light markup and styles. It's great for simple sites like blogs or magazines.
+            --h3 Default example
+            --p By default, the pager centers links.
+            --.bs-example
+            --  nav
+            --    ul.pager
+            --      li
+            --        a(href='#') Previous
+            --      li
+            --        a(href='#') Next
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3 Aligned links
+            --p Alternatively, you can align each link to the sides:
+            --.bs-example
+            --  nav
+            --    ul.pager
+            --      li.previous
+            --        a(href='#')
+            --          span ←
+            --          | Older
+            --      li.next
+            --        a(href='#')
+            --          | Newer
+            --          span →
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3 Optional disabled state
+            --p
+            --  | Pager links also use the general
+            --  code .disabled
+            --  | utility class from the pagination.
+            --.bs-example
+            --  nav
+            --    ul.pager
+            --      li.previous.disabled
+            --        a(href='#')
+            --          span ←
+            --          | Older
+            --      li.next
+            --        a(href='#')
+            --          | Newer
+            --          span →
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            ]
+          , bsDocsSection
+            [ pageHeader "labels" "Labels"
+            --h3 Example
+            --.bs-example
+            --  h1
+            --    | Example heading
+            --    span.label.label-default New
+            --  h2
+            --    | Example heading
+            --    span.label.label-default New
+            --  h3
+            --    | Example heading
+            --    span.label.label-default New
+            --  h4
+            --    | Example heading
+            --    span.label.label-default New
+            --  h5
+            --    | Example heading
+            --    span.label.label-default New
+            --  h6
+            --    | Example heading
+            --    span.label.label-default New
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3 Available variations
+            --p
+            --  | Add any of the below mentioned modifier classes to change the appearance of a label.
+            --.bs-example
+            --  span.label.label-default Default
+            --  span.label.label-primary Primary
+            --  span.label.label-success Success
+            --  span.label.label-info Info
+            --  span.label.label-warning Warning
+            --  span.label.label-danger Danger
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --.bs-callout.bs-callout-info
+            --  h4 Have tons of labels?
+            --  p
+            --    | Rendering problems can arise when you have dozens of inline labels within a narrow container, each containing its own
+            --    code inline-block
+            --    | element (like an icon). The way around
+            --    | this is setting
+            --    code display: inline-block;
+            --    | . For context and an example,
+            --    a(href='https://github.com/twbs/bootstrap/issues/13219') see #13219
+            --    | .
+              ]
+          , bsDocsSection
+            [ pageHeader "badges" "Badges"
+            --p.lead
+            --  | Easily highlight new or unread items by adding a
+            --  code <span class="badge">
+            --  | to links, Bootstrap navs, and more.
+            --.bs-example
+            --  a(href='#')
+            --    | Inbox
+            --    span.badge 42
+            --  br
+            --  br
+            --  button.btn.btn-primary(type='button')
+            --    | Messages
+            --    span.badge 4
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h4 Self collapsing
+            --p
+            --  | When there are no new or unread items, badges will simply collapse (via CSS's
+            --  code :empty
+            --  | selector) provided no content exists within.
+            --.bs-callout.bs-callout-danger
+            --  h4 Cross-browser compatibility
+            --  p
+            --    | Badges won't self collapse in Internet Explorer 8 because it lacks support for the
+            --    code :empty
+            --    | selector.
+            --h4 Adapts to active nav states
+            --p
+            --  | Built-in styles are included for placing badges in active states in pill navigations.
+            --.bs-example
+            --  ul.nav.nav-pills
+            --    li.active
+            --      a(href='#')
+            --        | Home
+            --        span.badge 42
+            --    li
+            --      a(href='#') Profile
+            --    li
+            --      a(href='#')
+            --        | Messages
+            --        span.badge 3
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            ]
+          , bsDocsSection
+            [ pageHeader "jumbotron" "Jumbotron"
+            --p
+            --  | A lightweight, flexible component that can optionally extend the entire viewport to showcase key content on your site.
+            --.bs-example
+            --  .jumbotron
+            --    h1 Hello, world!
+            --    p
+            --      | This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.
+            --    p
+            --      a.btn.btn-primary.btn-lg(href='#') Learn more
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --p
+            --  | To make the jumbotron full width, and without rounded corners, place it outside all
+            --  code .container
+            --  | s and instead add a
+            --  code .container
+            --  | within.
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            ]
+          , bsDocsSection
+            [ pageHeader "page-header" "Page header"
+            --p
+            --  | A simple shell for an
+            --  code h1
+            --  | to appropriately space out and segment sections of content on a page. It can utilize the
+            --  code h1
+            --  | 's default
+            --  code small
+            --  | element, as
+            --  | well as most other components (with additional styles).
+            --.bs-example
+            --  .page-header
+            --    h1
+            --      | Example page header
+            --      small Subtext for header
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            ]
+          , bsDocsSection
+            [ pageHeader "thumbnails" "Thumbnails"
+            --p.lead
+            --  | Extend Bootstrap's
+            --  a(href='../css/#grid') grid system
+            --  | with the thumbnail component to easily display grids of images, videos, text, and more.
+            --h3#thumbnails-default Default example
+            --p
+            --  | By default, Bootstrap's thumbnails are designed to showcase linked images with minimal required markup.
+            --.bs-example
+            --  row
+            --    colXsMd 6 3
+            --      a.thumbnail(href='#')
+            --        img(alt='100%x180', data-holder-rendered='true', data-src='holder.js/100%x180', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTcyIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE3MiAxODAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMTcyIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjYwLjA2MjUiIHk9IjkwIiBzdHlsZT0iZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQ7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+MTcyeDE4MDwvdGV4dD48L2c+PC9zdmc+', style='height: 180px; width: 100%; display: block;')
+            --    colXsMd 6 3
+            --      a.thumbnail(href='#')
+            --        img(alt='100%x180', data-holder-rendered='true', data-src='holder.js/100%x180', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTcyIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE3MiAxODAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMTcyIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjYwLjA2MjUiIHk9IjkwIiBzdHlsZT0iZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQ7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+MTcyeDE4MDwvdGV4dD48L2c+PC9zdmc+', style='height: 180px; width: 100%; display: block;')
+            --    colXsMd 6 3
+            --      a.thumbnail(href='#')
+            --        img(alt='100%x180', data-holder-rendered='true', data-src='holder.js/100%x180', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTcyIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE3MiAxODAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMTcyIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjYwLjA2MjUiIHk9IjkwIiBzdHlsZT0iZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQ7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+MTcyeDE4MDwvdGV4dD48L2c+PC9zdmc+', style='height: 180px; width: 100%; display: block;')
+            --    colXsMd 6 3
+            --      a.thumbnail(href='#')
+            --        img(alt='100%x180', data-holder-rendered='true', data-src='holder.js/100%x180', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTcyIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE3MiAxODAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMTcyIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjYwLjA2MjUiIHk9IjkwIiBzdHlsZT0iZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQ7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+MTcyeDE4MDwvdGV4dD48L2c+PC9zdmc+', style='height: 180px; width: 100%; display: block;')
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#thumbnails-custom-content Custom content
+            --p
+            --  | With a bit of extra markup, it's possible to add any kind of HTML content like headings, paragraphs, or buttons into thumbnails.
+            --.bs-example
+            --  row
+            --    colSmMd 6 4
+            --      .thumbnail
+            --        img(alt='100%x200', data-holder-rendered='true', data-src='holder.js/100%x200', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjQzIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI0MyAyMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMjQzIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjkyLjk2MDkzNzUiIHk9IjEwMCIgc3R5bGU9ImZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMXB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjI0M3gyMDA8L3RleHQ+PC9nPjwvc3ZnPg==', style='height: 200px; width: 100%; display: block;')
+            --        .caption
+            --          h3 Thumbnail label
+            --          p
+            --            | Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.
+            --          p
+            --            a.btn.btn-primary(href='#') Button
+            --            a.btn.btn-default(href='#') Button
+            --    colSmMd 6 4
+            --      .thumbnail
+            --        img(alt='100%x200', data-holder-rendered='true', data-src='holder.js/100%x200', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjQzIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI0MyAyMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMjQzIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjkyLjk2MDkzNzUiIHk9IjEwMCIgc3R5bGU9ImZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMXB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjI0M3gyMDA8L3RleHQ+PC9nPjwvc3ZnPg==', style='height: 200px; width: 100%; display: block;')
+            --        .caption
+            --          h3 Thumbnail label
+            --          p
+            --            | Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.
+            --          p
+            --            a.btn.btn-primary(href='#') Button
+            --            a.btn.btn-default(href='#') Button
+            --    colSmMd 6 4
+            --      .thumbnail
+            --        img(alt='100%x200', data-holder-rendered='true', data-src='holder.js/100%x200', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjQzIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI0MyAyMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMjQzIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjkyLjk2MDkzNzUiIHk9IjEwMCIgc3R5bGU9ImZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMXB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjI0M3gyMDA8L3RleHQ+PC9nPjwvc3ZnPg==', style='height: 200px; width: 100%; display: block;')
+            --        .caption
+            --          h3 Thumbnail label
+            --          p
+            --            | Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.
+            --          p
+            --            a.btn.btn-primary(href='#') Button
+            --            a.btn.btn-default(href='#') Button
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            ]
+          , bsDocsSection
+            [ pageHeader "alerts" "Alerts"
+            --p.lead
+            --  | Provide contextual feedback messages for typical user actions with the handful of available and flexible alert messages.
+            , h2' "alerts-examples" "Examples"
+            --p
+            --  | Wrap any text and an optional dismiss button in
+            --  code .alert
+            --  | and one of the four contextual classes (e.g.,
+            --  code .alert-success
+            --  | ) for basic alert messages.
+            --.bs-callout.bs-callout-info
+            --  h4 No default class
+            --  p
+            --    | Alerts don't have default classes, only base and modifier classes. A default gray alert doesn't make too much sense, so you're required to specify a type via contextual class. Choose
+            --    | from success, info, warning, or danger.
+            --.bs-example
+            --  .alert.alert-success
+            --    strong Well done!
+            --    | You successfully read this important alert message.
+            --  .alert.alert-info
+            --    strong Heads up!
+            --    | This alert needs your attention, but it's not super important.
+            --  .alert.alert-warning
+            --    strong Warning!
+            --    | Better check yourself, you're not looking too good.
+            --  .alert.alert-danger
+            --    strong Oh snap!
+            --    | Change a few things up and try submitting again.
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            , h2' "alerts-dismissible" "Dismissible alerts"
+            --p
+            --  | Build on any alert by adding an optional
+            --  code .alert-dismissible
+            --  | and close button.
+            --.bs-callout.bs-callout-info
+            --  h4 Requires JavaScript alert plugin
+            --  p
+            --    | For fully functioning, dismissible alerts, you must use the
+            --    a(href='../javascript/#alerts') alerts JavaScript plugin
+            --    | .
+            --.bs-example
+            --  .alert.alert-warning.alert-dismissible
+            --    button.close(data-dismiss='alert', type='button')
+            --      span ×
+            --      span.sr-only Close
+            --    strong Warning!
+            --    | Better check yourself, you're not looking
+            --    | too good.
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --.bs-callout.bs-callout-warning
+            --  h4 Ensure proper behavior across all devices
+            --  p
+            --    | Be sure to use the
+            --    code <button>
+            --    | element with the
+            --    code data-dismiss="alert"
+            --    | data attribute.
+            , h2' "alerts-links" "Links in alerts"
+            --p
+            --  | Use the
+            --  code .alert-link
+            --  | utility class to quickly provide matching colored links within any alert.
+            --.bs-example
+            --  .alert.alert-success
+            --    strong Well done!
+            --    | You successfully read
+            --    a.alert-link(href='#') this important alert message
+            --    | .
+            --  .alert.alert-info
+            --    strong Heads up!
+            --    | This
+            --    a.alert-link(href='#') alert needs your attention
+            --    | , but it's not super important.
+            --  .alert.alert-warning
+            --    strong Warning!
+            --    | Better check yourself, you're
+            --    a.alert-link(href='#') not looking too good
+            --    | .
+            --  .alert.alert-danger
+            --    strong Oh snap!
+            --    a.alert-link(href='#') Change a few things up
+            --    | and try submitting again.
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            ]
+          , bsDocsSection
+            [ pageHeader "progress" "Progress bars"
+            --p.lead
+            --  | Provide up-to-date feedback on the progress of a workflow or action with simple yet flexible progress bars.
+            --.bs-callout.bs-callout-danger
+            --  h4 Cross-browser compatibility
+            --  p
+            --    | Progress bars use CSS3 transitions and animations to achieve some of their effects. These features are not supported in Internet Explorer 9 and below or older versions of Firefox.
+            --    | Opera 12 does not support animations.
+            --h3#progress-basic Basic example
+            --p Default progress bar.
+            --.bs-example
+            --  .progress
+            --    .progress-bar(style='width: 60%;')
+            --      span.sr-only 60% Complete
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#progress-label With label
+            --p
+            --  | Remove the
+            --  code .sr-only
+            --  | class from within the progress bar to show a visible percentage. For low percentages, consider adding a
+            --  code min-width
+            --  | to ensure the label's text
+            --  | is fully visible.
+            --.bs-example
+            --  .progress
+            --    .progress-bar(style='width: 60%;')
+            --      | 60%
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#progress-low-percentages Low percentages
+            --p
+            --  | Progress bars representing low single digit percentages, as well as 0%, include a
+            --  code min-width: 20px;
+            --  | for legibility.
+            --.bs-example
+            --  .progress
+            --    .progress-bar
+            --      | 0%
+            --  .progress
+            --    .progress-bar(style='width: 2%;')
+            --      | 2%
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#progress-alternatives Contextual alternatives
+            --p
+            --  | Progress bars use some of the same button and alert classes for consistent styles.
+            --.bs-example
+            --  .progress
+            --    .progress-bar.progress-bar-success(style='width: 40%')
+            --      span.sr-only 40% Complete (success)
+            --  .progress
+            --    .progress-bar.progress-bar-info(style='width: 20%')
+            --      span.sr-only 20% Complete
+            --  .progress
+            --    .progress-bar.progress-bar-warning(style='width: 60%')
+            --      span.sr-only 60% Complete (warning)
+            --  .progress
+            --    .progress-bar.progress-bar-danger(style='width: 80%')
+            --      span.sr-only 80% Complete (danger)
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#progress-striped Striped
+            --p Uses a gradient to create a striped effect. Not available in IE8.
+            --.bs-example
+            --  .progress
+            --    .progress-bar.progress-bar-success.progress-bar-striped(style='width: 40%')
+            --      span.sr-only 40% Complete (success)
+            --  .progress
+            --    .progress-bar.progress-bar-info.progress-bar-striped(style='width: 20%')
+            --      span.sr-only 20% Complete
+            --  .progress
+            --    .progress-bar.progress-bar-warning.progress-bar-striped(style='width: 60%')
+            --      span.sr-only 60% Complete (warning)
+            --  .progress
+            --    .progress-bar.progress-bar-danger.progress-bar-striped(style='width: 80%')
+            --      span.sr-only 80% Complete (danger)
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#progress-animated Animated
+            --p
+            --  | Add
+            --  code .active
+            --  | to
+            --  code .progress-bar-striped
+            --  | to animate the stripes right to left. Not available in IE9 and below.
+            --.bs-example
+            --  .progress
+            --    .progress-bar.progress-bar-striped(style='width: 45%')
+            --      span.sr-only 45% Complete
+            --  button.btn.btn-default.bs-docs-activate-animated-progressbar(data-toggle='button', type='button') Toggle animation
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#progress-stacked Stacked
+            --p
+            --  | Place multiple bars into the same
+            --  code .progress
+            --  | to stack them.
+            --.bs-example
+            --  .progress
+            --    .progress-bar.progress-bar-success(style='width: 35%')
+            --      span.sr-only 35% Complete (success)
+            --    .progress-bar.progress-bar-warning.progress-bar-striped(style='width: 20%')
+            --      span.sr-only 20% Complete (warning)
+            --    .progress-bar.progress-bar-danger(style='width: 10%')
+            --      span.sr-only 10% Complete (danger)
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            ]
+          , bsDocsSection
+            [ pageHeader "media" "Media object"
+            --p.lead
+            --  | Abstract object styles for building various types of components (like blog comments, Tweets, etc) that feature a left- or right-aligned image alongside textual content.
+            --h3#media-default Default media
+            --p
+            --  | The default media displays a media object (images, video, audio) to the left or right of a content block.
+            --.bs-example
+            --  .media
+            --    a.media-left(href='#')
+            --      img(alt='64x64', data-holder-rendered='true', data-src='holder.js/64x64', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PGRlZnMvPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjEzLjQ2ODc1IiB5PSIzMiIgc3R5bGU9ImZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjY0eDY0PC90ZXh0PjwvZz48L3N2Zz4=', style='width: 64px; height: 64px;')
+            --    .media-body
+            --      h4.media-heading Media heading
+            --      | Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in
+            --      | vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+            --  .media
+            --    a.media-left(href='#')
+            --      img(alt='64x64', data-holder-rendered='true', data-src='holder.js/64x64', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PGRlZnMvPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjEzLjQ2ODc1IiB5PSIzMiIgc3R5bGU9ImZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjY0eDY0PC90ZXh0PjwvZz48L3N2Zz4=', style='width: 64px; height: 64px;')
+            --    .media-body
+            --      h4.media-heading Media heading
+            --      | Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in
+            --      | vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+            --      .media
+            --        a.media-left(href='#')
+            --          img(alt='64x64', data-holder-rendered='true', data-src='holder.js/64x64', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PGRlZnMvPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjEzLjQ2ODc1IiB5PSIzMiIgc3R5bGU9ImZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjY0eDY0PC90ZXh0PjwvZz48L3N2Zz4=', style='width: 64px; height: 64px;')
+            --        .media-body
+            --          h4.media-heading Nested media heading
+            --          | Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum
+            --          | in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+            --  .media
+            --    .media-body
+            --      h4.media-heading Media heading
+            --      | Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in
+            --      | vulputate at, tempus viverra turpis.
+            --    a.media-right(href='#')
+            --      img(alt='64x64', data-holder-rendered='true', data-src='holder.js/64x64', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PGRlZnMvPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjEzLjQ2ODc1IiB5PSIzMiIgc3R5bGU9ImZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjY0eDY0PC90ZXh0PjwvZz48L3N2Zz4=', style='width: 64px; height: 64px;')
+            --  .media
+            --    a.media-left(href='#')
+            --      img(alt='64x64', data-holder-rendered='true', data-src='holder.js/64x64', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PGRlZnMvPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjEzLjQ2ODc1IiB5PSIzMiIgc3R5bGU9ImZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjY0eDY0PC90ZXh0PjwvZz48L3N2Zz4=', style='width: 64px; height: 64px;')
+            --    .media-body
+            --      h4.media-heading Media heading
+            --      | Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in
+            --      | vulputate at, tempus viverra turpis.
+            --    a.media-right(href='#')
+            --      img(alt='64x64', data-holder-rendered='true', data-src='holder.js/64x64', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PGRlZnMvPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjEzLjQ2ODc1IiB5PSIzMiIgc3R5bGU9ImZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjY0eDY0PC90ZXh0PjwvZz48L3N2Zz4=', style='width: 64px; height: 64px;')
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --p
+            --  | The classes
+            --  code .pull-left
+            --  | and
+            --  code .pull-right
+            --  | also exist and were previously used as part of the media component, but are deprecated for that use as of v3.3.0. They
+            --  | are approximately equivalent to
+            --  code .media-left
+            --  | and
+            --  code .media-right
+            --  | , except that
+            --  code .media-right
+            --  | should be placed after the
+            --  code .media-body
+            --  | in the
+            --  | html.
+            --h3#media-alignment Media alignment
+            --p
+            --  | The images or other media can be aligned top, middle, or bottom. The default is top aligned.
+            --.bs-example
+            --  .media
+            --    a.media-left(href='#')
+            --      img(alt='64x64', data-holder-rendered='true', data-src='holder.js/64x64', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PGRlZnMvPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjEzLjQ2ODc1IiB5PSIzMiIgc3R5bGU9ImZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjY0eDY0PC90ZXh0PjwvZz48L3N2Zz4=', style='width: 64px; height: 64px;')
+            --    .media-body
+            --      h4.media-heading Top aligned media
+            --      p
+            --        | Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce
+            --        | condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+            --      p
+            --        | Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+            --  .media
+            --    a.media-left.media-middle(href='#')
+            --      img(alt='64x64', data-holder-rendered='true', data-src='holder.js/64x64', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PGRlZnMvPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjEzLjQ2ODc1IiB5PSIzMiIgc3R5bGU9ImZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjY0eDY0PC90ZXh0PjwvZz48L3N2Zz4=', style='width: 64px; height: 64px;')
+            --    .media-body
+            --      h4.media-heading Middle aligned media
+            --      p
+            --        | Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce
+            --        | condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+            --      p
+            --        | Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+            --  .media
+            --    a.media-left.media-bottom(href='#')
+            --      img(alt='64x64', data-holder-rendered='true', data-src='holder.js/64x64', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PGRlZnMvPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjEzLjQ2ODc1IiB5PSIzMiIgc3R5bGU9ImZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjY0eDY0PC90ZXh0PjwvZz48L3N2Zz4=', style='width: 64px; height: 64px;')
+            --    .media-body
+            --      h4.media-heading Bottom aligned media
+            --      p
+            --        | Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce
+            --        | condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+            --      p
+            --        | Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#media-list Media list
+            --p
+            --  | With a bit of extra markup, you can use media inside list (useful for comment threads or articles lists).
+            --.bs-example
+            --  ul.media-list
+            --    li.media
+            --      a.media-left(href='#')
+            --        img(alt='64x64', data-holder-rendered='true', data-src='holder.js/64x64', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PGRlZnMvPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjEzLjQ2ODc1IiB5PSIzMiIgc3R5bGU9ImZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjY0eDY0PC90ZXh0PjwvZz48L3N2Zz4=', style='width: 64px; height: 64px;')
+            --      .media-body
+            --        h4.media-heading Media heading
+            --        p
+            --          | Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.
+            --        -- Nested media object
+            --        .media
+            --          a.media-left(href='#')
+            --            img(alt='64x64', data-holder-rendered='true', data-src='holder.js/64x64', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PGRlZnMvPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjEzLjQ2ODc1IiB5PSIzMiIgc3R5bGU9ImZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjY0eDY0PC90ZXh0PjwvZz48L3N2Zz4=', style='width: 64px; height: 64px;')
+            --          .media-body
+            --            h4.media-heading Nested media heading
+            --            | Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio,
+            --            | vestibulum in vulputate at, tempus viverra turpis.
+            --            -- Nested media object
+            --            .media
+            --              a.media-left(href='#')
+            --                img(alt='64x64', data-holder-rendered='true', data-src='holder.js/64x64', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PGRlZnMvPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjEzLjQ2ODc1IiB5PSIzMiIgc3R5bGU9ImZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjY0eDY0PC90ZXh0PjwvZz48L3N2Zz4=', style='width: 64px; height: 64px;')
+            --              .media-body
+            --                h4.media-heading Nested media heading
+            --                | Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio,
+            --                | vestibulum in vulputate at, tempus viverra turpis.
+            --        -- Nested media object
+            --        .media
+            --          a.media-left(href='#')
+            --            img(alt='64x64', data-holder-rendered='true', data-src='holder.js/64x64', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PGRlZnMvPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjEzLjQ2ODc1IiB5PSIzMiIgc3R5bGU9ImZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjY0eDY0PC90ZXh0PjwvZz48L3N2Zz4=', style='width: 64px; height: 64px;')
+            --          .media-body
+            --            h4.media-heading Nested media heading
+            --            | Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio,
+            --            | vestibulum in vulputate at, tempus viverra turpis.
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            ]
+          , bsDocsSection
+            [ pageHeader "list-group" "List group"
+            --p.lead
+            --  | List groups are a flexible and powerful component for displaying not only simple lists of elements, but complex ones with custom content.
+            --h3#list-group-basic Basic example
+            --p
+            --  | The most basic list group is simply an unordered list with list items, and the proper classes. Build upon it with the options that follow, or your own CSS as needed.
+            --.bs-example
+            --  ul.list-group
+            --    li.list-group-item Cras justo odio
+            --    li.list-group-item Dapibus ac facilisis in
+            --    li.list-group-item Morbi leo risus
+            --    li.list-group-item Porta ac consectetur ac
+            --    li.list-group-item Vestibulum at eros
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#list-group-badges Badges
+            --p
+            --  | Add the badges component to any list group item and it will automatically be positioned on the right.
+            --.bs-example
+            --  ul.list-group
+            --    li.list-group-item
+            --      span.badge 14
+            --      | Cras justo odio
+            --    li.list-group-item
+            --      span.badge 2
+            --      | Dapibus ac facilisis in
+            --    li.list-group-item
+            --      span.badge 1
+            --      | Morbi leo risus
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#list-group-linked Linked items
+            --p
+            --  | Linkify list group items by using anchor tags instead of list items (that also means a parent
+            --  code <div>
+            --  | instead of an
+            --  code <ul>
+            --  | ). No need for individual
+            --  | parents around each element.
+            --.bs-example
+            --  .list-group
+            --    a.list-group-item.active(href='#') Cras justo odio
+            --    a.list-group-item(href='#') Dapibus ac facilisis in
+            --    a.list-group-item(href='#') Morbi leo risus
+            --    a.list-group-item(href='#') Porta ac consectetur ac
+            --    a.list-group-item(href='#') Vestibulum at eros
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#list-group-disabled Disabled items
+            --p
+            --  | Add
+            --  code .disabled
+            --  | to a
+            --  code .list-group-item
+            --  | to gray it out to appear disabled.
+            --.bs-example
+            --  .list-group
+            --    a.list-group-item.disabled(href='#') Cras justo odio
+            --    a.list-group-item(href='#') Dapibus ac facilisis in
+            --    a.list-group-item(href='#') Morbi leo risus
+            --    a.list-group-item(href='#') Porta ac consectetur ac
+            --    a.list-group-item(href='#') Vestibulum at eros
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#list-group-contextual-classes Contextual classes
+            --p
+            --  | Use contextual classes to style list items, default or linked. Also includes
+            --  code .active
+            --  | state.
+            --.bs-example
+            --  row
+            --    .col-sm-6
+            --      ul.list-group
+            --        li.list-group-item.list-group-item-success Dapibus ac facilisis in
+            --        li.list-group-item.list-group-item-info Cras sit amet nibh libero
+            --        li.list-group-item.list-group-item-warning Porta ac consectetur ac
+            --        li.list-group-item.list-group-item-danger Vestibulum at eros
+            --    .col-sm-6
+            --      .list-group
+            --        a.list-group-item.list-group-item-success(href='#') Dapibus ac facilisis in
+            --        a.list-group-item.list-group-item-info(href='#') Cras sit amet nibh libero
+            --        a.list-group-item.list-group-item-warning(href='#') Porta ac consectetur ac
+            --        a.list-group-item.list-group-item-danger(href='#') Vestibulum at eros
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#list-group-custom-content Custom content
+            --p Add nearly any HTML within, even for linked list groups like the one below.
+            --.bs-example
+            --  .list-group
+            --    a.list-group-item.active(href='#')
+            --      h4.list-group-item-heading List group item heading
+            --      p.list-group-item-text
+            --        | Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.
+            --    a.list-group-item(href='#')
+            --      h4.list-group-item-heading List group item heading
+            --      p.list-group-item-text
+            --        | Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.
+            --    a.list-group-item(href='#')
+            --      h4.list-group-item-heading List group item heading
+            --      p.list-group-item-text
+            --        | Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            ]
+          , bsDocsSection
+            [ pageHeader "panels" "Panels"
+            --p.lead
+            --  | While not always necessary, sometimes you need to put your DOM in a box. For those situations, try the panel component.
+            --h3#panels-basic Basic example
+            --p
+            --  | By default, all the
+            --  code .panel
+            --  | does is apply some basic border and padding to contain some content.
+            --.bs-example
+            --  .panel.panel-default
+            --    .panel-body
+            --      | Basic panel example
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#panels-heading Panel with heading
+            --p
+            --  | Easily add a heading container to your panel with
+            --  code .panel-heading
+            --  | . You may also include any
+            --  code <h1>
+            --  | -
+            --  code <h6>
+            --  | with a
+            --  code .panel-title
+            --  | class to add a pre-styled heading.
+            --p
+            --  | For proper link coloring, be sure to place links in headings within
+            --  code .panel-title
+            --  | .
+            --.bs-example
+            --  .panel.panel-default
+            --    .panel-heading
+            --      | Panel heading without title
+            --    .panel-body
+            --      | Panel content
+            --  .panel.panel-default
+            --    .panel-heading
+            --      h3.panel-title Panel title
+            --    .panel-body
+            --      | Panel content
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#panels-footer Panel with footer
+            --p
+            --  | Wrap buttons or secondary text in
+            --  code .panel-footer
+            --  | . Note that panel footers
+            --  strong do not
+            --  | inherit colors and borders when using contextual variations as they are not
+            --  | meant to be in the foreground.
+            --.bs-example
+            --  .panel.panel-default
+            --    .panel-body
+            --      | Panel content
+            --    .panel-footer
+            --      | Panel footer
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#panels-alternatives Contextual alternatives
+            --p
+            --  | Like other components, easily make a panel more meaningful to a particular context by adding any of the contextual state classes.
+            --.bs-example
+            --  .panel.panel-primary
+            --    .panel-heading
+            --      h3.panel-title Panel title
+            --    .panel-body
+            --      | Panel content
+            --  .panel.panel-success
+            --    .panel-heading
+            --      h3.panel-title Panel title
+            --    .panel-body
+            --      | Panel content
+            --  .panel.panel-info
+            --    .panel-heading
+            --      h3.panel-title Panel title
+            --    .panel-body
+            --      | Panel content
+            --  .panel.panel-warning
+            --    .panel-heading
+            --      h3.panel-title Panel title
+            --    .panel-body
+            --      | Panel content
+            --  .panel.panel-danger
+            --    .panel-heading
+            --      h3.panel-title Panel title
+            --    .panel-body
+            --      | Panel content
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#panels-tables With tables
+            --p
+            --  | Add any non-bordered
+            --  code .table
+            --  | within a panel for a seamless design. If there is a
+            --  code .panel-body
+            --  | , we add an extra border to the top of the table for separation.
+            --.bs-example
+            --  .panel.panel-default
+            --    -- Default panel contents
+            --    .panel-heading
+            --      | Panel heading
+            --    .panel-body
+            --      p
+            --        | Some default panel content here. Nulla vitae elit libero, a pharetra augue. Aenean lacinia bibendum nulla sed consectetur. Aenean eu leo quam. Pellentesque ornare sem lacinia quam
+            --        | venenatis vestibulum. Nullam id dolor id nibh ultricies vehicula ut id elit.
+            --    -- Table
+            --    table.table
+            --      thead
+            --        tr
+            --          th #
+            --          th First Name
+            --          th Last Name
+            --          th Username
+            --      tbody
+            --        tr
+            --          td 1
+            --          td Mark
+            --          td Otto
+            --          td @mdo
+            --        tr
+            --          td 2
+            --          td Jacob
+            --          td Thornton
+            --          td @fat
+            --        tr
+            --          td 3
+            --          td Larry
+            --          td the Bird
+            --          td @twitter
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --p
+            --  | If there is no panel body, the component moves from panel header to table without interruption.
+            --.bs-example
+            --  .panel.panel-default
+            --    -- Default panel contents
+            --    .panel-heading
+            --      | Panel heading
+            --    -- Table
+            --    table.table
+            --      thead
+            --        tr
+            --          th #
+            --          th First Name
+            --          th Last Name
+            --          th Username
+            --      tbody
+            --        tr
+            --          td 1
+            --          td Mark
+            --          td Otto
+            --          td @mdo
+            --        tr
+            --          td 2
+            --          td Jacob
+            --          td Thornton
+            --          td @fat
+            --        tr
+            --          td 3
+            --          td Larry
+            --          td the Bird
+            --          td @twitter
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3#panels-list-group With list groups
+            --p
+            --  | Easily include full-width
+            --  a(href='#list-group') list groups
+            --  | within any panel.
+            --.bs-example
+            --  .panel.panel-default
+            --    -- Default panel contents
+            --    .panel-heading
+            --      | Panel heading
+            --    .panel-body
+            --      p
+            --        | Some default panel content here. Nulla vitae elit libero, a pharetra augue. Aenean lacinia bibendum nulla sed consectetur. Aenean eu leo quam. Pellentesque ornare sem lacinia quam
+            --        | venenatis vestibulum. Nullam id dolor id nibh ultricies vehicula ut id elit.
+            --    -- List group
+            --    ul.list-group
+            --      li.list-group-item Cras justo odio
+            --      li.list-group-item Dapibus ac facilisis in
+            --      li.list-group-item Morbi leo risus
+            --      li.list-group-item Porta ac consectetur ac
+            --      li.list-group-item Vestibulum at eros
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            ]
+          , bsDocsSection
+            [ pageHeader "responsive-embed" "Responsive embed"
+            --p
+            --  | Allow browsers to determine video or slideshow dimensions based on the width of their containing block by creating an intrinsic ratio that will properly scale on any device.
+            --p
+            --  | Rules are directly applied to
+            --  code <iframe>
+            --  | ,
+            --  code <embed>
+            --  | ,
+            --  code <video>
+            --  | , and
+            --  code <object>
+            --  | elements; optionally use an explicit
+            --  | descendant class
+            --  code .embed-responsive-item
+            --  | when you want to match the styling for other attributes.
+            --p
+            --  strong Pro-Tip!
+            --  | You don't need to include
+            --  code frameborder="0"
+            --  | in your
+            --  code <iframe>
+            --  | s as we override that for you.
+            --.bs-example
+            --  .embed-responsive.embed-responsive-16by9
+            --    iframe.embed-responsive-item(src='//www.youtube.com/embed/zpOULjyy-n8?rel=0')
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            ]
+          , bsDocsSection
+            [ pageHeader "wells" "Wells"
+            --h3 Default well
+            --p Use the well as a simple effect on an element to give it an inset effect.
+            --.bs-example
+            --  .well
+            --    | Look, I'm in a well!
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --h3 Optional classes
+            --p Control padding and rounded corners with two optional modifier classes.
+            --.bs-example
+            --  .well.well-lg
+            --    | Look, I'm in a large well!
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            --.bs-example
+            --  .well.well-sm
+            --    | Look, I'm in a small well!
+            --.zero-clipboard
+            --  span.btn-clipboard Copy
+            --.highlight
+            --  pre.
+            --    \n            
+            ]
+          ]
+        , colMd3
+          [
+          --.bs-docs-sidebar.hidden-print.hidden-xs.hidden-sm.affix-top
+          --  ul.nav.bs-docs-sidenav
+          --    li
+          --      a(href='#glyphicons') Glyphicons
+          --      ul.nav
+          --        li
+          --          a(href='#glyphicons-glyphs') Available glyphs
+          --        li
+          --          a(href='#glyphicons-how-to-use') How to use
+          --        li
+          --          a(href='#glyphicons-examples') Examples
+          --    li
+          --      a(href='#dropdowns') Dropdowns
+          --      ul.nav
+          --        li
+          --          a(href='#dropdowns-example') Example
+          --        li
+          --          a(href='#dropdowns-alignment') Alignment
+          --        li
+          --          a(href='#dropdowns-headers') Headers
+          --        li
+          --          a(href='#dropdowns-divider') Divider
+          --        li
+          --          a(href='#dropdowns-disabled') Disabled menu items
+          --    li
+          --      a(href='#btn-groups') Button groups
+          --      ul.nav
+          --        li
+          --          a(href='#btn-groups-single') Basic example
+          --        li
+          --          a(href='#btn-groups-toolbar') Button toolbar
+          --        li
+          --          a(href='#btn-groups-sizing') Sizing
+          --        li
+          --          a(href='#btn-groups-nested') Nesting
+          --        li
+          --          a(href='#btn-groups-vertical') Vertical variation
+          --        li
+          --          a(href='#btn-groups-justified') Justified button groups
+          --    li
+          --      a(href='#btn-dropdowns') Button dropdowns
+          --      ul.nav
+          --        li
+          --          a(href='#btn-dropdowns-single') Single button dropdowns
+          --        li
+          --          a(href='#btn-dropdowns-split') Split button dropdowns
+          --        li
+          --          a(href='#btn-dropdowns-sizing') Sizing
+          --        li
+          --          a(href='#btn-dropdowns-dropup') Dropup variation
+          --    li
+          --      a(href='#input-groups') Input groups
+          --      ul.nav
+          --        li
+          --          a(href='#input-groups-basic') Basic example
+          --        li
+          --          a(href='#input-groups-sizing') Sizing
+          --        li
+          --          a(href='#input-groups-checkboxes-radios') Checkbox and radios addons
+          --        li
+          --          a(href='#input-groups-buttons') Button addons
+          --        li
+          --          a(href='#input-groups-buttons-dropdowns') Buttons with dropdowns
+          --        li
+          --          a(href='#input-groups-buttons-segmented') Segmented buttons
+          --    li
+          --      a(href='#nav') Navs
+          --      ul.nav
+          --        li
+          --          a(href='#nav-tabs') Tabs
+          --        li
+          --          a(href='#nav-pills') Pills
+          --        li
+          --          a(href='#nav-justified') Justified
+          --        li
+          --          a(href='#nav-disabled-links') Disabled links
+          --        li
+          --          a(href='#nav-dropdowns') Using dropdowns
+          --    li
+          --      a(href='#navbar') Navbar
+          --      ul.nav
+          --        li
+          --          a(href='#navbar-default') Default navbar
+          --        li
+          --          a(href='#navbar-brand-image') Brand image
+          --        li
+          --          a(href='#navbar-forms') Forms
+          --        li
+          --          a(href='#navbar-buttons') Buttons
+          --        li
+          --          a(href='#navbar-text') Text
+          --        li
+          --          a(href='#navbar-links') Non-nav links
+          --        li
+          --          a(href='#navbar-component-alignment') Component alignment
+          --        li
+          --          a(href='#navbar-fixed-top') Fixed to top
+          --        li
+          --          a(href='#navbar-fixed-bottom') Fixed to bottom
+          --        li
+          --          a(href='#navbar-static-top') Static top
+          --        li
+          --          a(href='#navbar-inverted') Inverted navbar
+          --    li
+          --      a(href='#breadcrumbs') Breadcrumbs
+          --    li
+          --      a(href='#pagination') Pagination
+          --      ul.nav
+          --        li
+          --          a(href='#pagination-default') Default pagination
+          --        li
+          --          a(href='#pagination-pager') Pager
+          --    li
+          --      a(href='#labels') Labels
+          --    li
+          --      a(href='#badges') Badges
+          --    li
+          --      a(href='#jumbotron') Jumbotron
+          --    li
+          --      a(href='#page-header') Page header
+          --    li
+          --      a(href='#thumbnails') Thumbnails
+          --      ul.nav
+          --        li
+          --          a(href='#thumbnails-default') Default example
+          --        li
+          --          a(href='#thumbnails-custom-content') Custom content
+          --    li
+          --      a(href='#alerts') Alerts
+          --      ul.nav
+          --        li
+          --          a(href='#alerts-examples') Examples
+          --        li
+          --          a(href='#alerts-dismissible') Dismissible alerts
+          --        li
+          --          a(href='#alerts-links') Links in alerts
+          --    li
+          --      a(href='#progress') Progress bars
+          --      ul.nav
+          --        li
+          --          a(href='#progress-basic') Basic example
+          --        li
+          --          a(href='#progress-label') With label
+          --        li
+          --          a(href='#progress-low-percentages') Low percentages
+          --        li
+          --          a(href='#progress-alternatives') Contextual alternatives
+          --        li
+          --          a(href='#progress-striped') Striped
+          --        li
+          --          a(href='#progress-animated') Animated
+          --        li
+          --          a(href='#progress-stacked') Stacked
+          --    li
+          --      a(href='#media') Media object
+          --      ul.nav
+          --        li
+          --          a(href='#media-default') Default media
+          --        li
+          --          a(href='#media-list') Media list
+          --    li
+          --      a(href='#list-group') List group
+          --      ul.nav
+          --        li
+          --          a(href='#list-group-basic') Basic example
+          --        li
+          --          a(href='#list-group-badges') Badges
+          --        li
+          --          a(href='#list-group-linked') Linked items
+          --        li
+          --          a(href='#list-group-disabled') Disabled items
+          --        li
+          --          a(href='#list-group-contextual-classes') Contextual classes
+          --        li
+          --          a(href='#list-group-custom-content') Custom content
+          --    li
+          --      a(href='#panels') Panels
+          --      ul.nav
+          --        li
+          --          a(href='#panels-basic') Basic example
+          --        li
+          --          a(href='#panels-heading') Panel with heading
+          --        li
+          --          a(href='#panels-alternatives') Contextual alternatives
+          --        li
+          --          a(href='#panels-tables') With tables
+          --        li
+          --          a(href='#panels-list-group') With list groups
+          --    li
+          --      a(href='#responsive-embed') Responsive embed
+          --    li
+          --      a(href='#wells') Wells
+          --  a.back-to-top(href='#top') Back to top
+          --  a.bs-docs-theme-toggle(href='#') Preview theme
+          ]
+        ]
+      ]
+    -- Footer
+    , footer [ class "bs-docs-footer" ]
+      [
+      --.container
+      --  .bs-docs-social
+      --    ul.bs-docs-social-buttons
+      --      li
+      --        iframe.github-btn(height='20', src='http://ghbtns.com/github-btn.html?user=twbs&repo=bootstrap&type=watch&count=true', title='Star on GitHub', width='100')
+      --      li
+      --        iframe.github-btn(height='20', src='http://ghbtns.com/github-btn.html?user=twbs&repo=bootstrap&type=fork&count=true', title='Fork on GitHub', width='102')
+      --      li.follow-btn
+      --        iframe#twitter-widget-1.twitter-follow-button.twitter-follow-button(data-twttr-rendered='true', frameborder='0', name='twitter-widget-1', scrolling='no', src='http://platform.twitter.com/widgets/follow_button.93c9003dd72a6cd9f4fee1e5eb3546c1.en.html#_=1417997568934&id=twitter-widget-1&lang=en&screen_name=twbootstrap&show_count=true&show_screen_name=true&size=m', style='width: 235px; height: 20px;', title='Twitter Follow Button')
+      --      li.tweet-btn
+      --        iframe#twitter-widget-0.twitter-share-button.twitter-tweet-button.twitter-share-button.twitter-count-horizontal(data-twttr-rendered='true', frameborder='0', name='twitter-widget-0', scrolling='no', src='http://platform.twitter.com/widgets/tweet_button.ff7d9077a26377d36b6a53b1a95be617.en.html#_=1417997568923&count=horizontal&id=twitter-widget-0&lang=en&original_referer=http%3A%2F%2Fgetbootstrap.com%2Fcomponents%2F&related=mdo%3ACreator%20of%20Bootstrap&size=m&text=Components%20%C2%B7%20Bootstrap&url=http%3A%2F%2Fgetbootstrap.com%2F&via=twbootstrap', style='width: 108px; height: 20px;', title='Twitter Tweet Button')
+      --  p
+      --    | Designed and built with all the love in the world by
+      --    a(href='https://twitter.com/mdo', target='_blank') @mdo
+      --    | and
+      --    a(href='https://twitter.com/fat', target='_blank') @fat
+      --    | .
+      --  p
+      --    | Maintained by the
+      --    a(href='https://github.com/orgs/twbs/people') core team
+      --    | with the help of
+      --    a(href='https://github.com/twbs/bootstrap/graphs/contributors') our contributors
+      --    | .
+      --  p
+      --    | Code licensed under
+      --    a(href='https://github.com/twbs/bootstrap/blob/master/LICENSE', target='_blank') MIT
+      --    | , documentation under
+      --    a(href='http://creativecommons.org/licenses/by/3.0/')
+      --      | CC BY
+      --      | 3.0
+      --    | .
+      --  ul.bs-docs-footer-links.muted
+      --    li Currently v3.3.1
+      --    li ·
+      --    li
+      --      a(href='https://github.com/twbs/bootstrap') GitHub
+      --    li ·
+      --    li
+      --      a(href='../getting-started/#examples') Examples
+      --    li ·
+      --    li
+      --      a(href='../2.3.2/') v2.3.2 docs
+      --    li ·
+      --    li
+      --      a(href='../about/') About
+      --    li ·
+      --    li
+      --      a(href='http://expo.getbootstrap.com') Expo
+      --    li ·
+      --    li
+      --      a(href='http://blog.getbootstrap.com') Blog
+      --    li ·
+      --    li
+      --      a(href='https://github.com/twbs/bootstrap/issues') Issues
+      --    li ·
+      --    li
+      --      a(href='https://github.com/twbs/bootstrap/releases') Releases
+      ]
+    ]
+
+
+--- INPUTS ---
+
+main : Signal Element
+main = Signal.map scene Window.dimensions
+
+scene : (Int,Int) -> Element
+scene (w,h) = toElement w h view

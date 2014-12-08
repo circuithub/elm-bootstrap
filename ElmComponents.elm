@@ -1,0 +1,2942 @@
+module ElmComponents where
+{-|
+Bring Bootstrap's components to life with some beautiful Elm FRP.  Ported from Bootstrap.
+-} 
+
+import Html (..)
+import Html.Attributes (..)
+import Html.Events (..)
+import Text (..)
+import Graphics.Element (..)
+import Graphics.Collage (..)
+import Signal
+import Window
+
+port title : Signal String
+port title = Signal.constant "Elm &middot; Elmstrap"
+
+view : Html
+view =
+  body []
+  [ a [ class "sr-only sr-only-focusable", href "#content" ] [ text "Skip to main content" ]
+  ---- Docs master nav
+  --header#top.navbar.navbar-static-top.bs-docs-nav
+  --  .container
+  --    .navbar-header
+  --      button.navbar-toggle.collapsed(data-target='.bs-navbar-collapse', data-toggle='collapse', type='button')
+  --        span.sr-only Toggle navigation
+  --        span.icon-bar
+  --        span.icon-bar
+  --        span.icon-bar
+  --      a.navbar-brand(href='../') Bootstrap
+  --    nav.collapse.navbar-collapse.bs-navbar-collapse
+  --      ul.nav.navbar-nav
+  --        li
+  --          a(href='../getting-started/') Getting started
+  --        li
+  --          a(href='../css/') CSS
+  --        li
+  --          a(href='../components/') Components
+  --        li.active
+  --          a(href='../javascript/') JavaScript
+  --        li
+  --          a(href='../customize/') Customize
+  --      ul.nav.navbar-nav.navbar-right
+  --        li
+  --          a(href='http://expo.getbootstrap.com', onclick='ga("send", "event", "Navbar", "Community links", "Expo");') Expo
+  --        li
+  --          a(href='http://blog.getbootstrap.com', onclick='ga("send", "event", "Navbar", "Community links", "Blog");') Blog
+  ---- Docs page layout
+  --#content.bs-docs-header
+  --  .container
+  --    h1 JavaScript
+  --    p
+  --      | Bring Bootstrap's components to life with over a dozen custom jQuery plugins. Easily include them all, or one by one.
+  --    #carbonads-container
+  --      .carbonad
+  --        #azcarbon
+  --          span
+  --            span.carbonad-image
+  --              a(href='http://srv.carbonads.net/ads/click/x/GTND423JCAAIL27UCYS4YKQWC6SIL537CYAIEZ3JCEYI55Q7CK7DTK7KC6BD4277F6SDEK3EHJNCLSIZ?segment=placement:getbootstrapcom', target='_blank')
+  --                img.carbonad-image.carbonad-img(border='0', height='100', src='https://assets.servedby-buysellads.com/p/manage/asset/id/18452', width='130')
+  --            span.carbonad-text
+  --              a(href='http://srv.carbonads.net/ads/click/x/GTND423JCAAIL27UCYS4YKQWC6SIL537CYAIEZ3JCEYI55Q7CK7DTK7KC6BD4277F6SDEK3EHJNCLSIZ?segment=placement:getbootstrapcom')
+  --                | Host 10 FREE .NET or PHP apps
+  --                | with no credit card. 99.99% uptime.
+  --            span.carbonad-tag
+  --              | ads via
+  --              a(href='http://carbonads.com') Carbon
+  --        script#gauges-tracker(async='', data-site-id='4f0dc9fef5a1f55508000013', src='//secure.gaug.es/track.js')
+  --        script#twitter-wjs(async='', src='https://platform.twitter.com/widgets.js')
+  --        script(async='', src='http://engine.carbonads.com/z/32341/azcarbon_2_1_0_HORIZ')
+  --        script
+  --          var z = document.createElement("script"); z.async = true; z.src = "http://engine.carbonads.com/z/32341/azcarbon_2_1_0_HORIZ"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(z, s);
+  --.container.bs-docs-container
+  --  .row
+  --    .col-md-9
+  --      .bs-docs-section
+  --        h1#js-overview.page-header Overview
+  --        h3#js-individual-compiled Individual or compiled
+  --        p
+  --          | Plugins can be included individually (using Bootstrap's individual
+  --          code *.js
+  --          | files), or all at once (using
+  --          code bootstrap.js
+  --          | or the minified
+  --          code bootstrap.min.js
+  --          | ).
+  --        .bs-callout.bs-callout-danger
+  --          h4 Using the compiled JavaScript
+  --          p
+  --            | Both
+  --            code bootstrap.js
+  --            | and
+  --            code bootstrap.min.js
+  --            | contain all plugins in a single file. Include only one.
+  --        .bs-callout.bs-callout-danger
+  --          h4 Component data attributes
+  --          p
+  --            | Don't use data attributes from multiple plugins on the same element. For example, a button cannot both have a tooltip and toggle a modal. To accomplish this, use a wrapping
+  --            | element.
+  --        .bs-callout.bs-callout-danger
+  --          h4 Plugin dependencies
+  --          p
+  --            | Some plugins and CSS components depend on other plugins. If you include plugins individually, make sure to check for these dependencies in the docs. Also note that all plugins depend
+  --            | on jQuery (this means jQuery must be included
+  --            strong before
+  --            | the plugin files).
+  --            a(href='https://github.com/twbs/bootstrap/blob/v3.3.1/bower.json')
+  --              | Consult our
+  --              code bower.json
+  --            | to see which versions of jQuery are supported.
+  --        h3#js-data-attrs Data attributes
+  --        p
+  --          | You can use all Bootstrap plugins purely through the markup API without writing a single line of JavaScript. This is Bootstrap's first-class API and should be your first consideration
+  --          | when using a plugin.
+  --        p
+  --          | That said, in some situations it may be desirable to turn this functionality off. Therefore, we also provide the ability to disable the data attribute API by unbinding all events on the
+  --          | document namespaced with
+  --          code data-api
+  --          | . This looks like this:
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        p
+  --          | Alternatively, to target a specific plugin, just include the plugin's name as a namespace along with the data-api namespace like this:
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3#js-programmatic-api Programmatic API
+  --        p
+  --          | We also believe you should be able to use all Bootstrap plugins purely through the JavaScript API. All public APIs are single, chainable methods, and return the collection acted
+  --          | upon.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        p
+  --          | All methods should accept an optional options object, a string which targets a particular method, or nothing (which initiates a plugin with default behavior):
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        p
+  --          | Each plugin also exposes its raw constructor on a
+  --          code Constructor
+  --          | property:
+  --          code $.fn.popover.Constructor
+  --          | . If you'd like to get a particular plugin instance, retrieve it
+  --          | directly from an element:
+  --          code $('[rel="popover"]').data('popover')
+  --          | .
+  --        h4 Default settings
+  --        p
+  --          | You can change the default settings for a plugin by modifying the plugin's
+  --          code Constructor.DEFAULTS
+  --          | object:
+  --        p
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3#js-noconflict No conflict
+  --        p
+  --          | Sometimes it is necessary to use Bootstrap plugins with other UI frameworks. In these circumstances, namespace collisions can occasionally occur. If this happens, you may call
+  --          code .noConflict
+  --          | on the plugin you wish to revert the value of.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3#js-events Events
+  --        p
+  --          | Bootstrap provides custom events for most plugins' unique actions. Generally, these come in an infinitive and past participle form - where the infinitive (ex.
+  --          code show
+  --          | ) is
+  --          | triggered at the start of an event, and its past participle form (ex.
+  --          code shown
+  --          | ) is triggered on the completion of an action.
+  --        p As of 3.0.0, all Bootstrap events are namespaced.
+  --        p
+  --          | All infinitive events provide
+  --          code preventDefault
+  --          | functionality. This provides the ability to stop the execution of an action before it starts.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3#js-disabled No special fallbacks when JavaScript is disabled
+  --        p
+  --          | Bootstrap's plugins don't fall back particularly gracefully when JavaScript is disabled. If you care about the user experience in this case, use
+  --          a(href='https://developer.mozilla.org/en-US/docs/Web/HTML/Element/noscript')
+  --            code <noscript>
+  --          | to explain the situation (and how to re-enable JavaScript) to your users, and/or add
+  --          | your own custom fallbacks.
+  --        #callout-third-party-libs.bs-callout.bs-callout-warning
+  --          h4 Third-party libraries
+  --          p
+  --            strong Bootstrap does not officially support third-party JavaScript libraries
+  --            | like Prototype or jQuery UI. Despite
+  --            code .noConflict
+  --            | and namespaced events, there may
+  --            | be compatibility problems that you need to fix on your own.
+  --      .bs-docs-section
+  --        h1#transitions.page-header
+  --          | Transitions
+  --          small transition.js
+  --        h3 About transitions
+  --        p
+  --          | For simple transition effects, include
+  --          code transition.js
+  --          | once alongside the other JS files. If you're using the compiled (or minified)
+  --          code bootstrap.js
+  --          | , there is no
+  --          | need to include this—it's already there.
+  --        h3 What's inside
+  --        p
+  --          | Transition.js is a basic helper for
+  --          code transitionEnd
+  --          | events as well as a CSS transition emulator. It's used by the other plugins to check for CSS transition support and to
+  --          | catch hanging transitions.
+  --      .bs-docs-section
+  --        h1#modals.page-header
+  --          | Modals
+  --          small modal.js
+  --        p
+  --          | Modals are streamlined, but flexible, dialog prompts with the minimum required functionality and smart defaults.
+  --        #callout-stacked-modals.bs-callout.bs-callout-warning
+  --          h4 Overlapping modals not supported
+  --          p
+  --            | Be sure not to open a modal while another is still visible. Showing more than one modal at a time requires custom code.
+  --        #callout-modal-markup-placement.bs-callout.bs-callout-warning
+  --          h4 Modal markup placement
+  --          p
+  --            | Always try to place a modal's HTML code in a top-level position in your document to avoid other components affecting the modal's appearance and/or functionality.
+  --        .bs-callout.bs-callout-warning
+  --          h4 Mobile device caveats
+  --          p
+  --            | There are some caveats regarding using modals on mobile devices.
+  --            a(href='../getting-started/#support-fixed-position-keyboards') See our browser support docs
+  --            | for details.
+  --        p
+  --          strong.text-danger
+  --            | Due to how HTML5 defines its semantics, the
+  --            code autofocus
+  --            | HTML attribute has no effect in Bootstrap modals.
+  --        h2#modals-examples Examples
+  --        h3 Static example
+  --        p A rendered modal with header, body, and set of actions in the footer.
+  --        .bs-example.bs-example-modal
+  --          .modal
+  --            .modal-dialog
+  --              .modal-content
+  --                .modal-header
+  --                  button.close(data-dismiss='modal', type='button')
+  --                    span ×
+  --                    span.sr-only Close
+  --                  h4.modal-title Modal title
+  --                .modal-body
+  --                  p One fine body…
+  --                .modal-footer
+  --                  button.btn.btn-default(data-dismiss='modal', type='button') Close
+  --                  button.btn.btn-primary(type='button') Save changes
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3 Live demo
+  --        p
+  --          | Toggle a modal via JavaScript by clicking the button below. It will slide down and fade in from the top of the page.
+  --        -- sample modal content
+  --        #myModal.modal.fade(tabindex='-1')
+  --          .modal-dialog
+  --            .modal-content
+  --              .modal-header
+  --                button.close(data-dismiss='modal', type='button')
+  --                  span ×
+  --                  span.sr-only Close
+  --                h4#myModalLabel.modal-title Modal title
+  --              .modal-body
+  --                h4 Text in a modal
+  --                p Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+  --                h4 Popover in a modal
+  --                p
+  --                  | This
+  --                  a.btn.btn-default.popover-test(data-content='And here"s some amazing content. It"s very engaging. right?', data-original-title='A Title', href='#', title='') button
+  --                  | should trigger a popover on click.
+  --                h4 Tooltips in a modal
+  --                p
+  --                  a.tooltip-test(data-original-title='Tooltip', href='#', title='') This link
+  --                  | and
+  --                  a.tooltip-test(data-original-title='Tooltip', href='#', title='') that link
+  --                  | should have tooltips on hover.
+  --                hr
+  --                h4 Overflowing text to show scroll behavior
+  --                p
+  --                  | Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+  --                p
+  --                  | Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+  --                p
+  --                  | Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor
+  --                  | fringilla.
+  --                p
+  --                  | Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+  --                p
+  --                  | Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+  --                p
+  --                  | Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor
+  --                  | fringilla.
+  --                p
+  --                  | Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+  --                p
+  --                  | Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+  --                p
+  --                  | Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor
+  --                  | fringilla.
+  --              .modal-footer
+  --                button.btn.btn-default(data-dismiss='modal', type='button') Close
+  --                button.btn.btn-primary(type='button') Save changes
+  --        .bs-example(style='padding-bottom: 24px;')
+  --          button.btn.btn-primary.btn-lg(data-target='#myModal', data-toggle='modal', type='button') Launch demo modal
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        .bs-callout.bs-callout-warning
+  --          h4 Make modals accessible
+  --          p
+  --            | Be sure to add
+  --            code role="dialog"
+  --            | to
+  --            code .modal
+  --            | ,
+  --            code aria-labelledby="myModalLabel"
+  --            | attribute to reference the modal title, and
+  --            code aria-hidden="true"
+  --            | to tell assistive technologies to skip the modal's DOM elements.
+  --          p
+  --            | Additionally, you may give a description of your modal dialog with
+  --            code aria-describedby
+  --            | on
+  --            code .modal
+  --            | .
+  --        .bs-callout.bs-callout-info
+  --          h4 Embedding YouTube videos
+  --          p
+  --            | Embedding YouTube videos in modals requires additional JavaScript not in Bootstrap to automatically stop playback and more.
+  --            a(href='http://stackoverflow.com/questions/18622508/bootstrap-3-and-youtube-in-modal') See this helpful Stack Overflow post
+  --            | for more information.
+  --        h2#modals-sizes Optional sizes
+  --        p
+  --          | Modals have two optional sizes, available via modifier classes to be placed on a
+  --          code .modal-dialog
+  --          | .
+  --        .bs-example
+  --          button.btn.btn-primary(data-target='.bs-example-modal-lg', data-toggle='modal', type='button') Large modal
+  --          button.btn.btn-primary(data-target='.bs-example-modal-sm', data-toggle='modal', type='button') Small modal
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        -- Modal content for the above example
+  --        .modal.fade.bs-example-modal-lg(tabindex='-1')
+  --          .modal-dialog.modal-lg
+  --            .modal-content
+  --              .modal-header
+  --                button.close(data-dismiss='modal', type='button')
+  --                  span ×
+  --                  span.sr-only Close
+  --                h4#myLargeModalLabel.modal-title Large modal
+  --              .modal-body
+  --                | ...
+  --        .modal.fade.bs-example-modal-sm(tabindex='-1')
+  --          .modal-dialog.modal-sm
+  --            .modal-content
+  --              .modal-header
+  --                button.close(data-dismiss='modal', type='button')
+  --                  span ×
+  --                  span.sr-only Close
+  --                h4#mySmallModalLabel.modal-title Small modal
+  --              .modal-body
+  --                | ...
+  --        h2#modals-remove-animation Remove animation
+  --        p
+  --          | For modals that simply appear rather than fade in to view, remove the
+  --          code .fade
+  --          | class from your modal markup.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h2#modals-related-target Varying modal content based on trigger button
+  --        p
+  --          | Have a bunch of buttons that all trigger the same modal, just with slightly different contents? Use
+  --          code event.relatedTarget
+  --          | and
+  --          a(href='https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Using_data_attributes')
+  --            | HTML
+  --            code data-*
+  --            | attributes
+  --          | (possibly
+  --          a(href='http://api.jquery.com/data/') via jQuery
+  --          | ) to
+  --          | vary the contents of the modal depending on which button was clicked. See the Modal Events docs for details on
+  --          code relatedTarget
+  --          | ,
+  --        .bs-example(style='padding-bottom: 24px;')
+  --          button.btn.btn-primary(data-target='#exampleModal', data-toggle='modal', data-whatever='@mdo', type='button') Open modal for @mdo
+  --          button.btn.btn-primary(data-target='#exampleModal', data-toggle='modal', data-whatever='@fat', type='button') Open modal for @fat
+  --          button.btn.btn-primary(data-target='#exampleModal', data-toggle='modal', data-whatever='@twbootstrap', type='button') Open modal for @twbootstrap
+  --          | ...more buttons...
+  --          #exampleModal.modal.fade(tabindex='-1')
+  --            .modal-dialog
+  --              .modal-content
+  --                .modal-header
+  --                  button.close(data-dismiss='modal', type='button')
+  --                    span ×
+  --                    span.sr-only Close
+  --                  h4#exampleModalLabel.modal-title New message
+  --                .modal-body
+  --                  form
+  --                    .form-group
+  --                      label.control-label(for='recipient-name') Recipient:
+  --                      input#recipient-name.form-control(type='text')
+  --                    .form-group
+  --                      label.control-label(for='message-text') Message:
+  --                      textarea#message-text.form-control
+  --                .modal-footer
+  --                  button.btn.btn-default(data-dismiss='modal', type='button') Close
+  --                  button.btn.btn-primary(type='button') Send message
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h2#modals-usage Usage
+  --        p
+  --          | The modal plugin toggles your hidden content on demand, via data attributes or JavaScript. It also adds
+  --          code .modal-open
+  --          | to the
+  --          code <body>
+  --          | to override default
+  --          | scrolling behavior and generates a
+  --          code .modal-backdrop
+  --          | to provide a click area for dismissing shown modals when clicking outside the modal.
+  --        h3 Via data attributes
+  --        p
+  --          | Activate a modal without writing JavaScript. Set
+  --          code data-toggle="modal"
+  --          | on a controller element, like a button, along with a
+  --          code data-target="#foo"
+  --          | or
+  --          code href="#foo"
+  --          | to target a specific modal to toggle.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3 Via JavaScript
+  --        p
+  --          | Call a modal with id
+  --          code myModal
+  --          | with a single line of JavaScript:
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3 Options
+  --        p
+  --          | Options can be passed via data attributes or JavaScript. For data attributes, append the option name to
+  --          code data-
+  --          | , as in
+  --          code data-backdrop=""
+  --          | .
+  --        .table-responsive
+  --          table.table.table-bordered.table-striped
+  --            thead
+  --              tr
+  --                th(style='width: 100px;') Name
+  --                th(style='width: 50px;') type
+  --                th(style='width: 50px;') default
+  --                th description
+  --            tbody
+  --              tr
+  --                td backdrop
+  --                td
+  --                  | boolean or the string
+  --                  code 'static'
+  --                td true
+  --                td
+  --                  | Includes a modal-backdrop element. Alternatively, specify
+  --                  code static
+  --                  | for a backdrop which doesn't close the modal on click.
+  --              tr
+  --                td keyboard
+  --                td boolean
+  --                td true
+  --                td Closes the modal when escape key is pressed
+  --              tr
+  --                td show
+  --                td boolean
+  --                td true
+  --                td Shows the modal when initialized.
+  --              tr
+  --                td remote
+  --                td path
+  --                td false
+  --                td
+  --                  p
+  --                    strong.text-danger This option is deprecated since v3.3.0 and will be removed in v4.
+  --                    | We recommend instead using client-side templating or a data binding
+  --                    | framework, or calling
+  --                    a(href='http://api.jquery.com/load/') jQuery.load
+  --                    | yourself.
+  --                  p
+  --                    | If a remote URL is provided,
+  --                    strong content will be loaded one time
+  --                    | via jQuery's
+  --                    code load
+  --                    | method and injected into the
+  --                    code .modal-content
+  --                    | div. If
+  --                    | you're using the data-api, you may alternatively use the
+  --                    code href
+  --                    | attribute to specify the remote source. An example of this is shown below:
+  --                  .zero-clipboard
+  --                    span.btn-clipboard Copy
+  --                  .highlight
+  --                    pre.
+  --                      \n                      
+  --        h3 Methods
+  --        h4 .modal(options)
+  --        p
+  --          | Activates your content as a modal. Accepts an optional options
+  --          code object
+  --          | .
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h4 .modal('toggle')
+  --        p
+  --          | Manually toggles a modal.
+  --          strong Returns to the caller before the modal has actually been shown or hidden
+  --          | (i.e. before the
+  --          code shown.bs.modal
+  --          | or
+  --          code hidden.bs.modal
+  --          | event occurs).
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h4 .modal('show')
+  --        p
+  --          | Manually opens a modal.
+  --          strong Returns to the caller before the modal has actually been shown
+  --          | (i.e. before the
+  --          code shown.bs.modal
+  --          | event occurs).
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h4 .modal('hide')
+  --        p
+  --          | Manually hides a modal.
+  --          strong Returns to the caller before the modal has actually been hidden
+  --          | (i.e. before the
+  --          code hidden.bs.modal
+  --          | event occurs).
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3 Events
+  --        p
+  --          | Bootstrap's modal class exposes a few events for hooking into modal functionality.
+  --        .table-responsive
+  --          table.table.table-bordered.table-striped
+  --            thead
+  --              tr
+  --                th(style='width: 150px;') Event Type
+  --                th Description
+  --            tbody
+  --              tr
+  --                td show.bs.modal
+  --                td
+  --                  | This event fires immediately when the
+  --                  code show
+  --                  | instance method is called. If caused by a click, the clicked element is available as the
+  --                  code relatedTarget
+  --                  | property of the event.
+  --              tr
+  --                td shown.bs.modal
+  --                td
+  --                  | This event is fired when the modal has been made visible to the user (will wait for CSS transitions to complete). If caused by a click, the clicked element is available as the
+  --                  code relatedTarget
+  --                  | property of the event.
+  --              tr
+  --                td hide.bs.modal
+  --                td
+  --                  | This event is fired immediately when the
+  --                  code hide
+  --                  | instance method has been called.
+  --              tr
+  --                td hidden.bs.modal
+  --                td
+  --                  | This event is fired when the modal has finished being hidden from the user (will wait for CSS transitions to complete).
+  --              tr
+  --                td loaded.bs.modal
+  --                td
+  --                  | This event is fired when the modal has loaded content using the
+  --                  code remote
+  --                  | option.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --      .bs-docs-section
+  --        h1#dropdowns.page-header
+  --          | Dropdowns
+  --          small dropdown.js
+  --        h2#dropdowns-examples Examples
+  --        p
+  --          | Add dropdown menus to nearly anything with this simple plugin, including the navbar, tabs, and pills.
+  --        h3 Within a navbar
+  --        .bs-example
+  --          nav#navbar-example.navbar.navbar-default.navbar-static
+  --            .container-fluid
+  --              .navbar-header
+  --                button.navbar-toggle.collapsed(data-target='.bs-example-js-navbar-collapse', data-toggle='collapse', type='button')
+  --                  span.sr-only Toggle navigation
+  --                  span.icon-bar
+  --                  span.icon-bar
+  --                  span.icon-bar
+  --                a.navbar-brand(href='#') Project Name
+  --              .collapse.navbar-collapse.bs-example-js-navbar-collapse
+  --                ul.nav.navbar-nav
+  --                  li.dropdown
+  --                    a#drop1.dropdown-toggle(data-toggle='dropdown', href='#')
+  --                      | Dropdown
+  --                      span.caret
+  --                    ul.dropdown-menu
+  --                      li
+  --                        a(href='https://twitter.com/fat', tabindex='-1') Action
+  --                      li
+  --                        a(href='https://twitter.com/fat', tabindex='-1') Another action
+  --                      li
+  --                        a(href='https://twitter.com/fat', tabindex='-1') Something else here
+  --                      li.divider
+  --                      li
+  --                        a(href='https://twitter.com/fat', tabindex='-1') Separated link
+  --                  li.dropdown
+  --                    a#drop2.dropdown-toggle(data-toggle='dropdown', href='#')
+  --                      | Dropdown
+  --                      span.caret
+  --                    ul.dropdown-menu
+  --                      li
+  --                        a(href='https://twitter.com/fat', tabindex='-1') Action
+  --                      li
+  --                        a(href='https://twitter.com/fat', tabindex='-1') Another action
+  --                      li
+  --                        a(href='https://twitter.com/fat', tabindex='-1') Something else here
+  --                      li.divider
+  --                      li
+  --                        a(href='https://twitter.com/fat', tabindex='-1') Separated link
+  --                ul.nav.navbar-nav.navbar-right
+  --                  li#fat-menu.dropdown
+  --                    a#drop3.dropdown-toggle(data-toggle='dropdown', href='#')
+  --                      | Dropdown
+  --                      span.caret
+  --                    ul.dropdown-menu
+  --                      li
+  --                        a(href='https://twitter.com/fat', tabindex='-1') Action
+  --                      li
+  --                        a(href='https://twitter.com/fat', tabindex='-1') Another action
+  --                      li
+  --                        a(href='https://twitter.com/fat', tabindex='-1') Something else here
+  --                      li.divider
+  --                      li
+  --                        a(href='https://twitter.com/fat', tabindex='-1') Separated link
+  --        h3 Within pills
+  --        .bs-example
+  --          ul.nav.nav-pills
+  --            li.active
+  --              a(href='#') Regular link
+  --            li.dropdown
+  --              a#drop4.dropdown-toggle(data-toggle='dropdown', href='#')
+  --                | Dropdown
+  --                span.caret
+  --              ul#menu1.dropdown-menu
+  --                li
+  --                  a(href='https://twitter.com/fat', tabindex='-1') Action
+  --                li
+  --                  a(href='https://twitter.com/fat', tabindex='-1') Another action
+  --                li
+  --                  a(href='https://twitter.com/fat', tabindex='-1') Something else here
+  --                li.divider
+  --                li
+  --                  a(href='https://twitter.com/fat', tabindex='-1') Separated link
+  --            li.dropdown
+  --              a#drop5.dropdown-toggle(data-toggle='dropdown', href='#')
+  --                | Dropdown
+  --                span.caret
+  --              ul#menu2.dropdown-menu
+  --                li
+  --                  a(href='https://twitter.com/fat', tabindex='-1') Action
+  --                li
+  --                  a(href='https://twitter.com/fat', tabindex='-1') Another action
+  --                li
+  --                  a(href='https://twitter.com/fat', tabindex='-1') Something else here
+  --                li.divider
+  --                li
+  --                  a(href='https://twitter.com/fat', tabindex='-1') Separated link
+  --            li.dropdown
+  --              a#drop6.dropdown-toggle(data-toggle='dropdown', href='#')
+  --                | Dropdown
+  --                span.caret
+  --              ul#menu3.dropdown-menu
+  --                li
+  --                  a(href='https://twitter.com/fat', tabindex='-1') Action
+  --                li
+  --                  a(href='https://twitter.com/fat', tabindex='-1') Another action
+  --                li
+  --                  a(href='https://twitter.com/fat', tabindex='-1') Something else here
+  --                li.divider
+  --                li
+  --                  a(href='https://twitter.com/fat', tabindex='-1') Separated link
+  --        h2#dropdowns-usage Usage
+  --        p
+  --          | Via data attributes or JavaScript, the dropdown plugin toggles hidden content (dropdown menus) by toggling the
+  --          code .open
+  --          | class on the parent list item.
+  --        p
+  --          | On mobile devices, opening a dropdown adds a
+  --          code .dropdown-backdrop
+  --          | as a tap area for closing dropdown menus when tapping outside the menu, a requirement for proper iOS support.
+  --          strong.text-danger
+  --            | This means that switching from an open dropdown menu to a different dropdown menu requires an extra tap on mobile.
+  --        p
+  --          | Note: The
+  --          code data-toggle="dropdown"
+  --          | attribute is relied on for closing dropdown menus at an application level, so it's a good idea to always use it.
+  --        h3 Via data attributes
+  --        p
+  --          | Add
+  --          code data-toggle="dropdown"
+  --          | to a link or button to toggle a dropdown.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        p
+  --          | To keep URLs intact with link buttons, use the
+  --          code data-target
+  --          | attribute instead of
+  --          code href="#"
+  --          | .
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3 Via JavaScript
+  --        p Call the dropdowns via JavaScript:
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        .bs-callout.bs-callout-info
+  --          h4
+  --            code data-toggle="dropdown"
+  --            | still required
+  --          p
+  --            | Regardless of whether you call your dropdown via JavaScript or instead use the data-api,
+  --            code data-toggle="dropdown"
+  --            | is always required to be present on the dropdown's trigger
+  --            | element.
+  --        h3 Options
+  --        p
+  --          em None
+  --        h3 Methods
+  --        h4 $().dropdown('toggle')
+  --        p Toggles the dropdown menu of a given navbar or tabbed navigation.
+  --        h3 Events
+  --        p
+  --          | All dropdown events are fired at the
+  --          code .dropdown-menu
+  --          | 's parent element.
+  --        .table-responsive
+  --          table.table.table-bordered.table-striped
+  --            thead
+  --              tr
+  --                th(style='width: 150px;') Event Type
+  --                th Description
+  --            tbody
+  --              tr
+  --                td show.bs.dropdown
+  --                td
+  --                  | This event fires immediately when the show instance method is called. The toggling anchor element is available as the
+  --                  code relatedTarget
+  --                  | property of the event.
+  --              tr
+  --                td shown.bs.dropdown
+  --                td
+  --                  | This event is fired when the dropdown has been made visible to the user (will wait for CSS transitions, to complete). The toggling anchor element is available as the
+  --                  code relatedTarget
+  --                  | property of the event.
+  --              tr
+  --                td hide.bs.dropdown
+  --                td
+  --                  | This event is fired immediately when the hide instance method has been called. The toggling anchor element is available as the
+  --                  code relatedTarget
+  --                  | property of the
+  --                  | event.
+  --              tr
+  --                td hidden.bs.dropdown
+  --                td
+  --                  | This event is fired when the dropdown has finished being hidden from the user (will wait for CSS transitions, to complete). The toggling anchor element is available as the
+  --                  code relatedTarget
+  --                  | property of the event.
+  --        -- ./bs-table-responsive
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --      .bs-docs-section
+  --        h1#scrollspy.page-header
+  --          | ScrollSpy
+  --          small scrollspy.js
+  --        h2#scrollspy-examples Example in navbar
+  --        p
+  --          | The ScrollSpy plugin is for automatically updating nav targets based on scroll position. Scroll the area below the navbar and watch the active class change. The dropdown sub items will
+  --          | be highlighted as well.
+  --        .bs-example
+  --          nav#navbar-example2.navbar.navbar-default.navbar-static
+  --            .container-fluid
+  --              .navbar-header
+  --                button.navbar-toggle.collapsed(data-target='.bs-example-js-navbar-scrollspy', data-toggle='collapse', type='button')
+  --                  span.sr-only Toggle navigation
+  --                  span.icon-bar
+  --                  span.icon-bar
+  --                  span.icon-bar
+  --                a.navbar-brand(href='#') Project Name
+  --              .collapse.navbar-collapse.bs-example-js-navbar-scrollspy
+  --                ul.nav.navbar-nav
+  --                  li.active
+  --                    a(href='#fat') @fat
+  --                  li
+  --                    a(href='#mdo') @mdo
+  --                  li.dropdown
+  --                    a#navbarDrop1.dropdown-toggle(data-toggle='dropdown', href='#')
+  --                      | Dropdown
+  --                      span.caret
+  --                    ul.dropdown-menu
+  --                      li
+  --                        a(href='#one', tabindex='-1') one
+  --                      li
+  --                        a(href='#two', tabindex='-1') two
+  --                      li.divider
+  --                      li
+  --                        a(href='#three', tabindex='-1') three
+  --          .scrollspy-example(data-offset='0', data-spy='scroll', data-target='#navbar-example2')
+  --            h4#fat @fat
+  --            p
+  --              | Ad leggings keytar, brunch id art party dolor labore. Pitchfork yr enim lo-fi before they sold out qui. Tumblr farm-to-table bicycle rights whatever. Anim keffiyeh carles cardigan.
+  --              | Velit seitan mcsweeney's photo booth 3 wolf moon irure. Cosby sweater lomo jean shorts, williamsburg hoodie minim qui you probably haven't heard of them et cardigan trust fund culpa
+  --              | biodiesel wes anderson aesthetic. Nihil tattooed accusamus, cred irony biodiesel keffiyeh artisan ullamco consequat.
+  --            h4#mdo @mdo
+  --            p
+  --              | Veniam marfa mustache skateboard, adipisicing fugiat velit pitchfork beard. Freegan beard aliqua cupidatat mcsweeney's vero. Cupidatat four loko nisi, ea helvetica nulla carles.
+  --              | Tattooed cosby sweater food truck, mcsweeney's quis non freegan vinyl. Lo-fi wes anderson +1 sartorial. Carles non aesthetic exercitation quis gentrify. Brooklyn adipisicing craft beer
+  --              | vice keytar deserunt.
+  --            h4#one one
+  --            p
+  --              | Occaecat commodo aliqua delectus. Fap craft beer deserunt skateboard ea. Lomo bicycle rights adipisicing banh mi, velit ea sunt next level locavore single-origin coffee in magna
+  --              | veniam. High life id vinyl, echo park consequat quis aliquip banh mi pitchfork. Vero VHS est adipisicing. Consectetur nisi DIY minim messenger bag. Cred ex in, sustainable delectus
+  --              | consectetur fanny pack iphone.
+  --            h4#two two
+  --            p
+  --              | In incididunt echo park, officia deserunt mcsweeney's proident master cleanse thundercats sapiente veniam. Excepteur VHS elit, proident shoreditch +1 biodiesel laborum craft beer.
+  --              | Single-origin coffee wayfarers irure four loko, cupidatat terry richardson master cleanse. Assumenda you probably haven't heard of them art party fanny pack, tattooed nulla cardigan
+  --              | tempor ad. Proident wolf nesciunt sartorial keffiyeh eu banh mi sustainable. Elit wolf voluptate, lo-fi ea portland before they sold out four loko. Locavore enim nostrud mlkshk brooklyn
+  --              | nesciunt.
+  --            h4#three three
+  --            p
+  --              | Ad leggings keytar, brunch id art party dolor labore. Pitchfork yr enim lo-fi before they sold out qui. Tumblr farm-to-table bicycle rights whatever. Anim keffiyeh carles cardigan.
+  --              | Velit seitan mcsweeney's photo booth 3 wolf moon irure. Cosby sweater lomo jean shorts, williamsburg hoodie minim qui you probably haven't heard of them et cardigan trust fund culpa
+  --              | biodiesel wes anderson aesthetic. Nihil tattooed accusamus, cred irony biodiesel keffiyeh artisan ullamco consequat.
+  --            p
+  --              | Keytar twee blog, culpa messenger bag marfa whatever delectus food truck. Sapiente synth id assumenda. Locavore sed helvetica cliche irony, thundercats you probably haven't heard of
+  --              | them consequat hoodie gluten-free lo-fi fap aliquip. Labore elit placeat before they sold out, terry richardson proident brunch nesciunt quis cosby sweater pariatur keffiyeh ut
+  --              | helvetica artisan. Cardigan craft beer seitan readymade velit. VHS chambray laboris tempor veniam. Anim mollit minim commodo ullamco thundercats.
+  --        h2#scrollspy-usage Usage
+  --        .bs-callout.bs-callout-warning
+  --          h4 Requires Bootstrap nav
+  --          p
+  --            | Scrollspy currently requires the use of a
+  --            a(href='../components/#nav') Bootstrap nav component
+  --            | for proper highlighting of active links.
+  --        .bs-callout.bs-callout-danger
+  --          h4 Resolvable ID targets required
+  --          p
+  --            | Navbar links must have resolvable id targets. For example, a
+  --            code <a href="#home">home</a>
+  --            | must correspond to something in the DOM like
+  --            code
+  --              | <div
+  --              | id="home"></div>
+  --            | .
+  --        .bs-callout.bs-callout-info
+  --          h4
+  --            | Non-
+  --            code :visible
+  --            | target elements ignored
+  --          p
+  --            | Target elements that are not
+  --            a(href='http://api.jquery.com/visible-selector/')
+  --              code :visible
+  --              | according to jQuery
+  --            | will be ignored and their corresponding nav items will
+  --            | never be highlighted.
+  --        h3 Requires relative positioning
+  --        p
+  --          | No matter the implementation method, scrollspy requires the use of
+  --          code position: relative;
+  --          | on the element you're spying on. In most cases this is the
+  --          code <body>
+  --          | .
+  --        h3 Via data attributes
+  --        p
+  --          | To easily add scrollspy behavior to your topbar navigation, add
+  --          code data-spy="scroll"
+  --          | to the element you want to spy on (most typically this would be the
+  --          code <body>
+  --          | ). Then add the
+  --          code data-target
+  --          | attribute with the ID or class of the parent element of any Bootstrap
+  --          code .nav
+  --          | component.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3 Via JavaScript
+  --        p
+  --          | After adding
+  --          code position: relative;
+  --          | in your CSS, call the scrollspy via JavaScript:
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3 Methods
+  --        h4 .scrollspy('refresh')
+  --        p
+  --          | When using scrollspy in conjunction with adding or removing of elements from the DOM, you'll need to call the refresh method like so:
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3 Options
+  --        p
+  --          | Options can be passed via data attributes or JavaScript. For data attributes, append the option name to
+  --          code data-
+  --          | , as in
+  --          code data-offset=""
+  --          | .
+  --        .table-responsive
+  --          table.table.table-bordered.table-striped
+  --            thead
+  --              tr
+  --                th(style='width: 100px;') Name
+  --                th(style='width: 100px;') type
+  --                th(style='width: 50px;') default
+  --                th description
+  --            tbody
+  --              tr
+  --                td offset
+  --                td number
+  --                td 10
+  --                td Pixels to offset from top when calculating position of scroll.
+  --        -- ./bs-table-responsive
+  --        h3 Events
+  --        .table-responsive
+  --          table.table.table-bordered.table-striped
+  --            thead
+  --              tr
+  --                th(style='width: 150px;') Event Type
+  --                th Description
+  --            tbody
+  --              tr
+  --                td activate.bs.scrollspy
+  --                td This event fires whenever a new item becomes activated by the scrollspy.
+  --        -- ./bs-table-responsive
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --      .bs-docs-section
+  --        h1#tabs.page-header
+  --          | Togglable tabs
+  --          small tab.js
+  --        h2#tabs-examples Example tabs
+  --        p
+  --          | Add quick, dynamic tab functionality to transition through panes of local content, even via dropdown menus.
+  --        .bs-example.bs-example-tabs
+  --          ul#myTab.nav.nav-tabs
+  --            li.active
+  --              a#home-tab(data-toggle='tab', href='#home') Home
+  --            li
+  --              a#profile-tab(data-toggle='tab', href='#profile') Profile
+  --            li.dropdown
+  --              a#myTabDrop1.dropdown-toggle(data-toggle='dropdown', href='#')
+  --                | Dropdown
+  --                span.caret
+  --              ul#myTabDrop1-contents.dropdown-menu
+  --                li
+  --                  a#dropdown1-tab(data-toggle='tab', href='#dropdown1', tabindex='-1') @fat
+  --                li
+  --                  a#dropdown2-tab(data-toggle='tab', href='#dropdown2', tabindex='-1') @mdo
+  --          #myTabContent.tab-content
+  --            #home.tab-pane.fade.in.active
+  --              p
+  --                | Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan
+  --                | helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip
+  --                | quis cardigan american apparel, butcher voluptate nisi qui.
+  --            #profile.tab-pane.fade
+  --              p
+  --                | Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan
+  --                | four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda
+  --                | labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean
+  --                | shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.
+  --            #dropdown1.tab-pane.fade
+  --              p
+  --                | Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork
+  --                | tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh
+  --                | mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork
+  --                | sustainable tofu synth chambray yr.
+  --            #dropdown2.tab-pane.fade
+  --              p
+  --                | Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland
+  --                | seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater.
+  --                | Lomo wolf viral, mustache readymade thundercats keffiyeh craft beer marfa ethical. Wolf salvia freegan, sartorial keffiyeh echo park vegan.
+  --        .bs-callout.bs-callout-info
+  --          h4 Extends tabbed navigation
+  --          p
+  --            | This plugin extends the
+  --            a(href='../components/#nav-tabs') tabbed navigation component
+  --            | to add tabbable areas.
+  --        h2#tabs-usage Usage
+  --        p
+  --          | Enable tabbable tabs via JavaScript (each tab needs to be activated individually):
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        p You can activate individual tabs in several ways:
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3 Markup
+  --        p
+  --          | You can activate a tab or pill navigation without writing any JavaScript by simply specifying
+  --          code data-toggle="tab"
+  --          | or
+  --          code data-toggle="pill"
+  --          | on an element. Adding the
+  --          code nav
+  --          | and
+  --          code nav-tabs
+  --          | classes to the tab
+  --          code ul
+  --          | will apply the Bootstrap
+  --          a(href='../components/#nav-tabs') tab styling
+  --          | , while adding the
+  --          code nav
+  --          | and
+  --          code nav-pills
+  --          | classes will apply
+  --          a(href='../components/#nav-pills') pill styling
+  --          | .
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3 Fade effect
+  --        p
+  --          | To make tabs fade in, add
+  --          code .fade
+  --          | to each
+  --          code .tab-pane
+  --          | . The first tab pane must also have
+  --          code .in
+  --          | to properly fade in initial content.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3 Methods
+  --        h4 $().tab
+  --        p
+  --          | Activates a tab element and content container. Tab should have either a
+  --          code data-target
+  --          | or an
+  --          code href
+  --          | targeting a container node in the DOM.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3 Events
+  --        p When showing a new tab, the events fire in the following order:
+  --        ol
+  --          li
+  --            code hide.bs.tab
+  --            | (on the current active tab)
+  --          li
+  --            code show.bs.tab
+  --            | (on the to-be-shown tab)
+  --          li
+  --            code hidden.bs.tab
+  --            | (on the previous active tab, the same one as for the
+  --            code hide.bs.tab
+  --            | event)
+  --          li
+  --            code shown.bs.tab
+  --            | (on the newly-active just-shown tab, the same one as for the
+  --            code show.bs.tab
+  --            | event)
+  --        p
+  --          | If no tab was already active, then the
+  --          code hide.bs.tab
+  --          | and
+  --          code hidden.bs.tab
+  --          | events will not be fired.
+  --        .table-responsive
+  --          table.table.table-bordered.table-striped
+  --            thead
+  --              tr
+  --                th(style='width: 150px;') Event Type
+  --                th Description
+  --            tbody
+  --              tr
+  --                td show.bs.tab
+  --                td
+  --                  | This event fires on tab show, but before the new tab has been shown. Use
+  --                  code event.target
+  --                  | and
+  --                  code event.relatedTarget
+  --                  | to target the active tab and the previous
+  --                  | active tab (if available) respectively.
+  --              tr
+  --                td shown.bs.tab
+  --                td
+  --                  | This event fires on tab show after a tab has been shown. Use
+  --                  code event.target
+  --                  | and
+  --                  code event.relatedTarget
+  --                  | to target the active tab and the previous active tab
+  --                  | (if available) respectively.
+  --              tr
+  --                td hide.bs.tab
+  --                td
+  --                  | This event fires when a new tab is to be shown (and thus the previous active tab is to be hidden). Use
+  --                  code event.target
+  --                  | and
+  --                  code event.relatedTarget
+  --                  | to target
+  --                  | the current active tab and the new soon-to-be-active tab, respectively.
+  --              tr
+  --                td hidden.bs.tab
+  --                td
+  --                  | This event fires after a new tab is shown (and thus the previous active tab is hidden). Use
+  --                  code event.target
+  --                  | and
+  --                  code event.relatedTarget
+  --                  | to target the previous
+  --                  | active tab and the new active tab, respectively.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --      .bs-docs-section
+  --        h1#tooltips.page-header
+  --          | Tooltips
+  --          small tooltip.js
+  --        p
+  --          | Inspired by the excellent jQuery.tipsy plugin written by Jason Frame; Tooltips are an updated version, which don't rely on images, use CSS3 for animations, and data-attributes for local
+  --          | title storage.
+  --        p Tooltips with zero-length titles are never displayed.
+  --        h2#tooltips-examples Examples
+  --        p Hover over the links below to see tooltips:
+  --        .bs-example.tooltip-demo
+  --          p.muted(style='margin-bottom: 0;')
+  --            | Tight pants next level keffiyeh
+  --            a(data-toggle='tooltip', href='#', title='Default tooltip') you probably
+  --            | haven't heard of them. Photo booth
+  --            | beard raw denim letterpress vegan messenger bag stumptown. Farm-to-table seitan, mcsweeney's fixie sustainable quinoa 8-bit american apparel
+  --            a(data-toggle='tooltip', href='#', title='Another tooltip') have a
+  --            | terry richardson vinyl chambray. Beard stumptown, cardigans banh mi lomo thundercats. Tofu biodiesel williamsburg marfa, four loko mcsweeney's cleanse vegan
+  --            | chambray. A really ironic artisan
+  --            a(data-toggle='tooltip', href='#', title='Another one here too') whatever keytar
+  --            | , scenester farm-to-table banksy Austin
+  --            a(data-toggle='tooltip', href='#', title='The last tip!') twitter handle
+  --            | freegan cred raw denim single-origin coffee viral.
+  --        h3 Static tooltip
+  --        p Four options are available: top, right, bottom, and left aligned.
+  --        .bs-example.bs-example-tooltip
+  --          .tooltip.left
+  --            .tooltip-arrow
+  --            .tooltip-inner
+  --              | Tooltip on the left
+  --          .tooltip.top
+  --            .tooltip-arrow
+  --            .tooltip-inner
+  --              | Tooltip on the top
+  --          .tooltip.bottom
+  --            .tooltip-arrow
+  --            .tooltip-inner
+  --              | Tooltip on the bottom
+  --          .tooltip.right
+  --            .tooltip-arrow
+  --            .tooltip-inner
+  --              | Tooltip on the right
+  --        h3 Four directions
+  --        .bs-example.tooltip-demo
+  --          .bs-example-tooltips
+  --            button.btn.btn-default(data-placement='left', data-toggle='tooltip', title='Tooltip on left', type='button') Tooltip on left
+  --            button.btn.btn-default(data-placement='top', data-toggle='tooltip', title='Tooltip on top', type='button') Tooltip on top
+  --            button.btn.btn-default(data-placement='bottom', data-toggle='tooltip', title='Tooltip on bottom', type='button') Tooltip on bottom
+  --            button.btn.btn-default(data-placement='right', data-toggle='tooltip', title='Tooltip on right', type='button') Tooltip on right
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        .bs-callout.bs-callout-danger
+  --          h4 Opt-in functionality
+  --          p
+  --            | For performance reasons, the Tooltip and Popover data-apis are opt-in, meaning
+  --            strong you must initialize them yourself
+  --            | .
+  --          p
+  --            | One way to initialize all tooltips on a page would be to select them by their
+  --            code data-toggle
+  --            | attribute:
+  --          .zero-clipboard
+  --            span.btn-clipboard Copy
+  --          .highlight
+  --            pre.
+  --              \n              
+  --        .bs-callout.bs-callout-warning
+  --          h4 Tooltips in button groups and input groups require special setting
+  --          p
+  --            | When using tooltips on elements within a
+  --            code .btn-group
+  --            | or an
+  --            code .input-group
+  --            | , you'll have to specify the option
+  --            code container: 'body'
+  --            | (documented below) to
+  --            | avoid unwanted side effects (such as the element growing wider and/or losing its rounded corners when the tooltip is triggered).
+  --        .bs-callout.bs-callout-warning
+  --          h4 Don't try to show tooltips on hidden elements
+  --          p
+  --            | Invoking
+  --            code $(...).tooltip('show')
+  --            | when the target element is
+  --            code display: none;
+  --            | will cause the tooltip to be incorrectly positioned.
+  --        .bs-callout.bs-callout-info
+  --          h4 Tooltips on disabled elements require wrapper elements
+  --          p
+  --            | To add a tooltip to a
+  --            code disabled
+  --            | or
+  --            code .disabled
+  --            | element, put the element inside of a
+  --            code <div>
+  --            | and apply the tooltip to that
+  --            code <div>
+  --            | instead.
+  --        h2#tooltips-usage Usage
+  --        p
+  --          | The tooltip plugin generates content and markup on demand, and by default places tooltips after their trigger element.
+  --        p Trigger the tooltip via JavaScript:
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3 Markup
+  --        p
+  --          | The required markup for a tooltip is only a
+  --          code data
+  --          | attribute and
+  --          code title
+  --          | on the HTML element you wish to have a tooltip. The generated markup of a tooltip is rather
+  --          | simple, though it does require a position (by default, set to
+  --          code top
+  --          | by the plugin).
+  --        .bs-callout.bs-callout-warning
+  --          h4 Multiple-line links
+  --          p
+  --            | Sometimes you want to add a tooltip to a hyperlink that wraps multiple lines. The default behavior of the tooltip plugin is to center it horizontally and vertically. Add
+  --            code white-space: nowrap;
+  --            | to your anchors to avoid this.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3 Options
+  --        p
+  --          | Options can be passed via data attributes or JavaScript. For data attributes, append the option name to
+  --          code data-
+  --          | , as in
+  --          code data-animation=""
+  --          | .
+  --        .table-responsive
+  --          table.table.table-bordered.table-striped
+  --            thead
+  --              tr
+  --                th(style='width: 100px;') Name
+  --                th(style='width: 100px;') Type
+  --                th(style='width: 50px;') Default
+  --                th Description
+  --            tbody
+  --              tr
+  --                td animation
+  --                td boolean
+  --                td true
+  --                td Apply a CSS fade transition to the tooltip
+  --              tr
+  --                td container
+  --                td string | false
+  --                td false
+  --                td
+  --                  p
+  --                    | Appends the tooltip to a specific element. Example:
+  --                    code container: 'body'
+  --                    | . This option is particularly useful in that it allows you to position the tooltip in the flow
+  --                    | of the document near the triggering element - which will prevent the tooltip from floating away from the triggering element during a window resize.
+  --              tr
+  --                td delay
+  --                td number | object
+  --                td 0
+  --                td
+  --                  p
+  --                    | Delay showing and hiding the tooltip (ms) - does not apply to manual trigger type
+  --                  p If a number is supplied, delay is applied to both hide/show
+  --                  p
+  --                    | Object structure is:
+  --                    code delay: { "show": 500, "hide": 100 }
+  --              tr
+  --                td html
+  --                td boolean
+  --                td false
+  --                td
+  --                  | Insert HTML into the tooltip. If false, jQuery's
+  --                  code text
+  --                  | method will be used to insert content into the DOM. Use text if you're worried about XSS attacks.
+  --              tr
+  --                td placement
+  --                td string | function
+  --                td 'top'
+  --                td
+  --                  p
+  --                    | How to position the tooltip - top | bottom | left | right | auto.
+  --                    br
+  --                    | When "auto" is specified, it will dynamically reorient the tooltip. For example, if placement is "auto left", the tooltip will display to the left when possible, otherwise it will
+  --                    | display right.
+  --                  p
+  --                    | When a function is used to determine the placement, it is called with the tooltip DOM node as its first argument and the triggering element DOM node as its second. The
+  --                    code this
+  --                    | context is set to the tooltip instance.
+  --              tr
+  --                td selector
+  --                td string
+  --                td false
+  --                td
+  --                  | If a selector is provided, tooltip objects will be delegated to the specified targets. In practice, this is used to enable dynamic HTML content to have tooltips added. See
+  --                  a(href='https://github.com/twbs/bootstrap/issues/4215') this
+  --                  | and
+  --                  a(href='http://jsbin.com/zopod/1/edit') an informative example
+  --                  | .
+  --              tr
+  --                td template
+  --                td string
+  --                td
+  --                  code
+  --                    | '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+  --                td
+  --                  p Base HTML to use when creating the tooltip.
+  --                  p
+  --                    | The tooltip's
+  --                    code title
+  --                    | will be injected into the
+  --                    code .tooltip-inner
+  --                    | .
+  --                  p
+  --                    code .tooltip-arrow
+  --                    | will become the tooltip's arrow.
+  --                  p
+  --                    | The outermost wrapper element should have the
+  --                    code .tooltip
+  --                    | class.
+  --              tr
+  --                td title
+  --                td string | function
+  --                td ''
+  --                td
+  --                  p
+  --                    | Default title value if
+  --                    code title
+  --                    | attribute isn't present.
+  --                  p
+  --                    | If a function is given, it will be called with its
+  --                    code this
+  --                    | reference set to the element that the tooltip is attached to.
+  --              tr
+  --                td trigger
+  --                td string
+  --                td 'hover focus'
+  --                td
+  --                  | How tooltip is triggered - click | hover | focus | manual. You may pass multiple triggers; separate them with a space.
+  --              tr
+  --                td viewport
+  --                td string | object
+  --                td { selector: 'body', padding: 0 }
+  --                td
+  --                  p
+  --                    | Keeps the tooltip within the bounds of this element. Example:
+  --                    code viewport: '#viewport'
+  --                    | or
+  --                    code { "selector": "#viewport", "padding": 0 }
+  --        .bs-callout.bs-callout-info
+  --          h4 Data attributes for individual tooltips
+  --          p
+  --            | Options for individual tooltips can alternatively be specified through the use of data attributes, as explained above.
+  --        h3 Methods
+  --        h4 $().tooltip(options)
+  --        p Attaches a tooltip handler to an element collection.
+  --        h4 .tooltip('show')
+  --        p
+  --          | Reveals an element's tooltip. Tooltips with zero-length titles are never displayed.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h4 .tooltip('hide')
+  --        p Hides an element's tooltip.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h4 .tooltip('toggle')
+  --        p Toggles an element's tooltip.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h4 .tooltip('destroy')
+  --        p Hides and destroys an element's tooltip.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3 Events
+  --        .table-responsive
+  --          table.table.table-bordered.table-striped
+  --            thead
+  --              tr
+  --                th(style='width: 150px;') Event Type
+  --                th Description
+  --            tbody
+  --              tr
+  --                td show.bs.tooltip
+  --                td
+  --                  | This event fires immediately when the
+  --                  code show
+  --                  | instance method is called.
+  --              tr
+  --                td shown.bs.tooltip
+  --                td
+  --                  | This event is fired when the tooltip has been made visible to the user (will wait for CSS transitions to complete).
+  --              tr
+  --                td hide.bs.tooltip
+  --                td
+  --                  | This event is fired immediately when the
+  --                  code hide
+  --                  | instance method has been called.
+  --              tr
+  --                td hidden.bs.tooltip
+  --                td
+  --                  | This event is fired when the tooltip has finished being hidden from the user (will wait for CSS transitions to complete).
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --      .bs-docs-section
+  --        h1#popovers.page-header
+  --          | Popovers
+  --          small popover.js
+  --        p
+  --          | Add small overlays of content, like those on the iPad, to any element for housing secondary information.
+  --        p Popovers whose both title and content are zero-length are never displayed.
+  --        .bs-callout.bs-callout-danger
+  --          h4 Plugin dependency
+  --          p
+  --            | Popovers require the
+  --            a(href='#tooltips') tooltip plugin
+  --            | to be included in your version of Bootstrap.
+  --        .bs-callout.bs-callout-danger
+  --          h4 Opt-in functionality
+  --          p
+  --            | For performance reasons, the Tooltip and Popover data-apis are opt-in, meaning
+  --            strong you must initialize them yourself
+  --            | .
+  --          p
+  --            | One way to initialize all popovers on a page would be to select them by their
+  --            code data-toggle
+  --            | attribute:
+  --          .zero-clipboard
+  --            span.btn-clipboard Copy
+  --          .highlight
+  --            pre.
+  --              \n              
+  --        .bs-callout.bs-callout-warning
+  --          h4 Popovers in button groups and input groups require special setting
+  --          p
+  --            | When using popovers on elements within a
+  --            code .btn-group
+  --            | or an
+  --            code .input-group
+  --            | , you'll have to specify the option
+  --            code container: 'body'
+  --            | (documented below) to
+  --            | avoid unwanted side effects (such as the element growing wider and/or losing its rounded corners when the popover is triggered).
+  --        .bs-callout.bs-callout-warning
+  --          h4 Don't try to show popovers on hidden elements
+  --          p
+  --            | Invoking
+  --            code $(...).popover('show')
+  --            | when the target element is
+  --            code display: none;
+  --            | will cause the popover to be incorrectly positioned.
+  --        .bs-callout.bs-callout-info
+  --          h4 Popovers on disabled elements require wrapper elements
+  --          p
+  --            | To add a popover to a
+  --            code disabled
+  --            | or
+  --            code .disabled
+  --            | element, put the element inside of a
+  --            code <div>
+  --            | and apply the popover to that
+  --            code <div>
+  --            | instead.
+  --        .bs-callout.bs-callout-info
+  --          h4 Multiple-line links
+  --          p
+  --            | Sometimes you want to add a popover to a hyperlink that wraps multiple lines. The default behavior of the popover plugin is to center it horizontally and vertically. Add
+  --            code white-space: nowrap;
+  --            | to your anchors to avoid this.
+  --        h2#popovers-examples Examples
+  --        h3 Static popover
+  --        p Four options are available: top, right, bottom, and left aligned.
+  --        .bs-example.bs-example-popover
+  --          .popover.top
+  --            .arrow
+  --            h3.popover-title Popover top
+  --            .popover-content
+  --              p
+  --                | Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
+  --          .popover.right
+  --            .arrow
+  --            h3.popover-title Popover right
+  --            .popover-content
+  --              p
+  --                | Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
+  --          .popover.bottom
+  --            .arrow
+  --            h3.popover-title Popover bottom
+  --            .popover-content
+  --              p
+  --                | Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
+  --          .popover.left
+  --            .arrow
+  --            h3.popover-title Popover left
+  --            .popover-content
+  --              p
+  --                | Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
+  --          .clearfix
+  --        h3 Live demo
+  --        .bs-example(style='padding-bottom: 24px;')
+  --          button.btn.btn-lg.btn-danger.bs-docs-popover(data-content='And here"s some amazing content. It"s very engaging. Right?', data-original-title='Popover title', data-toggle='popover', title='', type='button') Click to toggle popover
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h4 Four directions
+  --        .bs-example.popover-demo
+  --          .bs-example-popovers
+  --            button.btn.btn-default(data-container='body', data-content='Vivamus sagittis lacus vel augue laoreet rutrum faucibus.', data-placement='left', data-toggle='popover', type='button') Popover on left
+  --            button.btn.btn-default(data-container='body', data-content='Vivamus sagittis lacus vel augue laoreet rutrum faucibus.', data-placement='top', data-toggle='popover', type='button') Popover on top
+  --            button.btn.btn-default(data-container='body', data-content='Vivamus sagittis lacus vel augue laoreet rutrum faucibus.', data-placement='bottom', data-toggle='popover', type='button') Popover on bottom
+  --            button.btn.btn-default(data-container='body', data-content='Vivamus sagittis lacus vel augue laoreet rutrum faucibus.', data-placement='right', data-toggle='popover', type='button') Popover on right
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h4 Dismiss on next click
+  --        p
+  --          | Use the
+  --          code focus
+  --          | trigger to dismiss popovers on the next click that the user makes.
+  --        .bs-callout.bs-callout-danger
+  --          h4 Specific markup required for dismiss-on-next-click
+  --          p
+  --            | For proper cross-browser and cross-platform behavior, you must use the
+  --            code <a>
+  --            | tag,
+  --            i not
+  --            | the
+  --            code <button>
+  --            | tag, and you also must include a
+  --            a(href='https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes#tabindex')
+  --              code tabindex
+  --            | attribute.
+  --        .bs-example(style='padding-bottom: 24px;')
+  --          a.btn.btn-lg.btn-danger.bs-docs-popover(data-content='And here"s some amazing content. It"s very engaging. Right?', data-original-title='Dismissible popover', data-toggle='popover', data-trigger='focus', href='#', tabindex='0', title='') Dismissible popover
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h2#popovers-usage Usage
+  --        p Enable popovers via JavaScript:
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3 Options
+  --        p
+  --          | Options can be passed via data attributes or JavaScript. For data attributes, append the option name to
+  --          code data-
+  --          | , as in
+  --          code data-animation=""
+  --          | .
+  --        .table-responsive
+  --          table.table.table-bordered.table-striped
+  --            thead
+  --              tr
+  --                th(style='width: 100px;') Name
+  --                th(style='width: 100px;') Type
+  --                th(style='width: 50px;') Default
+  --                th Description
+  --            tbody
+  --              tr
+  --                td animation
+  --                td boolean
+  --                td true
+  --                td Apply a CSS fade transition to the popover
+  --              tr
+  --                td container
+  --                td string | false
+  --                td false
+  --                td
+  --                  p
+  --                    | Appends the popover to a specific element. Example:
+  --                    code container: 'body'
+  --                    | . This option is particularly useful in that it allows you to position the popover in the flow
+  --                    | of the document near the triggering element - which will prevent the popover from floating away from the triggering element during a window resize.
+  --              tr
+  --                td content
+  --                td string | function
+  --                td ''
+  --                td
+  --                  p
+  --                    | Default content value if
+  --                    code data-content
+  --                    | attribute isn't present.
+  --                  p
+  --                    | If a function is given, it will be called with its
+  --                    code this
+  --                    | reference set to the element that the popover is attached to.
+  --              tr
+  --                td delay
+  --                td number | object
+  --                td 0
+  --                td
+  --                  p
+  --                    | Delay showing and hiding the popover (ms) - does not apply to manual trigger type
+  --                  p If a number is supplied, delay is applied to both hide/show
+  --                  p
+  --                    | Object structure is:
+  --                    code delay: { "show": 500, "hide": 100 }
+  --              tr
+  --                td html
+  --                td boolean
+  --                td false
+  --                td
+  --                  | Insert HTML into the popover. If false, jQuery's
+  --                  code text
+  --                  | method will be used to insert content into the DOM. Use text if you're worried about XSS attacks.
+  --              tr
+  --                td placement
+  --                td string | function
+  --                td 'right'
+  --                td
+  --                  p
+  --                    | How to position the popover - top | bottom | left | right | auto.
+  --                    br
+  --                    | When "auto" is specified, it will dynamically reorient the popover. For example, if placement is "auto left", the popover will display to the left when possible, otherwise it will
+  --                    | display right.
+  --                  p
+  --                    | When a function is used to determine the placement, it is called with the popover DOM node as its first argument and the triggering element DOM node as its second. The
+  --                    code this
+  --                    | context is set to the popover instance.
+  --              tr
+  --                td selector
+  --                td string
+  --                td false
+  --                td
+  --                  | If a selector is provided, popover objects will be delegated to the specified targets. In practice, this is used to enable dynamic HTML content to have popovers added. See
+  --                  a(href='https://github.com/twbs/bootstrap/issues/4215') this
+  --                  | and
+  --                  a(href='http://jsbin.com/zopod/1/edit') an informative example
+  --                  | .
+  --              tr
+  --                td template
+  --                td string
+  --                td
+  --                  code
+  --                    | '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div
+  --                    | class="popover-content"></div></div>'
+  --                td
+  --                  p Base HTML to use when creating the popover.
+  --                  p
+  --                    | The popover's
+  --                    code title
+  --                    | will be injected into the
+  --                    code .popover-title
+  --                    | .
+  --                  p
+  --                    | The popover's
+  --                    code content
+  --                    | will be injected into the
+  --                    code .popover-content
+  --                    | .
+  --                  p
+  --                    code .arrow
+  --                    | will become the popover's arrow.
+  --                  p
+  --                    | The outermost wrapper element should have the
+  --                    code .popover
+  --                    | class.
+  --              tr
+  --                td title
+  --                td string | function
+  --                td ''
+  --                td
+  --                  p
+  --                    | Default title value if
+  --                    code title
+  --                    | attribute isn't present.
+  --                  p
+  --                    | If a function is given, it will be called with its
+  --                    code this
+  --                    | reference set to the element that the popover is attached to.
+  --              tr
+  --                td trigger
+  --                td string
+  --                td 'click'
+  --                td
+  --                  | How popover is triggered - click | hover | focus | manual. You may pass multiple triggers; separate them with a space.
+  --              tr
+  --                td viewport
+  --                td string | object
+  --                td { selector: 'body', padding: 0 }
+  --                td
+  --                  p
+  --                    | Keeps the popover within the bounds of this element. Example:
+  --                    code viewport: '#viewport'
+  --                    | or
+  --                    code { "selector": "#viewport", "padding": 0 }
+  --        .bs-callout.bs-callout-info
+  --          h4 Data attributes for individual popovers
+  --          p
+  --            | Options for individual popovers can alternatively be specified through the use of data attributes, as explained above.
+  --        h3 Methods
+  --        h4 $().popover(options)
+  --        p Initializes popovers for an element collection.
+  --        h4 .popover('show')
+  --        p
+  --          | Reveals an element's popover. Popovers whose both title and content are zero-length are never displayed.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h4 .popover('hide')
+  --        p Hides an element's popover.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h4 .popover('toggle')
+  --        p Toggles an element's popover.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h4 .popover('destroy')
+  --        p Hides and destroys an element's popover.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3 Events
+  --        .table-responsive
+  --          table.table.table-bordered.table-striped
+  --            thead
+  --              tr
+  --                th(style='width: 150px;') Event Type
+  --                th Description
+  --            tbody
+  --              tr
+  --                td show.bs.popover
+  --                td
+  --                  | This event fires immediately when the
+  --                  code show
+  --                  | instance method is called.
+  --              tr
+  --                td shown.bs.popover
+  --                td
+  --                  | This event is fired when the popover has been made visible to the user (will wait for CSS transitions to complete).
+  --              tr
+  --                td hide.bs.popover
+  --                td
+  --                  | This event is fired immediately when the
+  --                  code hide
+  --                  | instance method has been called.
+  --              tr
+  --                td hidden.bs.popover
+  --                td
+  --                  | This event is fired when the popover has finished being hidden from the user (will wait for CSS transitions to complete).
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --      .bs-docs-section
+  --        h1#alerts.page-header
+  --          | Alert messages
+  --          small alert.js
+  --        h2#alerts-examples Example alerts
+  --        p Add dismiss functionality to all alert messages with this plugin.
+  --        p
+  --          | When using a
+  --          code .close
+  --          | button, it must be the first child of the
+  --          code .alert-dismissible
+  --          | and no text content may come before it in the markup.
+  --        .bs-example.bs-example-standalone
+  --          .alert.alert-warning.alert-dismissible.fade.in
+  --            button.close(data-dismiss='alert', type='button')
+  --              span ×
+  --              span.sr-only Close
+  --            strong Holy guacamole!
+  --            | Best check yo self, you're not
+  --            | looking too good.
+  --          .alert.alert-danger.alert-dismissible.fade.in
+  --            button.close(data-dismiss='alert', type='button')
+  --              span ×
+  --              span.sr-only Close
+  --            h4 Oh snap! You got an error!
+  --            p
+  --              | Change this and that and try again. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet
+  --              | fermentum.
+  --            p
+  --              button.btn.btn-danger(type='button') Take this action
+  --              button.btn.btn-default(type='button') Or do this
+  --        h2#alerts-usage Usage
+  --        p
+  --          | Just add
+  --          code data-dismiss="alert"
+  --          | to your close button to automatically give an alert close functionality. Closing an alert removes it from the DOM.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        p
+  --          | To have your alerts use animation when closing, make sure they have the
+  --          code .fade
+  --          | and
+  --          code .in
+  --          | classes already applied to them.
+  --        h3 Methods
+  --        h4 $().alert()
+  --        p
+  --          | Makes an alert listen for click events on descendant elements which have the
+  --          code data-dismiss="alert"
+  --          | attribute. (Not necessary when using the data-api's
+  --          | auto-initialization.)
+  --        h4 $().alert('close')
+  --        p
+  --          | Closes an alert by removing it from the DOM. If the
+  --          code .fade
+  --          | and
+  --          code .in
+  --          | classes are present on the element, the alert will fade out before it is removed.
+  --        h3 Events
+  --        p
+  --          | Bootstrap's alert plugin exposes a few events for hooking into alert functionality.
+  --        .table-responsive
+  --          table.table.table-bordered.table-striped
+  --            thead
+  --              tr
+  --                th(style='width: 150px;') Event Type
+  --                th Description
+  --            tbody
+  --              tr
+  --                td close.bs.alert
+  --                td
+  --                  | This event fires immediately when the
+  --                  code close
+  --                  | instance method is called.
+  --              tr
+  --                td closed.bs.alert
+  --                td
+  --                  | This event is fired when the alert has been closed (will wait for CSS transitions to complete).
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --      .bs-docs-section
+  --        h1#buttons.page-header
+  --          | Buttons
+  --          small button.js
+  --        p.lead
+  --          | Do more with buttons. Control button states or create groups of buttons for more components like toolbars.
+  --        .bs-callout.bs-callout-danger
+  --          h4 Cross-browser compatibility
+  --          p
+  --            a(href='https://github.com/twbs/bootstrap/issues/793')
+  --              | Firefox persists form control states (disabledness and checkedness) across page loads
+  --            | . A workaround for this is to use
+  --            code autocomplete="off"
+  --            | . See
+  --            a(href='https://bugzilla.mozilla.org/show_bug.cgi?id=654072') Mozilla bug #654072
+  --            | .
+  --        h2#buttons-stateful Stateful
+  --        p
+  --          | Add
+  --          code data-loading-text="Loading..."
+  --          | to use a loading state on a button.
+  --        .bs-callout.bs-callout-info
+  --          h4 Use whichever state you like!
+  --          p
+  --            | For the sake of this demonstration, we are using
+  --            code data-loading-text
+  --            | and
+  --            code $().button('loading')
+  --            | , but that's not the only state you can use.
+  --            a(href='#buttons-methods')
+  --              | See more on this below in the
+  --              code $().button(string)
+  --              | documentation
+  --            | .
+  --        .bs-example
+  --          button#loading-example-btn.btn.btn-primary(data-loading-text='Loading...', type='button') Loading state
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h2#buttons-single-toggle Single toggle
+  --        p
+  --          | Add
+  --          code data-toggle="button"
+  --          | to activate toggling on a single button.
+  --        .bs-callout.bs-callout-warning
+  --          h4
+  --            | Pre-toggled buttons need
+  --            code .active
+  --            | and
+  --            code aria-pressed="true"
+  --          p
+  --            | For pre-toggled buttons, you must add the
+  --            code .active
+  --            | class and the
+  --            code aria-pressed="true"
+  --            | attribute to the
+  --            code button
+  --            | yourself.
+  --        .bs-example
+  --          button.btn.btn-primary(data-toggle='button', type='button') Single toggle
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h2#buttons-checkbox-radio Checkbox / Radio
+  --        p
+  --          | Add
+  --          code data-toggle="buttons"
+  --          | to a
+  --          code .btn-group
+  --          | containing checkbox or radio inputs to enable toggling in their respective styles.
+  --        .bs-callout.bs-callout-warning
+  --          h4
+  --            | Preselected options need
+  --            code .active
+  --          p
+  --            | For preselected options, you must add the
+  --            code .active
+  --            | class to the input's
+  --            code label
+  --            | yourself.
+  --        .bs-callout.bs-callout-warning
+  --          h4 Visual checked state only updated on click
+  --          p
+  --            | If the checked state of a checkbox button is updated without firing a
+  --            code click
+  --            | event on the button (e.g. via
+  --            code <input type="reset">
+  --            | or via setting the
+  --            code checked
+  --            | property of the input), you will need to toggle the
+  --            code .active
+  --            | class on the input's
+  --            code label
+  --            | yourself.
+  --        .bs-example
+  --          .btn-group(data-toggle='buttons')
+  --            label.btn.btn-primary.active
+  --              input(autocomplete='off', checked='', type='checkbox')
+  --              | Checkbox 1 (pre-checked)
+  --            label.btn.btn-primary
+  --              input(autocomplete='off', type='checkbox')
+  --              | Checkbox 2
+  --            label.btn.btn-primary
+  --              input(autocomplete='off', type='checkbox')
+  --              | Checkbox 3
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        .bs-example
+  --          .btn-group(data-toggle='buttons')
+  --            label.btn.btn-primary.active
+  --              input#option1(autocomplete='off', checked='', name='options', type='radio')
+  --              | Radio 1 (preselected)
+  --            label.btn.btn-primary
+  --              input#option2(autocomplete='off', name='options', type='radio')
+  --              | Radio 2
+  --            label.btn.btn-primary
+  --              input#option3(autocomplete='off', name='options', type='radio')
+  --              | Radio 3
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h2#buttons-methods Methods
+  --        h4 $().button('toggle')
+  --        p Toggles push state. Gives the button the appearance that it has been activated.
+  --        h4 $().button('reset')
+  --        p Resets button state - swaps text to original text.
+  --        h4 $().button(string)
+  --        p Swaps text to any data defined text state.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --      .bs-docs-section
+  --        h1#collapse.page-header
+  --          | Collapse
+  --          small collapse.js
+  --        h3 About
+  --        p
+  --          | Get base styles and flexible support for collapsible components like accordions and navigation.
+  --        .bs-callout.bs-callout-danger
+  --          h4 Plugin dependency
+  --          p
+  --            | Collapse requires the
+  --            a(href='#transitions') transitions plugin
+  --            | to be included in your version of Bootstrap.
+  --        h2#collapse-examples Example accordion
+  --        p
+  --          | Using the collapse plugin, we built a simple accordion by extending the panel component.
+  --        .bs-example
+  --          #accordion.panel-group
+  --            .panel.panel-default
+  --              #headingOne.panel-heading
+  --                h4.panel-title
+  --                  a(data-parent='#accordion', data-toggle='collapse', href='#collapseOne') Collapsible Group Item #1
+  --              #collapseOne.panel-collapse.collapse.in
+  --                .panel-body
+  --                  | Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+  --                  | nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft
+  --                  | beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
+  --                  | you probably haven't heard of them accusamus labore sustainable VHS.
+  --            .panel.panel-default
+  --              #headingTwo.panel-heading
+  --                h4.panel-title
+  --                  a.collapsed(data-parent='#accordion', data-toggle='collapse', href='#collapseTwo') Collapsible Group Item #2
+  --              #collapseTwo.panel-collapse.collapse
+  --                .panel-body
+  --                  | Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+  --                  | nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft
+  --                  | beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
+  --                  | you probably haven't heard of them accusamus labore sustainable VHS.
+  --            .panel.panel-default
+  --              #headingThree.panel-heading
+  --                h4.panel-title
+  --                  a.collapsed(data-parent='#accordion', data-toggle='collapse', href='#collapseThree') Collapsible Group Item #3
+  --              #collapseThree.panel-collapse.collapse
+  --                .panel-body
+  --                  | Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+  --                  | nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft
+  --                  | beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
+  --                  | you probably haven't heard of them accusamus labore sustainable VHS.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        p
+  --          | It's also possible to swap out
+  --          code .panel-body
+  --          | s with
+  --          code .list-group
+  --          | s.
+  --        .panel-group
+  --          .panel.panel-default
+  --            #collapseListGroupHeading1.panel-heading
+  --              h4.panel-title
+  --                a.collapsed(data-toggle='collapse', href='#collapseListGroup1') Collapsible list group
+  --            #collapseListGroup1.panel-collapse.collapse
+  --              ul.list-group
+  --                li.list-group-item Bootply
+  --                li.list-group-item One itmus ac facilin
+  --                li.list-group-item Second eros
+  --              .panel-footer
+  --                | Footer
+  --        p
+  --          | You can also use the plugin without the accordion markup. Make a button toggle the expanding and collapsing of another element.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        .bs-callout.bs-callout-warning
+  --          h4 Make expand/collapse controls accessible
+  --          p
+  --            | Be sure to add
+  --            code aria-expanded
+  --            | to the control element. This attribute explicitly defines the current state of the collapsible element to screen readers and similar assistive
+  --            | technologies. If the collapsible element is closed by default, it should have a value of
+  --            code aria-expanded="false"
+  --            | . If you've set the collapsible element to be open by default
+  --            | using the
+  --            code in
+  --            | class, set
+  --            code aria-expanded="true"
+  --            | on the control instead. The plugin will automatically toggle this attribute based on whether or not the collapsible
+  --            | element has been opened or closed.
+  --          p
+  --            | Additionally, if your control element is targetting a single collapsible element – i.e. the
+  --            code data-target
+  --            | attribute is pointing to an
+  --            code id
+  --            | selector – you may add
+  --            | an additional
+  --            code aria-controls
+  --            | attribute to the control element, containing the
+  --            code id
+  --            | of the collapsible element. Modern screen readers and similar assistive
+  --            | technologies make use of this attribute to provide users with additional shortcuts to navigate directly to the collapsible element itself.
+  --        h2#collapse-usage Usage
+  --        p The collapse plugin utilizes a few classes to handle the heavy lifting:
+  --        ul
+  --          li
+  --            code .collapse
+  --            | hides the content
+  --          li
+  --            code .collapse.in
+  --            | shows the content
+  --          li
+  --            code .collapsing
+  --            | is added when the transition starts, and removed when it finishes
+  --        p
+  --          | These classes can be found in
+  --          code component-animations.less
+  --          | .
+  --        h3 Via data attributes
+  --        p
+  --          | Just add
+  --          code data-toggle="collapse"
+  --          | and a
+  --          code data-target
+  --          | to the element to automatically assign control of a collapsible element. The
+  --          code data-target
+  --          | attribute accepts a CSS selector to apply the collapse to. Be sure to add the class
+  --          code collapse
+  --          | to the collapsible element. If you'd like it to default open, add the additional
+  --          | class
+  --          code in
+  --          | .
+  --        p
+  --          | To add accordion-like group management to a collapsible control, add the data attribute
+  --          code data-parent="#selector"
+  --          | . Refer to the demo to see this in action.
+  --        h3 Via JavaScript
+  --        p Enable manually with:
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3 Options
+  --        p
+  --          | Options can be passed via data attributes or JavaScript. For data attributes, append the option name to
+  --          code data-
+  --          | , as in
+  --          code data-parent=""
+  --          | .
+  --        .table-responsive
+  --          table.table.table-bordered.table-striped
+  --            thead
+  --              tr
+  --                th(style='width: 100px;') Name
+  --                th(style='width: 50px;') type
+  --                th(style='width: 50px;') default
+  --                th description
+  --            tbody
+  --              tr
+  --                td parent
+  --                td selector
+  --                td false
+  --                td
+  --                  | If a selector is provided, then all collapsible elements under the specified parent will be closed when this collapsible item is shown. (similar to traditional accordion
+  --                  | behavior - this is dependent on the
+  --                  code panel
+  --                  | class)
+  --              tr
+  --                td toggle
+  --                td boolean
+  --                td true
+  --                td Toggles the collapsible element on invocation
+  --        h3 Methods
+  --        h4 .collapse(options)
+  --        p
+  --          | Activates your content as a collapsible element. Accepts an optional options
+  --          code object
+  --          | .
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h4 .collapse('toggle')
+  --        p Toggles a collapsible element to shown or hidden.
+  --        h4 .collapse('show')
+  --        p Shows a collapsible element.
+  --        h4 .collapse('hide')
+  --        p Hides a collapsible element.
+  --        h3 Events
+  --        p
+  --          | Bootstrap's collapse class exposes a few events for hooking into collapse functionality.
+  --        .table-responsive
+  --          table.table.table-bordered.table-striped
+  --            thead
+  --              tr
+  --                th(style='width: 150px;') Event Type
+  --                th Description
+  --            tbody
+  --              tr
+  --                td show.bs.collapse
+  --                td
+  --                  | This event fires immediately when the
+  --                  code show
+  --                  | instance method is called.
+  --              tr
+  --                td shown.bs.collapse
+  --                td
+  --                  | This event is fired when a collapse element has been made visible to the user (will wait for CSS transitions to complete).
+  --              tr
+  --                td hide.bs.collapse
+  --                td
+  --                  | This event is fired immediately when the
+  --                  code hide
+  --                  | method has been called.
+  --              tr
+  --                td hidden.bs.collapse
+  --                td
+  --                  | This event is fired when a collapse element has been hidden from the user (will wait for CSS transitions to complete).
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --      .bs-docs-section
+  --        h1#carousel.page-header
+  --          | Carousel
+  --          small carousel.js
+  --        p
+  --          | A slideshow component for cycling through elements, like a carousel.
+  --          strong Nested carousels are not supported.
+  --        h2#carousel-examples Examples
+  --        .bs-example
+  --          #carousel-example-generic.carousel.slide(data-ride='carousel')
+  --            ol.carousel-indicators
+  --              li.active(data-slide-to='0', data-target='#carousel-example-generic')
+  --              li(data-slide-to='1', data-target='#carousel-example-generic')
+  --              li(data-slide-to='2', data-target='#carousel-example-generic')
+  --            .carousel-inner
+  --              .item.active
+  --                img(alt='First slide [900x500]', data-holder-rendered='true', data-src='holder.js/900x500/auto/#777:#555/text:First slide', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDkwMCA1MDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iIzc3NyIvPjxnPjx0ZXh0IHg9IjMxNy43NSIgeT0iMjUwIiBzdHlsZT0iZmlsbDojNTU1O2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjQycHQ7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+Rmlyc3Qgc2xpZGU8L3RleHQ+PC9nPjwvc3ZnPg==')
+  --              .item
+  --                img(alt='Second slide [900x500]', data-holder-rendered='true', data-src='holder.js/900x500/auto/#666:#444/text:Second slide', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDkwMCA1MDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iIzY2NiIvPjxnPjx0ZXh0IHg9IjI3Ny4yOTY4NzUiIHk9IjI1MCIgc3R5bGU9ImZpbGw6IzQ0NDtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZTo0MnB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPlNlY29uZCBzbGlkZTwvdGV4dD48L2c+PC9zdmc+')
+  --              .item
+  --                img(alt='Third slide [900x500]', data-holder-rendered='true', data-src='holder.js/900x500/auto/#555:#333/text:Third slide', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDkwMCA1MDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iIzU1NSIvPjxnPjx0ZXh0IHg9IjMwOC40Mzc1IiB5PSIyNTAiIHN0eWxlPSJmaWxsOiMzMzM7Zm9udC13ZWlnaHQ6Ym9sZDtmb250LWZhbWlseTpBcmlhbCwgSGVsdmV0aWNhLCBPcGVuIFNhbnMsIHNhbnMtc2VyaWYsIG1vbm9zcGFjZTtmb250LXNpemU6NDJwdDtkb21pbmFudC1iYXNlbGluZTpjZW50cmFsIj5UaGlyZCBzbGlkZTwvdGV4dD48L2c+PC9zdmc+')
+  --            a.left.carousel-control(data-slide='prev', href='#carousel-example-generic')
+  --              span.glyphicon.glyphicon-chevron-left
+  --              span.sr-only Previous
+  --            a.right.carousel-control(data-slide='next', href='#carousel-example-generic')
+  --              span.glyphicon.glyphicon-chevron-right
+  --              span.sr-only Next
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        #callout-carousel-accessibility.bs-callout.bs-callout-danger
+  --          h4 Accessibility issue
+  --          p
+  --            | The carousel component is generally not compliant with accessibility standards. If you need to be compliant, please consider other options for presenting your content.
+  --        #callout-carousel-transitions.bs-callout.bs-callout-warning
+  --          h4 Transition animations not supported in Internet Explorer 8 & 9
+  --          p
+  --            | Bootstrap exclusively uses CSS3 for its animations, but Internet Explorer 8 & 9 don't support the necessary CSS properties. Thus, there are no slide transition animations when
+  --            | using these browsers. We have intentionally decided not to include jQuery-based fallbacks for the transitions.
+  --        #callout-carousel-active.bs-callout.bs-callout-warning
+  --          h4 Initial active element required
+  --          p
+  --            | The
+  --            code .active
+  --            | class needs to be added to one of the slides. Otherwise, the carousel will not be visible.
+  --        h3 Optional captions
+  --        p
+  --          | Add captions to your slides easily with the
+  --          code .carousel-caption
+  --          | element within any
+  --          code .item
+  --          | . Place just about any optional HTML within there and it will be
+  --          | automatically aligned and formatted.
+  --        .bs-example
+  --          #carousel-example-captions.carousel.slide(data-ride='carousel')
+  --            ol.carousel-indicators
+  --              li.active(data-slide-to='0', data-target='#carousel-example-captions')
+  --              li(data-slide-to='1', data-target='#carousel-example-captions')
+  --              li(data-slide-to='2', data-target='#carousel-example-captions')
+  --            .carousel-inner
+  --              .item.active
+  --                img(alt='900x500', data-holder-rendered='true', data-src='holder.js/900x500/auto/#777:#777', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDkwMCA1MDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iIzc3NyIvPjxnPjx0ZXh0IHg9IjM0MSIgeT0iMjUwIiBzdHlsZT0iZmlsbDojNzc3O2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjQycHQ7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+OTAweDUwMDwvdGV4dD48L2c+PC9zdmc+')
+  --                .carousel-caption
+  --                  h3 First slide label
+  --                  p Nulla vitae elit libero, a pharetra augue mollis interdum.
+  --              .item
+  --                img(alt='900x500', data-holder-rendered='true', data-src='holder.js/900x500/auto/#666:#666', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDkwMCA1MDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iIzY2NiIvPjxnPjx0ZXh0IHg9IjM0MSIgeT0iMjUwIiBzdHlsZT0iZmlsbDojNjY2O2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjQycHQ7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+OTAweDUwMDwvdGV4dD48L2c+PC9zdmc+')
+  --                .carousel-caption
+  --                  h3 Second slide label
+  --                  p Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  --              .item
+  --                img(alt='900x500', data-holder-rendered='true', data-src='holder.js/900x500/auto/#555:#5555', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDkwMCA1MDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iIzU1NSIvPjxnPjx0ZXh0IHg9IjM0MSIgeT0iMjUwIiBzdHlsZT0iZmlsbDojNTU1NTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZTo0MnB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjkwMHg1MDA8L3RleHQ+PC9nPjwvc3ZnPg==')
+  --                .carousel-caption
+  --                  h3 Third slide label
+  --                  p Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+  --            a.left.carousel-control(data-slide='prev', href='#carousel-example-captions')
+  --              span.glyphicon.glyphicon-chevron-left
+  --              span.sr-only Previous
+  --            a.right.carousel-control(data-slide='next', href='#carousel-example-captions')
+  --              span.glyphicon.glyphicon-chevron-right
+  --              span.sr-only Next
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h2#carousel-usage Usage
+  --        h3 Multiple carousels
+  --        p
+  --          | Carousels require the use of an
+  --          code id
+  --          | on the outermost container (the
+  --          code .carousel
+  --          | ) for carousel controls to function properly. When adding multiple carousels, or
+  --          | when changing a carousel's
+  --          code id
+  --          | , be sure to update the relevant controls.
+  --        h3 Via data attributes
+  --        p
+  --          | Use data attributes to easily control the position of the carousel.
+  --          code data-slide
+  --          | accepts the keywords
+  --          code prev
+  --          | or
+  --          code next
+  --          | , which alters the slide position
+  --          | relative to its current position. Alternatively, use
+  --          code data-slide-to
+  --          | to pass a raw slide index to the carousel
+  --          code data-slide-to="2"
+  --          | , which shifts the slide position to
+  --          | a particular index beginning with
+  --          code 0
+  --          | .
+  --        p
+  --          | The
+  --          code data-ride="carousel"
+  --          | attribute is used to mark a carousel as animating starting at page load.
+  --          strong.text-danger
+  --            | It cannot be used in combination with
+  --            | (redundant and unnecessary) explicit JavaScript initialization of the same carousel.
+  --        h3 Via JavaScript
+  --        p Call carousel manually with:
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3 Options
+  --        p
+  --          | Options can be passed via data attributes or JavaScript. For data attributes, append the option name to
+  --          code data-
+  --          | , as in
+  --          code data-interval=""
+  --          | .
+  --        .table-responsive
+  --          table.table.table-bordered.table-striped
+  --            thead
+  --              tr
+  --                th(style='width: 100px;') Name
+  --                th(style='width: 50px;') type
+  --                th(style='width: 50px;') default
+  --                th description
+  --            tbody
+  --              tr
+  --                td interval
+  --                td number
+  --                td 5000
+  --                td
+  --                  | The amount of time to delay between automatically cycling an item. If false, carousel will not automatically cycle.
+  --              tr
+  --                td pause
+  --                td string
+  --                td "hover"
+  --                td
+  --                  | Pauses the cycling of the carousel on mouseenter and resumes the cycling of the carousel on mouseleave.
+  --              tr
+  --                td wrap
+  --                td boolean
+  --                td true
+  --                td Whether the carousel should cycle continuously or have hard stops.
+  --              tr
+  --                td keyboard
+  --                td boolean
+  --                td true
+  --                td Whether the carousel should react to keyboard events.
+  --        h3 Methods
+  --        h4 .carousel(options)
+  --        p
+  --          | Initializes the carousel with an optional options
+  --          code object
+  --          | and starts cycling through items.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h4 .carousel('cycle')
+  --        p Cycles through the carousel items from left to right.
+  --        h4 .carousel('pause')
+  --        p Stops the carousel from cycling through items.
+  --        h4 .carousel(number)
+  --        p Cycles the carousel to a particular frame (0 based, similar to an array).
+  --        h4 .carousel('prev')
+  --        p Cycles to the previous item.
+  --        h4 .carousel('next')
+  --        p Cycles to the next item.
+  --        h3 Events
+  --        p
+  --          | Bootstrap's carousel class exposes two events for hooking into carousel functionality.
+  --        p Both events have the following additional properties:
+  --        ul
+  --          li
+  --            code direction
+  --            | : The direction in which the carousel is sliding (either
+  --            code "left"
+  --            | or
+  --            code "right"
+  --            | ).
+  --          li
+  --            code relatedTarget
+  --            | : The DOM element that is being slid into place as the active item.
+  --        .table-responsive
+  --          table.table.table-bordered.table-striped
+  --            thead
+  --              tr
+  --                th(style='width: 150px;') Event Type
+  --                th Description
+  --            tbody
+  --              tr
+  --                td slide.bs.carousel
+  --                td
+  --                  | This event fires immediately when the
+  --                  code slide
+  --                  | instance method is invoked.
+  --              tr
+  --                td slid.bs.carousel
+  --                td This event is fired when the carousel has completed its slide transition.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --      .bs-docs-section
+  --        h1#affix.page-header
+  --          | Affix
+  --          small affix.js
+  --        h2#affix-examples Example
+  --        p The subnavigation on the right is a live demo of the affix plugin.
+  --        hr.bs-docs-separator
+  --        h2#affix-usage Usage
+  --        p
+  --          | Use the affix plugin via data attributes or manually with your own JavaScript.
+  --          strong.text-danger
+  --            | In both situations, you must provide CSS for the positioning and width of your
+  --            | affixed content.
+  --        h3 Positioning via CSS
+  --        p
+  --          | The affix plugin toggles between three classes, each representing a particular state:
+  --          code .affix
+  --          | ,
+  --          code .affix-top
+  --          | , and
+  --          code .affix-bottom
+  --          | . You must provide the
+  --          | styles for these classes yourself (independent of this plugin) to handle the actual positions.
+  --        p Here's how the affix plugin works:
+  --        ol
+  --          li
+  --            | To start, the plugin adds
+  --            code .affix-top
+  --            | to indicate the element is in its top-most position. At this point no CSS positioning is required.
+  --          li
+  --            | Scrolling past the element you want affixed should trigger the actual affixing. This is where
+  --            code .affix
+  --            | replaces
+  --            code .affix-top
+  --            | and sets
+  --            code
+  --              | position:
+  --              | fixed;
+  --            | (provided by Bootstrap's CSS).
+  --          li
+  --            | If a bottom offset is defined, scrolling past it should replace
+  --            code .affix
+  --            | with
+  --            code .affix-bottom
+  --            | . Since offsets are optional, setting one requires you to set the
+  --            | appropriate CSS. In this case, add
+  --            code position: absolute;
+  --            | when necessary. The plugin uses the data attribute or JavaScript option to determine where to position the element from
+  --            | there.
+  --        p Follow the above steps to set your CSS for either of the usage options below.
+  --        h3 Via data attributes
+  --        p
+  --          | To easily add affix behavior to any element, just add
+  --          code data-spy="affix"
+  --          | to the element you want to spy on. Use offsets to define when to toggle the pinning of an element.
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3 Via JavaScript
+  --        p Call the affix plugin via JavaScript:
+  --        .zero-clipboard
+  --          span.btn-clipboard Copy
+  --        .highlight
+  --          pre.
+  --            \n            
+  --        h3 Options
+  --        p
+  --          | Options can be passed via data attributes or JavaScript. For data attributes, append the option name to
+  --          code data-
+  --          | , as in
+  --          code data-offset-top="200"
+  --          | .
+  --        .table-responsive
+  --          table.table.table-bordered.table-striped
+  --            thead
+  --              tr
+  --                th(style='width: 100px;') Name
+  --                th(style='width: 100px;') type
+  --                th(style='width: 50px;') default
+  --                th description
+  --            tbody
+  --              tr
+  --                td offset
+  --                td number | function | object
+  --                td 10
+  --                td
+  --                  | Pixels to offset from screen when calculating position of scroll. If a single number is provided, the offset will be applied in both top and bottom directions. To provide a
+  --                  | unique, bottom and top offset just provide an object
+  --                  code offset: { top: 10 }
+  --                  | or
+  --                  code offset: { top: 10, bottom: 5 }
+  --                  | . Use a function when you need to dynamically
+  --                  | calculate an offset.
+  --              tr
+  --                td target
+  --                td selector | node | jQuery element
+  --                td
+  --                  | the
+  --                  code window
+  --                  | object
+  --                td Specifies the target element of the affix.
+  --        h3 Events
+  --        p
+  --          | Bootstrap's affix plugin exposes a few events for hooking into affix functionality.
+  --        .table-responsive
+  --          table.table.table-bordered.table-striped
+  --            thead
+  --              tr
+  --                th(style='width: 150px;') Event Type
+  --                th Description
+  --            tbody
+  --              tr
+  --                td affix.bs.affix
+  --                td This event fires immediately before the element has been affixed.
+  --              tr
+  --                td affixed.bs.affix
+  --                td This event is fired after the element has been affixed.
+  --              tr
+  --                td affix-top.bs.affix
+  --                td This event fires immediately before the element has been affixed-top.
+  --              tr
+  --                td affixed-top.bs.affix
+  --                td This event is fired after the element has been affixed-top.
+  --              tr
+  --                td affix-bottom.bs.affix
+  --                td This event fires immediately before the element has been affixed-bottom.
+  --              tr
+  --                td affixed-bottom.bs.affix
+  --                td This event is fired after the element has been affixed-bottom.
+  --    .col-md-3
+  --      .bs-docs-sidebar.hidden-print.hidden-xs.hidden-sm.affix-top
+  --        ul.nav.bs-docs-sidenav
+  --          li
+  --            a(href='#js-overview') Overview
+  --            ul.nav
+  --              li
+  --                a(href='#js-individual-compiled') Individual or compiled
+  --              li
+  --                a(href='#js-data-attrs') Data attributes
+  --              li
+  --                a(href='#js-programmatic-api') Programmatic API
+  --              li
+  --                a(href='#js-noconflict') No conflict
+  --              li
+  --                a(href='#js-events') Events
+  --              li
+  --                a(href='#js-disabled') When JavaScript is disabled
+  --              li
+  --                a(href='#callout-third-party-libs') Third-party libraries
+  --          li
+  --            a(href='#transitions') Transitions
+  --          li
+  --            a(href='#modals') Modal
+  --            ul.nav
+  --              li
+  --                a(href='#modals-examples') Examples
+  --              li
+  --                a(href='#modals-sizes') Sizes
+  --              li
+  --                a(href='#modals-remove-animation') Remove animation
+  --              li
+  --                a(href='#modals-related-target') Varying content based on trigger button
+  --              li
+  --                a(href='#modals-usage') Usage
+  --          li
+  --            a(href='#dropdowns') Dropdown
+  --            ul.nav
+  --              li
+  --                a(href='#dropdowns-examples') Examples
+  --              li
+  --                a(href='#dropdowns-usage') Usage
+  --          li
+  --            a(href='#scrollspy') Scrollspy
+  --            ul.nav
+  --              li
+  --                a(href='#scrollspy-examples') Examples
+  --              li
+  --                a(href='#scrollspy-usage') Usage
+  --          li
+  --            a(href='#tabs') Tab
+  --            ul.nav
+  --              li
+  --                a(href='#tabs-examples') Examples
+  --              li
+  --                a(href='#tabs-usage') Usage
+  --          li
+  --            a(href='#tooltips') Tooltip
+  --            ul.nav
+  --              li
+  --                a(href='#tooltips-examples') Examples
+  --              li
+  --                a(href='#tooltips-usage') Usage
+  --          li
+  --            a(href='#popovers') Popover
+  --            ul.nav
+  --              li
+  --                a(href='#popovers-examples') Examples
+  --              li
+  --                a(href='#popovers-usage') Usage
+  --          li
+  --            a(href='#alerts') Alert
+  --            ul.nav
+  --              li
+  --                a(href='#alerts-examples') Examples
+  --              li
+  --                a(href='#alerts-usage') Usage
+  --          li
+  --            a(href='#buttons') Button
+  --            ul.nav
+  --              li
+  --                a(href='#buttons-stateful') Stateful
+  --              li
+  --                a(href='#buttons-single-toggle') Single toggle
+  --              li
+  --                a(href='#buttons-checkbox-radio') Checkbox / Radio
+  --              li
+  --                a(href='#buttons-methods') Methods
+  --          li
+  --            a(href='#collapse') Collapse
+  --            ul.nav
+  --              li
+  --                a(href='#collapse-examples') Examples
+  --              li
+  --                a(href='#collapse-usage') Usage
+  --          li
+  --            a(href='#carousel') Carousel
+  --            ul.nav
+  --              li
+  --                a(href='#carousel-examples') Examples
+  --              li
+  --                a(href='#carousel-usage') Usage
+  --          li
+  --            a(href='#affix') Affix
+  --            ul.nav
+  --              li
+  --                a(href='#affix-examples') Examples
+  --              li
+  --                a(href='#affix-usage') Usage
+  --        a.back-to-top(href='#top') Back to top
+  --        a.bs-docs-theme-toggle(href='#') Preview theme
+  ---- Footer
+  --  ================================================== 
+  --footer.bs-docs-footer
+  --  .container
+  --    .bs-docs-social
+  --      ul.bs-docs-social-buttons
+  --        li
+  --          iframe.github-btn(height='20', src='http://ghbtns.com/github-btn.html?user=twbs&repo=bootstrap&type=watch&count=true', title='Star on GitHub', width='100')
+  --        li
+  --          iframe.github-btn(height='20', src='http://ghbtns.com/github-btn.html?user=twbs&repo=bootstrap&type=fork&count=true', title='Fork on GitHub', width='102')
+  --        li.follow-btn
+  --          iframe#twitter-widget-1.twitter-follow-button.twitter-follow-button(data-twttr-rendered='true', frameborder='0', name='twitter-widget-1', scrolling='no', src='http://platform.twitter.com/widgets/follow_button.93c9003dd72a6cd9f4fee1e5eb3546c1.en.html#_=1417999115866&id=twitter-widget-1&lang=en&screen_name=twbootstrap&show_count=true&show_screen_name=true&size=m', style='width: 235px; height: 20px;', title='Twitter Follow Button')
+  --        li.tweet-btn
+  --          iframe#twitter-widget-0.twitter-share-button.twitter-tweet-button.twitter-share-button.twitter-count-horizontal(data-twttr-rendered='true', frameborder='0', name='twitter-widget-0', scrolling='no', src='http://platform.twitter.com/widgets/tweet_button.ff7d9077a26377d36b6a53b1a95be617.en.html#_=1417999115834&count=horizontal&id=twitter-widget-0&lang=en&original_referer=http%3A%2F%2Fgetbootstrap.com%2Fjavascript%2F&related=mdo%3ACreator%20of%20Bootstrap&size=m&text=JavaScript%20%C2%B7%20Bootstrap&url=http%3A%2F%2Fgetbootstrap.com%2F&via=twbootstrap', style='width: 108px; height: 20px;', title='Twitter Tweet Button')
+  --    p
+  --      | Designed and built with all the love in the world by
+  --      a(href='https://twitter.com/mdo', target='_blank') @mdo
+  --      | and
+  --      a(href='https://twitter.com/fat', target='_blank') @fat
+  --      | .
+  --    p
+  --      | Maintained by the
+  --      a(href='https://github.com/orgs/twbs/people') core team
+  --      | with the help of
+  --      a(href='https://github.com/twbs/bootstrap/graphs/contributors') our contributors
+  --      | .
+  --    p
+  --      | Code licensed under
+  --      a(href='https://github.com/twbs/bootstrap/blob/master/LICENSE', target='_blank') MIT
+  --      | , documentation under
+  --      a(href='http://creativecommons.org/licenses/by/3.0/')
+  --        | CC BY
+  --        | 3.0
+  --      | .
+  --    ul.bs-docs-footer-links.muted
+  --      li Currently v3.3.1
+  --      li ·
+  --      li
+  --        a(href='https://github.com/twbs/bootstrap') GitHub
+  --      li ·
+  --      li
+  --        a(href='../getting-started/#examples') Examples
+  --      li ·
+  --      li
+  --        a(href='../2.3.2/') v2.3.2 docs
+  --      li ·
+  --      li
+  --        a(href='../about/') About
+  --      li ·
+  --      li
+  --        a(href='http://expo.getbootstrap.com') Expo
+  --      li ·
+  --      li
+  --        a(href='http://blog.getbootstrap.com') Blog
+  --      li ·
+  --      li
+  --        a(href='https://github.com/twbs/bootstrap/issues') Issues
+  --      li ·
+  --      li
+  --        a(href='https://github.com/twbs/bootstrap/releases') Releases
+  ---- Bootstrap core JavaScript
+  --  ================================================== 
+  ---- Placed at the end of the document so the pages load faster
+  --script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')
+  --script(src='../dist/js/bootstrap.min.js')
+  --script(src='../assets/js/docs.min.js')
+  ---- IE10 viewport hack for Surface/desktop Windows 8 bug
+  --script(src='../assets/js/ie10-viewport-bug-workaround.js')
+  --script
+  --  window.twttr = (function (d,s,id) {
+  --  var t, js, fjs = d.getElementsByTagName(s)[0];
+  --  if (d.getElementById(id)) return; js=d.createElement(s); js.id=id; js.async=1;
+  --  js.src="https://platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs);
+  --  return window.twttr || (t = { _e: [], ready: function(f){ t._e.push(f) } });
+  --  }(document, "script", "twitter-wjs"));
+  ---- Analytics
+  --  ================================================== 
+  --script
+  --  var _gauges = _gauges || [];
+  --  (function() {
+  --  var t   = document.createElement('script');
+  --  t.async = true;
+  --  t.id    = 'gauges-tracker';
+  --  t.setAttribute('data-site-id', '4f0dc9fef5a1f55508000013');
+  --  t.src = '//secure.gaug.es/track.js';
+  --  var s = document.getElementsByTagName('script')[0];
+  --  s.parentNode.insertBefore(t, s);
+  --  })();
+  --#global-zeroclipboard-html-bridge.global-zeroclipboard-container(style='position: absolute; left: 0px; top: -9999px; width: 15px; height: 15px; z-index: 999999999;')
+  --  object#global-zeroclipboard-flash-bridge(classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000', height='100%', width='100%')
+  --    param(name='movie', value='/assets/flash/ZeroClipboard.swf?noCache=1417999114362')
+  --    param(name='allowScriptAccess', value='sameDomain')
+  --    param(name='scale', value='exactfit')
+  --    param(name='loop', value='false')
+  --    param(name='menu', value='false')
+  --    param(name='quality', value='best')
+  --    param(name='bgcolor', value='#ffffff')
+  --    param(name='wmode', value='transparent')
+  --    param(name='flashvars', value='trustedOrigins=getbootstrap.com%2C%2F%2Fgetbootstrap.com%2Chttp%3A%2F%2Fgetbootstrap.com')
+  --    embed(height='100%', src='/assets/flash/ZeroClipboard.swf?noCache=1417999114362', type='application/x-shockwave-flash', width='100%')
+  --| 900x500
+  ]
+
+--- INPUTS ---
+
+main : Signal Element
+main = Signal.map scene Window.dimensions
+
+scene : (Int,Int) -> Element
+scene (w,h) = toElement w h view
