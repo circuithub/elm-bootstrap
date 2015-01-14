@@ -3,9 +3,12 @@ module PlainComponents where
 Over a dozen reusable components built to provide iconography, dropdowns, input groups, navigation, alerts, and much more.  Provided by Bootstrap.
 -}
 
-import Html (..)
+import Html
+import Html (Html, text, toElement, fromElement)
+import Html.Shorthand (..)
 import Html.Attributes (..)
 import Html.Events (..)
+import Bootstrap.Html (..)
 import Text (..)
 import Graphics.Element (..)
 import Graphics.Collage (..)
@@ -13,22 +16,14 @@ import Signal
 import Window
 
 port title : Signal String
-port title = Signal.constant "Components &middot; Elmstrap"
+port title = Signal.constant "Elm &middot; Bootstrap"
 
 ---- VIEW ----
 
 view : Html
 view =
   let -- Bootstrap specific
-      container       = div [ class "container" ]
-      containerFluid  = div [ class "container-fluid" ]
       iconBar         = span [ class "icon-bar" ] []
-      row             = div [ class "row" ]
-      colMd3          = div [ class "col-md-3" ]
-      colMd9          = div [ class "col-md-9" ]
-      colLg6          = div [ class "col-lg-6" ]
-      --colXsMd xs md   = div [ class "col-xs-" ++ toString xs ++ " " ++ "col-md-" ++ toString md ] 
-      --colSmMd sm md   = div [ class "col-sm-" ++ toString sm ++ " " ++ "col-md-" ++ toString md ] 
       inputGroup      = div [ class "input-group" ]
       inputGroupAddon = span [ class "input-group-addon" ]
       pageHeader i t  = h1 [ id i, class "page-header" ] [ text t ]
@@ -45,11 +40,12 @@ view =
       -- Bootstrap documentation
       bsDocsSection   = div [ class "bs-docs-section" ]
   in body [] 
-    [ a [ class "sr-only sr-only-focusable", href "#content" ] [ text "Skip to main content" ]
+    [ skipNavigation' "Skip to main content"
     -- Docs master nav
-    , header [ class "navbar navbar-static-top bs-docs-nav", id "top"{-role "banner"-} ]
-      [ container
-        [ div [ class "navbar-header" ]
+    , -- TODO: Not sure why bootstrap uses a header instead of nav here
+      Html.header [ class "navbar navbar-static-top bs-docs-nav", id "top"{-role "banner"-} ]
+      [ container'
+        [ navbarHeader_
           [ button [ class "navbar-toggle collapsed", type' "button" {-, data-toggle "collapse",data-target ".bs-navbar-collapse"-}]
             [ span [ class "sr-only" ] [ text "Toggle navigation" ]
             , iconBar
@@ -2856,16 +2852,16 @@ view =
             --  | By default, Bootstrap's thumbnails are designed to showcase linked images with minimal required markup.
             --.bs-example
             --  row
-            --    colXsMd 6 3
+            --    colMd' 6 3 3
             --      a.thumbnail(href='#')
             --        img(alt='100%x180', data-holder-rendered='true', data-src='holder.js/100%x180', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTcyIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE3MiAxODAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMTcyIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjYwLjA2MjUiIHk9IjkwIiBzdHlsZT0iZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQ7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+MTcyeDE4MDwvdGV4dD48L2c+PC9zdmc+', style='height: 180px; width: 100%; display: block;')
-            --    colXsMd 6 3
+            --    colMd' 6 3 3
             --      a.thumbnail(href='#')
             --        img(alt='100%x180', data-holder-rendered='true', data-src='holder.js/100%x180', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTcyIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE3MiAxODAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMTcyIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjYwLjA2MjUiIHk9IjkwIiBzdHlsZT0iZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQ7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+MTcyeDE4MDwvdGV4dD48L2c+PC9zdmc+', style='height: 180px; width: 100%; display: block;')
-            --    colXsMd 6 3
+            --    colMd' 6 3 3
             --      a.thumbnail(href='#')
             --        img(alt='100%x180', data-holder-rendered='true', data-src='holder.js/100%x180', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTcyIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE3MiAxODAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMTcyIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjYwLjA2MjUiIHk9IjkwIiBzdHlsZT0iZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQ7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+MTcyeDE4MDwvdGV4dD48L2c+PC9zdmc+', style='height: 180px; width: 100%; display: block;')
-            --    colXsMd 6 3
+            --    colMd' 6 3 3
             --      a.thumbnail(href='#')
             --        img(alt='100%x180', data-holder-rendered='true', data-src='holder.js/100%x180', src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTcyIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE3MiAxODAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMTcyIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjYwLjA2MjUiIHk9IjkwIiBzdHlsZT0iZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQ7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+MTcyeDE4MDwvdGV4dD48L2c+PC9zdmc+', style='height: 180px; width: 100%; display: block;')
             --.zero-clipboard

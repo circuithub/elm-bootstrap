@@ -3,9 +3,12 @@ module ElmComponents where
 Bring Bootstrap's components to life with some beautiful Elm FRP.  Ported from Bootstrap.
 -} 
 
-import Html (..)
+import Html
+import Html (Html, text, toElement, fromElement)
+import Html.Shorthand (..)
 import Html.Attributes (..)
 import Html.Events (..)
+import Bootstrap.Html (..)
 import Text (..)
 import Graphics.Element (..)
 import Graphics.Collage (..)
@@ -13,12 +16,12 @@ import Signal
 import Window
 
 port title : Signal String
-port title = Signal.constant "Elm &middot; Elmstrap"
+port title = Signal.constant "Elm &middot; Bootstrap"
 
 view : Html
 view =
   body []
-  [ a [ class "sr-only sr-only-focusable", href "#content" ] [ text "Skip to main content" ]
+  [ skipNavigation' "Skip to main content"
   ---- Docs master nav
   --header#top.navbar.navbar-static-top.bs-docs-nav
   --  .container
